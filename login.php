@@ -50,7 +50,7 @@
             <h3 class="mb-4 text-center">Login</h3>
             <form action="login_DB.php" method="POST">
               <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
+                <label for="username" class="form-label">Username.</label>
                 <input type="text" name="mobileNumber" id="username" class="form-control" maxlength="10" required>
               </div>
 
