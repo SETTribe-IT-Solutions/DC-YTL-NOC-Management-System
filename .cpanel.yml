@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/nmrmlatur/dev.settribeitsolutions.com/dcytlnocms
+    - /bin/cp -r * $DEPLOYPATH
