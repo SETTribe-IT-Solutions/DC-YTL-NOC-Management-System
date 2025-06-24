@@ -2,4 +2,6 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/nmrmlatur/dev.settribeitsolutions.com/dcytlnocms
+    - /bin/echo "Starting deployment"
     - /bin/cp -r * $DEPLOYPATH
+    - /bin/echo "Deployment complete"
