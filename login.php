@@ -47,7 +47,7 @@
 
           <!-- Login Form -->
           <div class="col-md-6 col-sm-12 p-4">
-            <h3 class="mb-4 text-center">Login Page - Modified by Saurabh</h3>
+            <h3 class="mb-4 text-center">Login Page</h3>
             <form action="login_DB.php" method="POST">
               <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
@@ -57,11 +57,6 @@
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" name="password" id="password" class="form-control" required>
-              </div>
-
-              <div class="mb-3">
-                <label for="password" class="form-label">Mobile Numer</label>
-                <input type="text" name="password" id="password" class="form-control" required>
               </div>
 
               <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
