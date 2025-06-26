@@ -58,6 +58,12 @@
                 <label for="password" class="form-label">Password</label>
                 <input type="password" name="password" id="password" class="form-control" required>
               </div>
+
+              <div class="mb-3">
+                <label for="password" class="form-label">Mobile Numer</label>
+                <input type="text" name="password" id="password" class="form-control" required>
+              </div>
+
               <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
   <p class="mt-3 text-center">
                 <a href="">User register</a>
