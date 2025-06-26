@@ -80,6 +80,7 @@
           <option value="Village1">Village1</option>
           <option value="Village2">Village2</option>
           <option value="Village3">Village3</option>
+           <option value="Village3">Village4</option>
         </select>
       </div>
 
@@ -103,7 +104,7 @@
 
 <div class="col-md-4 mb-3">
         <label for="mobileNumber" class="form-label">मोबाईल क्रमांक</label>
-        <input type="text" name="mobileNumber" id="mobileNumber" class="form-control" maxlength="10" pattern="\d{10}" title="Mobile Number" required>
+        <input type="tel" maxlength="10" name="mobileNumber" id="mobileNumber" class="form-control" maxlength="10" pattern="\d{10}" title="Mobile Number" required>
       </div>
 
       <div class="col-md-4 mb-3">
@@ -112,7 +113,7 @@
 
       <div class="col-md-4 mb-3">
         <label for="otpnumber" class="form-label">OTP टाका</label>
-        <input type="text" name="otpnumber" id="otpnumber" class="form-control" title="otpnumber">
+        <input type="tel" maxlength="6" name="otpnumber" id="otpnumber" class="form-control" title="otpnumber">
       </div>
 
       <!-- Password -->
