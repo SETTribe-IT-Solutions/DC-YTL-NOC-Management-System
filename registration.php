@@ -87,7 +87,7 @@
       <!-- Aadhaar Number -->
      <div class="col-md-4 mb-3">
   <label for="aadhaar" class="form-label">आधार क्रमांक</label>
-  <input type="text" name="aadhaarNumber" id="aadhaar" class="form-control" maxlength="12" pattern="\d{12}" title="12 digit Aadhaar number" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+  <input type="tel" name="aadhaarNumber" id="aadhaar" class="form-control" maxlength="12" pattern="\d{12}" title="12 digit Aadhaar number" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
 </div>
 
       <!-- Email -->
