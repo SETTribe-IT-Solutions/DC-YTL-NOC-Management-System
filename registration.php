@@ -5,8 +5,12 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   
-  <?php include('include/title.php');
+  <?php
+  include('include/conn.php');
+  include('include/title.php');
     include('include/cssLinks.php');
   ?>
   <style>
@@ -65,9 +69,12 @@
         <label for="taluka" class="form-label">तालुका निवडा</label>
         <select name="taluka" id="taluka" class="form-control" required>
           <option value="">-- तालुका निवडा --</option>
-          <option value="Hingoli">Hingoli</option>
-          <option value="Sengaon">Sengaon</option>
-          <option value="Kalamnuri">Kalamnuri</option>
+       <?php 
+       $query = mysqli_query($conn, " SELECT DISTINCT taluka FROM taluka ORDER BY taluka  ASC");
+       while($row = mysqli_fetch_assoc($query)){
+        echo '<option value="' . htmlspecialchars($row['taluka']) . '">' . htmlspecialchars($row['taluka']) . '</option>';
+       }
+       ?>
           <!-- Add more as needed -->
         </select>
       </div>
@@ -77,10 +84,7 @@
         <label for="village" class="form-label">गाव</label>
         <select name="village" id="village" class="form-control" required>
           <option value="">-- गाव निवडा --</option>
-          <option value="Village1">Village1</option>
-          <option value="Village2">Village2</option>
-          <option value="Village3">Village3</option>
-           <option value="Village3">Village4</option>
+          
         </select>
       </div>
 
@@ -104,7 +108,7 @@
 
 <div class="col-md-4 mb-3">
         <label for="mobileNumber" class="form-label">मोबाईल क्रमांक</label>
-        <input type="tel" maxlength="10" name="mobileNumber" id="mobileNumber" class="form-control" maxlength="10" pattern="\d{10}" title="Mobile Number" required>
+        <input type="text" name="mobileNumber" id="mobileNumber" class="form-control" maxlength="10" pattern="\d{10}" title="Mobile Number" required>
       </div>
 
       <div class="col-md-4 mb-3">
@@ -113,7 +117,7 @@
 
       <div class="col-md-4 mb-3">
         <label for="otpnumber" class="form-label">OTP टाका</label>
-        <input type="tel" maxlength="6" name="otpnumber" id="otpnumber" class="form-control" title="otpnumber">
+        <input type="text" name="otpnumber" id="otpnumber" class="form-control" title="otpnumber">
       </div>
 
       <!-- Password -->
@@ -151,17 +155,46 @@
  <?php include('include/jsLinks.php'); ?>
   <!-- End custom js for this page-->
   
-    <script>
+   <!-- Make sure SweetAlert2 is included -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
   document.querySelector('form').addEventListener('submit', function(e) {
     const pwd = document.getElementById('password').value;
     const cpwd = document.getElementById('confirm_password').value;
+
     if (pwd !== cpwd) {
-      e.preventDefault();
-      alert("पासवर्ड जुळत नाहीत. कृपया तपासा.");
+      e.preventDefault(); // prevent form submission
+
+      Swal.fire({
+        icon: 'error',
+        title: 'पासवर्ड जुळत नाहीत',
+        text: 'कृपया तपासा.',
+        confirmButtonText: 'ठीक आहे'
+      });
     }
   });
 </script>
 
-  
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $('#taluka').on('change', function () {
+    var selectedTaluka = $(this).val();
+    if (selectedTaluka !== "") {
+      $.ajax({
+        url: 'fetch_villages.php',
+        method: 'POST',
+        data: { taluka: selectedTaluka },
+        success: function (data) {
+          $('#village').html(data);
+        }
+      });
+    } else {
+      $('#village').html('<option value="">-- गाव निवडा --</option>');
+    }
+  });
+</script>
+
 </body>
 </html>
