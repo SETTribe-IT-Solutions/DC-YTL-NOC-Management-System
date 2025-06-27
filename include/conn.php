@@ -1,6 +1,6 @@
 <?php
 
-$conn = mysqli_connect("localhost","nmrmlatur_dcytlnocms","ST@NOCYavatmal1","nmrmlatur_dcytlnocms");
+$conn = mysqli_connect("217.21.88.4","u952673419_NOC_Portal","ST@NOCYavatmal1","u952673419_NOC_Portal");
 
 $connect = $conn;
 $con = $conn;

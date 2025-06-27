@@ -23,7 +23,9 @@
 }
 </style>
 
-  
+  <!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -47,7 +49,7 @@
 
           <!-- Login Form -->
           <div class="col-md-6 col-sm-12 p-4">
-            <h3 class="mb-4 text-center">Login Page</h3>
+            <h3 class="mb-4 text-center">Login</h3>
             <form action="login_DB.php" method="POST">
               <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
@@ -60,7 +62,7 @@
               </div>
               <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
   <p class="mt-3 text-center">
-                <a href="">User register</a>
+                <a href="registration.php">User register</a>
               </p>
               <p class="mt-3 text-center">
                 <a href="forgot_password.php">Forgot password?</a>
