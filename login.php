@@ -52,7 +52,7 @@
             <h3 class="mb-4 text-center">Login Form</h3>
             <form action="login_DB.php" method="POST">
               <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
+                <label for="username" class="form-label">Mobile Number</label>
                 <input type="text" name="mobileNumber" id="username" class="form-control" maxlength="10" required>
               </div>
 
@@ -64,9 +64,9 @@
   <p class="mt-3 text-center">
                 <a href="registration.php">User register</a>
               </p>
-              <p class="mt-3 text-center">
+              <!-- <p class="mt-3 text-center">
                 <a href="forgot_password.php">Forgot password?</a>
-              </p>
+              </p> -->
                
             </form>
           </div>
