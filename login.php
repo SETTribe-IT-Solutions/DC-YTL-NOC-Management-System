@@ -49,7 +49,7 @@
 
           <!-- Login Form -->
           <div class="col-md-6 col-sm-12 p-4">
-            <h3 class="mb-4 text-center">Login features</h3>
+            <h3 class="mb-4 text-center">Login Form</h3>
             <form action="login_DB.php" method="POST">
               <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
