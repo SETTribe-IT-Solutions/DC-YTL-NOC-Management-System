@@ -111,8 +111,8 @@
         <input type="text" name="mobileNumber" id="mobileNumber" class="form-control" maxlength="10" pattern="\d{10}" title="Mobile Number" required>
       </div>
 
-      <div class="col-md-4 mb-3">
-           <button type="submit" class="btn btn-primary w-100 mt-4">OTP पटवा</button>
+      <div class="col-md-2 mb-3">
+           <button type="button"  id="sendOtpBtn"  class="btn btn-primary w-100 mt-4">OTP पटवा</button>
       </div>
 
       <div class="col-md-4 mb-3">
@@ -120,8 +120,12 @@
         <input type="text" name="otpnumber" id="otpnumber" class="form-control" title="otpnumber">
       </div>
 
+      <div class="col-md-2 mb-3">
+           <button type="button" id="verifyOTP" class="btn btn-primary w-100 mt-4">Verify</button>
+      </div>
+
       <!-- Password -->
-<div class="col-md-4 mb-3">
+<div class="col-md- 4 mb-3">
   <label for="password" class="form-label">पासवर्ड</label>
   <input type="password" name="password" id="password" class="form-control"  required>
 </div>
@@ -157,7 +161,41 @@
   
    <!-- Make sure SweetAlert2 is included -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<sceipt>
+  <script>
+  document.getElementById('sendOtpBtn').addEventListener('click', function () {
+    Swal.fire({
+      icon: 'success',
+      title: 'OTP पाठवण्यात आला आहे',
+      text: 'कृपया तुमचा OTP तपासा!',
+      confirmButtonText: 'ठीक आहे'
+    });
+  });
+</script>
+<sceipt>
+  <script>
+  document.getElementById('verifyOTP').addEventListener('click', function () {
+    var otp = document.getElementById('otpnumber').value;
+    if(otp=="123456"){
+    Swal.fire({
+      icon: 'success',
+      title: 'OTP Verified Successfully',
+      // text: 'कृपया तुमचा OTP तपासा!',
+      confirmButtonText: 'ठीक आहे'
+    });
+  }else{
+    Swal.fire({
+      icon: 'error',
+      title: 'OTP is invalid',
+      text: 'Please Check carefully otp',
+      confirmButtonText: 'ठीक आहे'
+    });
+  }
+  });
+  
+</script>
 
+</sceipt>
 <script>
   document.querySelector('form').addEventListener('submit', function(e) {
     const pwd = document.getElementById('password').value;
