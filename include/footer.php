@@ -1,10 +1,9 @@
-<footer class="footer">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024 <a href="https://www.bootstrapdash.com/" class="text-muted" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center text-muted">Hand-crafted & made with <i class="typcn typcn-heart-full-outline text-danger"></i></span>
-                    </div>
-                </div>    
-            </div>        
-        </footer>
+<div id="kt_app_footer"
+    class="app-footer align-items-center justify-content-center justify-content-md-between flex-column flex-md-row py-3">
+    <!--begin::Copyright-->
+    <div class="text-dark order-2 order-md-1">
+        <span class="text-muted fw-semibold me-1">2025&copy;</span>
+        <a href="https://keenthemes.com" target="_blank" class="text-gray-800 text-hover-primary">SETTribe</a>
+    </div>
+    <!--end::Copyright-->
+</div>
