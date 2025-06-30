@@ -69,14 +69,14 @@
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Blank</li>
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC प्रकार निर्मिती</li>
                                             <!--end::Item-->
                                         </ul>
                                         <!--end::Breadcrumb-->
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
-                                            Blank</h1>
+                                            NOC प्रकार निर्मिती</h1>
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
@@ -94,6 +94,12 @@
                                 <div class="card p-lg-17">
                                     <!--begin::Body-->
                                     <div class="row mb-3">
+                                        <?php if (isset($_REQUEST['edit'])) {
+            $id = $_REQUEST['edit'];
+            $query = mysqli_query($conn,"select * from nocTypes WHERE id = $id");
+            $result = mysqli_fetch_assoc($query);
+           ?>
+           <?php } ?>
                                         <!--begin::Col-->
                                         <div class="col-md-12 pe-lg-10">
                                             <!--begin::Form-->
@@ -101,6 +107,8 @@
                                                 <h1 class="fw-bold text-gray-900 mb-9">NOC प्रकार निर्मिती</h1>
 
                                                 <!--begin::Input group-->
+                                             
+                                                
                                                 <div class="row mb-5">
                                                     <!--begin::Col-->
                                                     <div class="col-md-6 fv-row fv-plugins-icon-container">
@@ -110,7 +118,7 @@
 
                                                         <!--begin::Input-->
                                                         <input type="text" class="form-control form-control-solid"
-                                                            placeholder="NOC Type" name="type">
+                                                            placeholder="NOC Type" value="<?php echo $result['type'];  ?>" name="type">
                                                         <!--end::Input-->
                                                         <div
                                                             class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
@@ -166,7 +174,9 @@
 		<div class="card-title">
 			<!--begin::Search-->
 			<div class="d-flex align-items-center position-relative my-1">
-				<span class="svg-icon fs-1 position-absolute ms-4">...</span>
+				<span class="svg-icon fs-1 position-absolute ms-4"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+</svg></span>
 				<input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search Report" />
 			</div>
 			<!--end::Search-->
@@ -191,13 +201,15 @@
 			</thead>
 			<tbody class="fw-semibold text-gray-600">
                   <?php
-         $result = mysqli_query($conn, "
+       $result = mysqli_query($conn, "
     SELECT n.id, n.type, n.departmentId, 
            GROUP_CONCAT(d.departmentName SEPARATOR ', ') AS departmentNames
     FROM nocTypes n
     LEFT JOIN departments d ON FIND_IN_SET(d.id, n.departmentId)
+    WHERE n.status = 'Active'
     GROUP BY n.id
 ");
+
           $i = 1;
           while($row = mysqli_fetch_assoc($result)){
 
@@ -209,12 +221,12 @@
 					<td><?php echo $row['type'] ?></td>
 					<td><?php echo $row['departmentNames'] ?></td>
 					<td data-order="2022-03-10T14:40:00+05:00">
-                        <a href="admin/department_master.php?edit=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning me-1">
+                        <a href="admin/nocType.php?edit=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning me-1">
                     <i class="fas fa-edit"></i>
                   </a>
                 <a href="#" 
    class="btn btn-sm btn-danger delete-btn" 
-   data-href="admin/department_master_DB.php?delete=<?php echo $row['id']; ?>">
+   data-href="admin/nocType_DB.php?delete=<?php echo $row['id']; ?>">
    <i class="fas fa-trash-alt"></i>
 </a>
                     </td>
@@ -360,6 +372,34 @@ KTUtil.onDOMContentLoaded(function () {
     KTDatatablesExample.init();
 });
         </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+
+    deleteButtons.forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault(); // prevent default <a> behavior
+        const href = this.getAttribute('data-href');
+
+        Swal.fire({
+          title: "Are you sure?",
+          text: "you want to mark this NOC Type as Inactive?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = href;
+          }
+        });
+      });
+    });
+  });
+</script>
 
 </body>
 <!--end::Body-->
