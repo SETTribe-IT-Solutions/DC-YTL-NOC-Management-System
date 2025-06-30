@@ -99,7 +99,7 @@ include('../include/sweetAlert.php');
                                         $village = $row['village'];
                                         $panCard = $row['panCard'];
                                         $aadharCard = $row['aadharCard'];
-                                        $gatNo = $row['gatNO']
+                                        $gatNo = $row['gatNo']
                                             ?>
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1">
@@ -229,9 +229,6 @@ include('../include/sweetAlert.php');
                                                                         <div class="modal-footer">
                                                                             <button type="button" class="btn btn-light"
                                                                                 data-bs-dismiss="modal">Close</button>
-                                                                            <button type="button"
-                                                                                class="btn btn-primary">Save
-                                                                                changes</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
