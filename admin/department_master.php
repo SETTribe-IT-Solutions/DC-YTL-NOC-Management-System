@@ -105,10 +105,7 @@
     <div class="row">
       <!-- department Name -->
 
-      <div class="mb-10">
-    <label for="exampleFormControlInput1" class="required form-label">Symbol in label</label>
-    <input type="email" class="form-control form-control-solid" placeholder="Example input"/>
-</div>
+  
       <div class="col-md-4 mb-3">
         <label for="fullname" class="form-label">Department</label>
         <input type="text" value="<?php echo $result['departmentName'];  ?>" name="departmentName" id="Department" class="form-control" required placeholder="Department">
@@ -151,11 +148,12 @@
           <a href="admin/department_master.php?edit=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning me-1">
                     <i class="fas fa-edit"></i>
                   </a>
-                 <a href="admin/department_master_DB.php?delete=<?php echo $row['id']; ?>" 
-   class="btn btn-sm btn-danger" 
-   onclick="return confirm('Are you sure you want to mark this department as Inactive?');">
+                <a href="#" 
+   class="btn btn-sm btn-danger delete-btn" 
+   data-href="admin/department_master_DB.php?delete=<?php echo $row['id']; ?>">
    <i class="fas fa-trash-alt"></i>
 </a>
+
 
         </td>
        </tr>
@@ -203,6 +201,34 @@
         ?>
 </body>
 <!--end::Body-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+
+    deleteButtons.forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault(); // prevent default <a> behavior
+        const href = this.getAttribute('data-href');
+
+        Swal.fire({
+          title: "Are you sure?",
+          text: "you want to mark this department as Inactive?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = href;
+          }
+        });
+      });
+    });
+  });
+</script>
+
 
 </html>
 
