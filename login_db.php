@@ -1,8 +1,8 @@
 <?php
 session_start();
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting();
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);
 if (isset($_REQUEST['logIn'])) {
     include('include/conn.php');
     include('include/sweetAlert.php');
@@ -21,17 +21,17 @@ if (isset($_REQUEST['logIn'])) {
                 setcookie('userId', $result['civilianId'], time() + (86400 * 30), '/');
                 setcookie('designation', "civilian", time() + (86400 * 30), '/');
             }
-            echo $_SESSION['userI'];
-            header('location:civilian/index.php');
+            echo "<script>window.location = 'civilian/index.php';</script>";
         } else {
             $_SESSION['status'] = false;
             $_SESSION['msg'] = "Invalid Mobile No. & Password";
-            header('location:login.php');
+            // header('location:login.php');
+            echo "<script>window.location = '../login.php';</script>";
         }
     } else {
         $_SESSION['status'] = false;
         $_SESSION['msg'] = "Invalid Mobile No. & Password";
-        header('location:login.php');
+        echo "<script>window.location = '../login.php';</script>";
     }
 
 }
