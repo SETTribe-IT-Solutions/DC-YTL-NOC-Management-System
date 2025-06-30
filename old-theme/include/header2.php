@@ -1,31 +1,59 @@
 <style>
-  .heading {
-    /* margin-right: 39%; */
-    color: white;
-    font-size: 33px;
-     margin-left: 20%;
+  .custom-header {
+    background-color: #844fc1;
+    padding: 10px 0;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .custom-header img {
+    height: 70px;
+    width: auto;
+  }
+
+  .custom-header .center-text {
+    flex: 1;
+    text-align: center;
+    color: #ffffff;
+  }
+
+  .custom-header .center-text h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .custom-header .center-text h3 {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .custom-header {
+      flex-direction: column;
+    }
+
+    .custom-header .center-text {
+      order: 2;
+      margin-top: 10px;
+    }
   }
 </style>
 
-<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-      <div class="navbar-brand-wrapper d-flex justify-content-center">
-        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
-          <a class="navbar-brand brand-logo" href="index.html"><img style="height: 70px; width: 70px;" src="img/Picsart2.png" alt="logo"/></a>
-          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../assets/images/logo-mini.svg" alt="logo"/></a>
-          <!-- <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-            <span class="typcn typcn-th-menu"></span>
-          </button> -->
-        
-        </div>
-      </div>
-      <div class="navbar-menu-wrapper align-items-center justify-content-end" style="background-color:#844fc1;">
-       <h3 class="heading" style="margin-left: 23%;"><b>NOC Management System</b></h3>
-          <h3 class="heading"><b>जिल्हाधिकारी कार्यालय, यवतमाळ</b></h3>
-         
-   <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-    
-          <span class="typcn typcn-th-menu"></span>
-          
-        </button>
-      </div>
-    </nav>
+<div class="custom-header">
+  <div style="padding-left: 20px;">
+    <img src="img/satymev-jayte.png" alt="Gov Logo" />
+  </div>
+
+  <div class="center-text">
+    <h2>NOC Management System</h2><br>
+    <h3>जिल्हाधिकारी कार्यालय, यवतमाळ</h3>
+  </div>
+
+  <div style="padding-right: 20px;">
+    <img src="img/Seal_of_Maharashtra.png" alt="State Seal" />
+  </div>
+</div>
