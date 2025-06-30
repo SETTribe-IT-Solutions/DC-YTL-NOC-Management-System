@@ -2,198 +2,181 @@
 <html lang="en">
 
 <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration | NOC Management System</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <?php include("include/cssLinks.php"); 
+    
+    include("include/conn.php");
 
-  
-  <?php
-  include('include/conn.php');
-  include('include/title.php');
-    include('include/cssLinks.php');
-  ?>
-  <style>
-  @media (max-width: 768px) {
-    .rounded-start {
-      border-radius: 0 !important;
-    }
-  }
-  @media (max-width: 767px) {
-    .content-wrapper {
-        margin-top: 30%;
-        padding: 1.5rem 1.5rem;
-    }
-}
-</style>
-
-  
+    ?>
+    
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+        .header-bar {
+            background-color: #7e41c3;
+            padding: 10px 20px;
+            color: white;
+        }
+        .header-bar img {
+            height: 60px;
+        }
+        .header-title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .register-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 10px;
+        }
+        .register-image {
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .register-image img {
+            max-width: 100%;
+            height: auto;
+        }
+        .register-form {
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+            padding: 30px;
+            background: #ffffff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.08);
+            border-radius: 10px;
+        }
+    </style>
 </head>
-
 <body>
-  <div class="container-scroller">
-    <!-- partial:../../partials/_navbar.html -->
-       <?php include('include/header2.php'); ?>
-   <!-- partial -->
-    <div class="container-fluid page-body-wrapper">      
-      
-      <!-- partial -->
-   <!-- Centering Wrapper -->
-<div class="content-wrapper d-flex justify-content-center " style="background-color: #f5f5f5;">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-10 col-md-12 col-sm-12 shadow p-4 bg-white rounded">
-        <div class="row">
-          <!-- Login Image -->
-         
 
-          <!-- Login Form -->
-         <div class="col-md-12 col-sm-12 p-4">
-  <h3 class="mb-4 text-center">युजर नोंदणी</h3>
-  <form action="registration_DB.php" method="POST">
-    <div class="row">
-      <!-- Full Name -->
-      <div class="col-md-4 mb-3">
-        <label for="fullname" class="form-label">पूर्ण नाव</label>
-        <input type="text" name="fullname" id="fullname" class="form-control" required>
-      </div>
-
-      <!-- Address -->
-      <div class="col-md-4 mb-3">
-        <label for="address" class="form-label">पत्ता</label>
-        <input type="text" name="address" id="address" class="form-control" required>
-      </div>
-
-      <!-- Taluka Dropdown -->
-      <div class="col-md-4 mb-3">
-        <label for="taluka" class="form-label">तालुका निवडा</label>
-        <select name="taluka" id="taluka" class="form-control" required>
-          <option value="">-- तालुका निवडा --</option>
-       <?php 
-       $query = mysqli_query($conn, " SELECT DISTINCT taluka FROM taluka ORDER BY taluka  ASC");
-       while($row = mysqli_fetch_assoc($query)){
-        echo '<option value="' . htmlspecialchars($row['taluka']) . '">' . htmlspecialchars($row['taluka']) . '</option>';
-       }
-       ?>
-          <!-- Add more as needed -->
-        </select>
-      </div>
-
-      <!-- Village Dropdown -->
-      <div class="col-md-4 mb-3">
-        <label for="village" class="form-label">गाव</label>
-        <select name="village" id="village" class="form-control" required>
-          <option value="">-- गाव निवडा --</option>
-          
-        </select>
-      </div>
-
-      <!-- Aadhaar Number -->
-     <div class="col-md-4 mb-3">
-  <label for="aadhaar" class="form-label">आधार क्रमांक</label>
-  <input type="text" name="aadhaarNumber" id="aadhaar" class="form-control" maxlength="12" pattern="\d{12}" title="12 digit Aadhaar number" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+<!-- Header -->
+<div class="header-bar d-flex align-items-center justify-content-between flex-wrap">
+    <img src="assets/media/icons/india-emblem.png" alt="India Emblem">
+    <div class="flex-grow-1 text-center header-title">NOC Management System</div>
+    <img src="assets/media/icons/maharashtra-seal.png" alt="Maharashtra Seal">
 </div>
 
-      <!-- Email -->
-      <div class="col-md-4 mb-3">
-        <label for="email" class="form-label">ईमेल</label>
-        <input type="email" name="email" id="email" class="form-control" required>
-      </div>
-  
-
-    <!-- <div class="col-md-4 mb-3">
-  <label for="id_proof" class="form-label">ओळखपत्र अपलोड करा</label>
-  <input type="file" name="id_proof" id="id_proof" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
-</div> -->
-
-<div class="col-md-4 mb-3">
-        <label for="mobileNumber" class="form-label">मोबाईल क्रमांक</label>
-        <input type="text" name="mobileNumber" id="mobileNumber" class="form-control" maxlength="10" pattern="\d{10}" title="Mobile Number" required>
-      </div>
-
-      <div class="col-md-4 mb-3">
-           <button type="submit" class="btn btn-primary w-100 mt-4">OTP पटवा</button>
-      </div>
-
-      <div class="col-md-4 mb-3">
-        <label for="otpnumber" class="form-label">OTP टाका</label>
-        <input type="text" name="otpnumber" id="otpnumber" class="form-control" title="otpnumber">
-      </div>
-
-      <!-- Password -->
-<div class="col-md-4 mb-3">
-  <label for="password" class="form-label">पासवर्ड</label>
-  <input type="password" name="password" id="password" class="form-control"  required>
-</div>
-
-<!-- Confirm Password -->
-<div class="col-md-4 mb-3">
-  <label for="confirm_password" class="form-label">पासवर्ड पुन्हा लिहा</label>
-  <input type="password" name="confirm_password" id="confirm_password" class="form-control" required>
-</div>
-
+<!-- Registration Section -->
+<div class="register-section">
+    <!-- Left: Image -->
+    <div class="register-image">
+        <img src="img/login.png" alt="Register Illustration">
     </div>
-    <button type="submit" name="submit" class="btn btn-primary w-100 mt-3">नोंदणी करा</button>
-  </form>
+
+    <!-- Right: Form -->
+    <div class="register-form">
+        <h3 class="text-center mb-4">युजर नोंदणी</h3>
+        <form method="post" action="registrationDB.php" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">पुर्ण नाव</label><span style="color: red;">*</span>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">पत्ता</label><span style="color: red;">*</span>
+                    <input type="text" name="address" class="form-control" required>
+                </div>
+            </div>
+                <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">तालुका निवडा</label><span style="color: red;">*</span>
+                    <select name="taluka" id="taluka" class="form-select" required>
+                        <option value="" selected disabled>-- निवडा --</option>
+                        <?php
+                        include("include/conn.php");
+                        $res = mysqli_query($con, "SELECT DISTINCT taluka FROM taluka");
+                        while ($row = mysqli_fetch_assoc($res)) {
+                            $taluka = htmlspecialchars($row['taluka']);
+                            echo "<option value='$taluka'>$taluka</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">गाव निवडा</label><span style="color: red;">*</span>
+                    <select name="village" id="village" class="form-select" required>
+                        <option value="" selected disabled>-- गाव निवडा --</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">आधार क्रमांक</label><span style="color: red;">*</span>
+                    <input type="text" name="aadharNo" class="form-control" maxlength="12" pattern="\d{12}" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">ईमेल</label><span style="color: red;">*</span>
+                    <input type="email" name="emailId" class="form-control" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">ओळखपत्र अपलोड करा</label><span style="color: red;">*</span>
+                    <input type="file" name="identificationCertificate" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">मोबाईल क्रमांक</label><span style="color: red;">*</span>
+                    <input type="text" name="mobileNo" class="form-control" maxlength="10" pattern="\d{10}" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">पासवर्ड</label><span style="color: red;">*</span>
+                <input type="number" name="password" class="form-control" required>
+            </div>   
+            <div class="col-md-6">
+                <label class="form-label">OTP टाका</label><span style="color: red;">*</span>
+                <input type="text" name="otp" class="form-control" maxlength="6" required>
+            </div>
+            </div>
+            <div class="d-grid mb-3">
+                <button type="submit" name="submit" class="btn btn-primary" style="background-color:#7e41c3; border:none;">नोंदणी करा</button>
+            </div>
+            <div class="text-center">
+                <a href="login.php">आधीच खाते आहे? लॉगिन करा</a>
+            </div>
+        </form>
+    </div>
 </div>
 
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-    </div>
-  </div>
-      </div>
-      <!-- main-panel ends -->
-    </div>
-    <!-- page-body-wrapper ends -->
-  </div>
-  <!-- container-scroller -->
-  <!-- base:js -->
-   <?php include('include/footer.php'); ?>
- <?php include('include/jsLinks.php'); ?>
-  <!-- End custom js for this page-->
-  
-   <!-- Make sure SweetAlert2 is included -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?php include("include/jsLinks.php"); ?>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  document.querySelector('form').addEventListener('submit', function(e) {
-    const pwd = document.getElementById('password').value;
-    const cpwd = document.getElementById('confirm_password').value;
-
-    if (pwd !== cpwd) {
-      e.preventDefault(); // prevent form submission
-
-      Swal.fire({
-        icon: 'error',
-        title: 'पासवर्ड जुळत नाहीत',
-        text: 'कृपया तपासा.',
-        confirmButtonText: 'ठीक आहे'
-      });
-    }
-  });
-</script>
-
-
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  $('#taluka').on('change', function () {
+$('#taluka').on('change', function () {
     var selectedTaluka = $(this).val();
-    if (selectedTaluka !== "") {
-      $.ajax({
-        url: 'fetch_villages.php',
-        method: 'POST',
+    $.ajax({
+        url: 'get_villages.php',
+        type: 'GET',
         data: { taluka: selectedTaluka },
         success: function (data) {
-          $('#village').html(data);
+            $('#village').empty().append('<option value="" disabled selected>-- गाव निवडा --</option>');
+            if (Array.isArray(data)) {
+                data.forEach(function (village) {
+                    $('#village').append('<option value="' + village + '">' + village + '</option>');
+                });
+            }
+        },
+        error: function (xhr) {
+            alert("गाव माहिती मिळवता आली नाही.");
+            console.error(xhr.responseText);
         }
-      });
-    } else {
-      $('#village').html('<option value="">-- गाव निवडा --</option>');
-    }
-  });
+    });
+});
 </script>
 
 </body>
