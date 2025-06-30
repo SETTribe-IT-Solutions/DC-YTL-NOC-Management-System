@@ -34,4 +34,30 @@ if (isset($_POST['submit'])) {
     </body>
     </html>
     <?php
-} ?>
+}
+if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+
+    $query = mysqli_query($conn, "UPDATE nocTypes SET status = 'Inactive' WHERE id = '$id'");
+
+    ?>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+    <body>
+    <script>
+        Swal.fire({
+            icon: '<?php echo $query ? "success" : "error"; ?>',
+            title: '<?php echo $query ? "Deleted!" : "Oops..."; ?>',
+            text: '<?php echo $query ? "NOC Type marked as Inactive." : "Something went wrong!"; ?>',
+        }).then(() => {
+            window.location.href = 'nocType.php';
+        });
+    </script>
+    </body>
+    </html>
+    <?php
+}
+?>
