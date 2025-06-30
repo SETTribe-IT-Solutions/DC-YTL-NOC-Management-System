@@ -9,11 +9,6 @@
     <meta name="keywords"
         content="Saul, bootstrap, bootstrap 5, dmin themes, free admin themes, bootstrap admin, bootstrap dashboard" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
-    <meta property="og:url" content="https://keenthemes.com/products/saul-html-pro" />
-    <meta property="og:site_name" content="Keenthemes | Saul HTML Free" />
 
     <?php include("include/cssLinks.php"); ?>
 </head>
@@ -90,9 +85,100 @@
                             <!--begin::Content container-->
                             <div id="kt_app_content_container" class="app-container container-fluid">
                                 <!--begin::Contact-->
-                                <div class="card">
+                                <div class="card p-lg-17">
                                     <!--begin::Body-->
+                                    <div class="row mb-3">
+                                        <!--begin::Col-->
+                                        <div class="col-md-12 pe-lg-10">
+                                            <!--begin::Form-->
+                                            <form action=""
+                                                class="form mb-15 fv-plugins-bootstrap5 fv-plugins-framework"
+                                                method="post" id="kt_contact_form">
+                                                <h1 class="fw-bold text-gray-900 mb-9">Send Us Email</h1>
 
+                                                <!--begin::Input group-->
+                                                <div class="row mb-5">
+                                                    <!--begin::Col-->
+                                                    <div class="col-md-6 fv-row fv-plugins-icon-container">
+                                                        <!--begin::Label-->
+                                                        <label class="fs-5 fw-semibold mb-2">Name</label>
+                                                        <!--end::Label-->
+
+                                                        <!--begin::Input-->
+                                                        <input type="text" class="form-control form-control-solid"
+                                                            placeholder="" name="name">
+                                                        <!--end::Input-->
+                                                        <div
+                                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                        </div>
+                                                    </div>
+                                                    <!--end::Col-->
+
+                                                    <!--begin::Col-->
+                                                    <div class="col-md-6 fv-row fv-plugins-icon-container">
+                                                        <!--end::Label-->
+                                                        <label class="fs-5 fw-semibold mb-2">Email</label>
+                                                        <!--end::Label-->
+
+                                                        <!--end::Input-->
+                                                        <input type="text" class="form-control form-control-solid"
+                                                            placeholder="" name="email">
+                                                        <!--end::Input-->
+                                                        <div
+                                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                        </div>
+                                                    </div>
+                                                    <!--end::Col-->
+                                                </div>
+                                                <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                                                <div class="d-flex flex-column mb-5 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="fs-5 fw-semibold mb-2">Subject</label>
+                                                    <!--end::Label-->
+
+                                                    <!--begin::Input-->
+                                                    <input class="form-control form-control-solid" placeholder=""
+                                                        name="subject">
+                                                    <!--end::Input-->
+                                                </div>
+                                                <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                                                <div class="d-flex flex-column mb-10 fv-row fv-plugins-icon-container">
+                                                    <label class="fs-6 fw-semibold mb-2">Message</label>
+
+                                                    <textarea class="form-control form-control-solid" rows="6"
+                                                        name="message" placeholder="">        </textarea>
+                                                    <div
+                                                        class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                    </div>
+                                                </div>
+                                                <!--end::Input group-->
+
+                                                <!--begin::Submit-->
+                                                <button type="submit" class="btn btn-primary"
+                                                    id="kt_contact_submit_button">
+
+                                                    <!--begin::Indicator label-->
+                                                    <span class="indicator-label">
+                                                        Send Feedback</span>
+                                                    <!--end::Indicator label-->
+
+                                                    <!--begin::Indicator progress-->
+                                                    <span class="indicator-progress">
+                                                        Please wait... <span
+                                                            class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                    </span>
+                                                    <!--end::Indicator progress--> </button>
+                                                <!--end::Submit-->
+                                            </form>
+                                            <!--end::Form-->
+                                        </div>
+                                        <!--end::Col-->
+
+                                    </div>
                                     <!--end::Body-->
                                 </div>
                                 <!--end::Contact-->
