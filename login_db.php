@@ -26,12 +26,12 @@ if (isset($_REQUEST['logIn'])) {
             $_SESSION['status'] = false;
             $_SESSION['msg'] = "Invalid Mobile No. & Password";
             // header('location:login.php');
-            echo "<script>window.location = '../login.php';</script>";
+            echo "<script>window.location = 'login.php';</script>";
         }
     } else {
         $_SESSION['status'] = false;
         $_SESSION['msg'] = "Invalid Mobile No. & Password";
-        echo "<script>window.location = '../login.php';</script>";
+        echo "<script>window.location = 'login.php';</script>";
     }
 
 }
