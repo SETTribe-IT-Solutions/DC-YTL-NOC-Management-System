@@ -1,91 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  
-  <?php include('include/title.php');
-    include('include/cssLinks.php');
-  ?>
-  <style>
-  @media (max-width: 768px) {
-    .rounded-start {
-      border-radius: 0 !important;
-    }
-  }
-  @media (max-width: 767px) {
-    .content-wrapper {
-        margin-top: 30%;
-        padding: 1.5rem 1.5rem;
-    }
-}
-</style>
-
-  <!-- SweetAlert2 CDN -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <title>NOC Management System</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <?php include("include/cssLinks.php"); ?>
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+        .header-bar {
+            background-color: #7e41c3;
+            padding: 10px 20px;
+            color: white;
+        }
+        .header-bar img {
+            height: 60px;
+        }
+        .header-title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .login-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 10px;
+        }
+        .login-image {
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .login-image img {
+            max-width: 100%;
+            height: auto;
+        }
+        .login-form {
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+            padding: 30px;
+            background: #ffffff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.08);
+            border-radius: 10px;
+        }
+    </style>
 </head>
-
 <body>
-  <div class="container-scroller">
-    <!-- partial:../../partials/_navbar.html -->
-    <?php include('include/header2.php'); ?>
-    <!-- partial -->
-    <div class="container-fluid page-body-wrapper">      
-      
-      <!-- partial -->
-   <!-- Centering Wrapper -->
-<div class="content-wrapper d-flex justify-content-center " style="background-color: #f5f5f5;">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-10 col-md-12 col-sm-12 shadow p-4 bg-white rounded">
-        <div class="row">
-          <!-- Login Image -->
-          <div class="col-md-6 d-none d-md-block">
-            <img src="img/login2.svg" alt="Login" class="img-fluid rounded-start w-100" style="height:100%;">
-          </div>
 
-          <!-- Login Form -->
-          <div class="col-md-6 col-sm-12 p-4 card">
-            <h3 class="mb-4 text-center">Login Form</h3>
-            <form action="login_DB.php" method="POST">
-              <div class="mb-3">
-                <!-- <label for="username" class="form-label">Mobile Number</label> -->
-                <input type="text" name="mobileNumber" id="username" class="form-control" maxlength="10" required placeholder="Mobile Number">
-              </div>
-
-              <div class="mb-3">
-                <!-- <label for="password" class="form-label">Password</label> -->
-                <input type="password" name="password" id="password" class="form-control" required placeholder="Password">
-              </div>
-              <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
-  <p class="mt-3 text-center">
-                <a href="registration.php">User register</a>
-              </p>
-              <!-- <p class="mt-3 text-center">
-                <a href="forgot_password.php">Forgot password?</a>
-              </p> -->
-               
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- Header -->
+<div class="header-bar d-flex align-items-center justify-content-between flex-wrap">
+    <img src="assets/media/icons/india-emblem.png" alt="India Emblem">
+    <div class="flex-grow-1 text-center header-title">NOC Management System</div>
+    <img src="assets/media/icons/maharashtra-seal.png" alt="Maharashtra Seal">
 </div>
+
+<!-- Main Section -->
+<div class="login-section">
+    <!-- Left: Image -->
+    <div class="login-image">
+        <img src="img/login.png" alt="Login Illustration">
     </div>
-  </div>
-      </div>
-      <!-- main-panel ends -->
+
+    <!-- Right: Login Form -->
+    <div class="login-form">
+        <h3 class="text-center mb-4">लॉगिन</h3>
+        <form method="post" action="login-check.php">
+            <div class="mb-3">
+                <label class="form-label">Mobile No</label>
+                <input type="text" name="mobile" class="form-control" placeholder="Enter Mobile No" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Enter Password" required>
+            </div>
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-primary" style="background-color:#7e41c3; border:none;">लॉगिन</button>
+            </div>
+            <div class="text-center">
+                <a href="forgot-password.php">पासवर्ड विसरलात?</a><br>
+                <a href="register.php">वापरकर्ता खाते नाही? नोंदणी करा</a>
+            </div>
+        </form>
     </div>
-    <!-- page-body-wrapper ends -->
-  </div>
-  <!-- container-scroller -->
-  <!-- base:js -->
-   <?php include('include/footer.php'); ?>
- <?php include('include/jsLinks.php'); ?>
-  <!-- End custom js for this page-->
+</div>
+
+<?php include('include/jsLinks.php'); ?>
 </body>
 </html>
