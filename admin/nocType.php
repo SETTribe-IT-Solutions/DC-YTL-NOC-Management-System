@@ -3,14 +3,20 @@
 <!--begin::Head-->
 
 <head>
+     <base href="../">
     <title>Saul Theme by Keenthemes</title>
     <meta charset="utf-8" />
     <meta name="description" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
     <meta name="keywords"
         content="Saul, bootstrap, bootstrap 5, dmin themes, free admin themes, bootstrap admin, bootstrap dashboard" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css"/>
+<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
 
-    <?php include("include/cssLinks.php"); ?>
+    <?php
+    include('../include/conn.php');
+    include("../include/cssLinks.php");
+     ?>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -27,13 +33,13 @@
         <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
             <!--begin::Header-->
             <?php
-            include("include/header.php");
+            include("../include/header.php");
             ?>
             <!--end::Header-->
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                <?php include("include/sidebar.php"); ?>
+                <?php include("../include/sidebar.php"); ?>
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -91,22 +97,20 @@
                                         <!--begin::Col-->
                                         <div class="col-md-12 pe-lg-10">
                                             <!--begin::Form-->
-                                            <form action=""
-                                                class="form mb-15 fv-plugins-bootstrap5 fv-plugins-framework"
-                                                method="post" id="kt_contact_form">
-                                                <h1 class="fw-bold text-gray-900 mb-9">Send Us Email</h1>
+                                            <form action="admin/nocType_DB.php"  class="form mb-15 fv-plugins-bootstrap5 fv-plugins-framework" method="POST" id="kt_contact_form">
+                                                <h1 class="fw-bold text-gray-900 mb-9">NOC प्रकार निर्मिती</h1>
 
                                                 <!--begin::Input group-->
                                                 <div class="row mb-5">
                                                     <!--begin::Col-->
                                                     <div class="col-md-6 fv-row fv-plugins-icon-container">
                                                         <!--begin::Label-->
-                                                        <label class="fs-5 fw-semibold mb-2">Name</label>
+                                                        <label class="fs-5 fw-semibold mb-2">NOC Type</label>
                                                         <!--end::Label-->
 
                                                         <!--begin::Input-->
                                                         <input type="text" class="form-control form-control-solid"
-                                                            placeholder="" name="name">
+                                                            placeholder="NOC Type" name="type">
                                                         <!--end::Input-->
                                                         <div
                                                             class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
@@ -115,71 +119,116 @@
                                                     <!--end::Col-->
 
                                                     <!--begin::Col-->
-                                                    <div class="col-md-6 fv-row fv-plugins-icon-container">
-                                                        <!--end::Label-->
-                                                        <label class="fs-5 fw-semibold mb-2">Email</label>
-                                                        <!--end::Label-->
+                                                    
+<div class="col-md-6 fv-row fv-plugins-icon-container">
+    <label class="fs-5 fw-semibold mb-2">Department</label>
 
-                                                        <!--end::Input-->
-                                                        <input type="text" class="form-control form-control-solid"
-                                                            placeholder="" name="email">
-                                                        <!--end::Input-->
-                                                        <div
-                                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                        </div>
-                                                    </div>
+    <select class="form-select form-select-solid rounded-start-0 border-start"
+            data-control="select2"
+            data-placeholder="Select an option"
+            name="departmentId[]" multiple="multiple" required>
+        <option></option>
+
+        <?php
+        $result = mysqli_query($conn, "SELECT id, departmentName FROM departments WHERE status = 'Active'");
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '<option value="' . $row['id'] . '">' . $row['departmentName'] . '</option>';
+        }
+        ?>
+    </select>
+</div>
                                                     <!--end::Col-->
+                                                    
                                                 </div>
+                                                <button href="#" class="btn btn-success" type="submit" name="submit">Submit
+                                                </button>
                                                 <!--end::Input group-->
 
                                                 <!--begin::Input group-->
-                                                <div class="d-flex flex-column mb-5 fv-row">
-                                                    <!--begin::Label-->
-                                                    <label class="fs-5 fw-semibold mb-2">Subject</label>
-                                                    <!--end::Label-->
-
-                                                    <!--begin::Input-->
-                                                    <input class="form-control form-control-solid" placeholder=""
-                                                        name="subject">
-                                                    <!--end::Input-->
-                                                </div>
+                                          
                                                 <!--end::Input group-->
 
                                                 <!--begin::Input group-->
-                                                <div class="d-flex flex-column mb-10 fv-row fv-plugins-icon-container">
-                                                    <label class="fs-6 fw-semibold mb-2">Message</label>
-
-                                                    <textarea class="form-control form-control-solid" rows="6"
-                                                        name="message" placeholder="">        </textarea>
-                                                    <div
-                                                        class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                    </div>
-                                                </div>
+                                             
                                                 <!--end::Input group-->
 
                                                 <!--begin::Submit-->
-                                                <button type="submit" class="btn btn-primary"
-                                                    id="kt_contact_submit_button">
-
-                                                    <!--begin::Indicator label-->
-                                                    <span class="indicator-label">
-                                                        Send Feedback</span>
-                                                    <!--end::Indicator label-->
-
-                                                    <!--begin::Indicator progress-->
-                                                    <span class="indicator-progress">
-                                                        Please wait... <span
-                                                            class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                                                    </span>
-                                                    <!--end::Indicator progress--> </button>
+                                              
                                                 <!--end::Submit-->
                                             </form>
                                             <!--end::Form-->
+
+                                            
                                         </div>
                                         <!--end::Col-->
+                                        <div class="card card-p-0 card-flush">
+	<div class="card-header align-items-center py-5 gap-2 gap-md-5">
+		<div class="card-title">
+			<!--begin::Search-->
+			<div class="d-flex align-items-center position-relative my-1">
+				<span class="svg-icon fs-1 position-absolute ms-4">...</span>
+				<input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search Report" />
+			</div>
+			<!--end::Search-->
+			<!--begin::Export buttons-->
+			<div id="kt_datatable_example_1_export" class="d-none"></div>
+			<!--end::Export buttons-->
+		</div>
+		
+	</div>
+	<div class="card-body">
+		<table class="table align-middle border rounded table-row-dashed fs-6 g-5" id="kt_datatable_example">
+			<thead>
+				<!--begin::Table row-->
+				<tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase">
+					<th class="min-w-100px">SR . NO</th>
+					<th class="min-w-100px">NOC Type</th>
+					<th class="min-w-100px">Deprtment</th>
+					<th class="min-w-100px">Action</th>
+					
+				</tr>
+				<!--end::Table row-->
+			</thead>
+			<tbody class="fw-semibold text-gray-600">
+                  <?php
+         $result = mysqli_query($conn, "
+    SELECT n.id, n.type, n.departmentId, 
+           GROUP_CONCAT(d.departmentName SEPARATOR ', ') AS departmentNames
+    FROM nocTypes n
+    LEFT JOIN departments d ON FIND_IN_SET(d.id, n.departmentId)
+    GROUP BY n.id
+");
+          $i = 1;
+          while($row = mysqli_fetch_assoc($result)){
 
+
+          
+          ?>
+				<tr class="odd">
+					<td><?php echo $i++ ?></td>
+					<td><?php echo $row['type'] ?></td>
+					<td><?php echo $row['departmentNames'] ?></td>
+					<td data-order="2022-03-10T14:40:00+05:00">
+                        <a href="admin/department_master.php?edit=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning me-1">
+                    <i class="fas fa-edit"></i>
+                  </a>
+                <a href="#" 
+   class="btn btn-sm btn-danger delete-btn" 
+   data-href="admin/department_master_DB.php?delete=<?php echo $row['id']; ?>">
+   <i class="fas fa-trash-alt"></i>
+</a>
+                    </td>
+					
+				</tr>
+                <?php } ?>
+			</tbody>
+		</table>
+	</div>
+</div>
+                                      
                                     </div>
                                     <!--end::Body-->
+                                    
                                 </div>
                                 <!--end::Contact-->
                             </div>
@@ -190,7 +239,7 @@
                     <!--end::Content wrapper-->
                     <!--begin::Footer-->
                     <?php
-                    include('include/footer.php')
+                    include('../include/footer.php')
                         ?>
                     <!--end::Footer-->
                 </div>
@@ -211,9 +260,109 @@
     <!--end::Scrolltop-->
 
     <?php
-    include('include/jsLinks.php')
+    include('../include/jsLinks.php')
         ?>
+
+        <script>
+            "use strict";
+
+// Class definition
+var KTDatatablesExample = function () {
+    // Shared variables
+    var table;
+    var datatable;
+
+    // Private functions
+    var initDatatable = function () {
+        // Set date data order
+        const tableRows = table.querySelectorAll('tbody tr');
+
+        tableRows.forEach(row => {
+            const dateRow = row.querySelectorAll('td');
+            const realDate = moment(dateRow[3].innerHTML, "DD MMM YYYY, LT").format(); // select date from 4th column in table
+            dateRow[3].setAttribute('data-order', realDate);
+        });
+
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            "info": false,
+            'order': [],
+            'pageLength': 10,
+        });
+    }
+
+    // Hook export buttons
+    var exportButtons = () => {
+        const documentTitle = 'Customer Orders Report';
+        var buttons = new $.fn.dataTable.Buttons(table, {
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    title: documentTitle
+                },
+                {
+                    extend: 'excelHtml5',
+                    title: documentTitle
+                },
+                {
+                    extend: 'csvHtml5',
+                    title: documentTitle
+                },
+                {
+                    extend: 'pdfHtml5',
+                    title: documentTitle
+                }
+            ]
+        }).container().appendTo($('#kt_datatable_example_buttons'));
+
+        // Hook dropdown menu click event to datatable export buttons
+        const exportButtons = document.querySelectorAll('#kt_datatable_example_export_menu [data-kt-export]');
+        exportButtons.forEach(exportButton => {
+            exportButton.addEventListener('click', e => {
+                e.preventDefault();
+
+                // Get clicked export value
+                const exportValue = e.target.getAttribute('data-kt-export');
+                const target = document.querySelector('.dt-buttons .buttons-' + exportValue);
+
+                // Trigger click event on hidden datatable export buttons
+                target.click();
+            });
+        });
+    }
+
+    // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
+    var handleSearchDatatable = () => {
+        const filterSearch = document.querySelector('[data-kt-filter="search"]');
+        filterSearch.addEventListener('keyup', function (e) {
+            datatable.search(e.target.value).draw();
+        });
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#kt_datatable_example');
+
+            if ( !table ) {
+                return;
+            }
+
+            initDatatable();
+            exportButtons();
+            handleSearchDatatable();
+        }
+    };
+}();
+
+// On document ready
+KTUtil.onDOMContentLoaded(function () {
+    KTDatatablesExample.init();
+});
+        </script>
+
 </body>
 <!--end::Body-->
+
 
 </html>
