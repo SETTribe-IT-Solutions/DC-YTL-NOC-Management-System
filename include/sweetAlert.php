@@ -85,30 +85,4 @@ function sweetMsg($status, $msg)
             }
         })
     }
-
-
-
-    let alreadyExit = () => {
-        var status;
-        Swal.fire({
-            title: 'This scheme is already exit.',
-            text: "You want to continue?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $("#habitation").val(null).trigger("change");
-                // status = true;
-            } else {
-                // status = false;
-            }
-        });
-
-        return status;
-    }
-
 </script>
