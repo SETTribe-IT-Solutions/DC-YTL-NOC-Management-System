@@ -396,6 +396,7 @@ function validateFile(input, label) {
       return;
     }
   }
+
 }
 </script>
 
