@@ -18,7 +18,7 @@ include('../include/sweetAlert.php');
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <?php include("include/cssLinks.php"); ?>
+    <?php include("../include/cssLinks.php"); ?>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -71,14 +71,14 @@ include('../include/sweetAlert.php');
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Blank</li>
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Dashboard</li>
                                             <!--end::Item-->
                                         </ul>
                                         <!--end::Breadcrumb-->
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
-                                            Blank</h1>
+                                            Dashboard</h1>
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
@@ -198,7 +198,7 @@ include('../include/sweetAlert.php');
                     <!--end::Content wrapper-->
                     <!--begin::Footer-->
                     <?php
-                    include('include/footer.php')
+                    include('../include/footer.php')
                         ?>
                     <!--end::Footer-->
                 </div>
@@ -219,7 +219,7 @@ include('../include/sweetAlert.php');
     <!--end::Scrolltop-->
 
     <?php
-    include('include/jsLinks.php')
+    include('../include/jsLinks.php')
         ?>
 </body>
 <!--end::Body-->
