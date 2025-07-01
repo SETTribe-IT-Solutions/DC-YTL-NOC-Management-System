@@ -1,6 +1,8 @@
 <?php
 session_start();
-
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -359,8 +361,8 @@ $("#kt_datepicker_2").flatpickr();
 
 
   <?php
-    include('include/jsLinks.php');
-    include('include/sweetAlert.php');
+    include('../include/jsLinks.php');
+    include('../include/sweetAlert.php');
     if (isset($_SESSION['msg'])) {
         $status = $_SESSION['status'];
         $msg = $_SESSION['msg'];
