@@ -98,6 +98,7 @@
             $id = $_REQUEST['edit'];
             $query = mysqli_query($conn,"select * from nocTypes WHERE id = $id");
             $result = mysqli_fetch_assoc($query);
+              $selectedDepartments = explode(',', $result['departmentId']);
            ?>
            <?php } ?>
                                         <!--begin::Col-->
@@ -137,19 +138,31 @@
             name="departmentId[]" multiple="multiple" required>
         <option></option>
 
-        <?php
-        $result = mysqli_query($conn, "SELECT id, departmentName FROM departments WHERE status = 'Active'");
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo '<option value="' . $row['id'] . '">' . $row['departmentName'] . '</option>';
-        }
-        ?>
+         <?php
+    // Fetch all active departments
+    $deptResult = mysqli_query($conn, "SELECT id, departmentName FROM departments WHERE status = 'Active'");
+    while ($rows = mysqli_fetch_assoc($deptResult)) {
+        // Check if this department ID is in the selected list
+                                                         if (isset($_REQUEST['edit'])) { 
+        $selected = in_array($rows['id'], $selectedDepartments) ? 'selected' : '';
+
+                                                         }
+
+        echo '<option value="' . $rows['id'] . '" ' . $selected . '>' . $rows['departmentName'] . '</option>';
+    }
+    ?>
     </select>
 </div>
                                                     <!--end::Col-->
                                                     
                                                 </div>
-                                                <button href="#" class="btn btn-success" type="submit" name="submit">Submit
-                                                </button>
+                                                <?php if (isset($_REQUEST['edit'])) { ?>
+        <input type="hidden" name="id" value="<?php echo $result['id']; ?>">
+         <button href="#" type="submit" name="update" class="btn btn-warning">Update</button>
+         <?php } else { ?>
+        <button href="#" class="btn btn-success" type="submit" name="submit">Submit</button>
+        <?php } ?>
+                                               
                                                 <!--end::Input group-->
 
                                                 <!--begin::Input group-->
@@ -385,7 +398,7 @@ KTUtil.onDOMContentLoaded(function () {
 
         Swal.fire({
           title: "Are you sure?",
-          text: "you want to mark this NOC Type as Inactive?",
+          text: "you want to delete NOC Type?",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
