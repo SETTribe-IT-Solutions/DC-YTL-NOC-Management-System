@@ -10,6 +10,9 @@ error_reporting(0);
 
 <head>
     <title>NOC Portal - Maharashtra Shashan</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
     <meta charset="utf-8" />
     <meta name="description" content="No Objection Certificate Portal - Maharashtra Government" />
     <meta name="keywords" content="NOC, No Objection Certificate, Maharashtra Government, Maharashtra Shashan" />
@@ -257,25 +260,37 @@ error_reporting(0);
                                 <!--end::Input group-->
 
                                 <!--begin::Input group-->
-                                <div class="fv-row mb-8">
-                                    <!--begin::Wrapper-->
-                                    <div class="d-flex flex-stack mb-2">
-                                        <!--begin::Label-->
-                                        <label class="form-label fw-bold fs-6 mb-0"
-                                            style="color: #1e3c72;">Password</label>
-                                        <!--end::Label-->
-                                        <!--begin::Link-->
-                                        <a href="forgot_password.php" class="fs-6 fw-bold" style="color: #ff6600;">
-                                            Forgot Password?
-                                        </a>
-                                        <!--end::Link-->
-                                    </div>
-                                    <!--end::Wrapper-->
-                                    <!--begin::Input-->
-                                    <input class="form-control form-control-lg form-control-solid" type="password"
-                                        name="password" placeholder="Enter your password" required autocomplete="off" />
-                                    <!--end::Input-->
-                                </div>
+                                <div class="fv-row mb-8 position-relative">
+    <!--begin::Wrapper-->
+    <div class="d-flex flex-stack mb-2">
+        <!--begin::Label-->
+        <label class="form-label fw-bold fs-6 mb-0" style="color: #1e3c72;">Password</label>
+        <!--end::Label-->
+        <!--begin::Link-->
+        <a href="forgot_password.php" class="fs-6 fw-bold" style="color: #ff6600;">
+            Forgot Password?
+        </a>
+        <!--end::Link-->
+    </div>
+    <!--end::Wrapper-->
+
+    <!--begin::Input with toggle icon-->
+    <div class="position-relative">
+        <input id="password-input" class="form-control form-control-lg form-control-solid pe-10"
+            type="password" name="password" placeholder="Enter your password"
+            required autocomplete="off" />
+        
+        <!-- Toggle Eye Icon -->
+        <span class="position-absolute top-50 end-0 translate-middle-y me-3" onclick="togglePassword()"
+            style="cursor: pointer;">
+            <i id="toggle-icon" class="bi bi-eye-slash-fill fs-4" style="color: #1e3c72;"></i>
+        </span>
+    </div>
+    <!--end::Input with toggle icon-->
+</div>
+
+
+
                                 <!--end::Input group-->
 
                                 <!--begin::Actions-->
@@ -333,6 +348,24 @@ error_reporting(0);
     }
     ?>
     <!--end::Javascript-->
+
+    <script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('password-input');
+        const toggleIcon = document.getElementById('toggle-icon');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('bi-eye-slash-fill');
+            toggleIcon.classList.add('bi-eye-fill');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('bi-eye-fill');
+            toggleIcon.classList.add('bi-eye-slash-fill');
+        }
+    }
+</script>
+
 </body>
 <!--end::Body-->
 

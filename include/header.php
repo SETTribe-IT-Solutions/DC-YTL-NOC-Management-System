@@ -44,15 +44,10 @@
                         <input type="hidden" />
                         <!--end::Hidden input-->
                         <!--begin::Icon-->
-                        <i
-                            class="ki-duotone ki-magnifier search-icon fs-2 text-gray-500 position-absolute top-50 translate-middle-y ms-5">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>
+                        
                         <!--end::Icon-->
                         <!--begin::Input-->
-                        <input type="text" class="search-input form-control form-control border-0 h-lg-40px ps-13"
-                            name="search" value="" placeholder="Search..." data-kt-search-element="input" />
+                      
                         <!--end::Input-->
                         <!--begin::Spinner-->
                         <span class="search-spinner position-absolute top-50 end-0 translate-middle-y lh-0 d-none me-5"
@@ -1312,18 +1307,7 @@
             </div>
             <!--end::Notifications-->
             <!--begin::Quick links-->
-            <div class="app-navbar-item">
-                <!--begin::Menu- wrapper-->
-                <div class="btn btn-icon btn-custom btn-color-gray-600 btn-active-color-primary w-35px h-35px w-md-40px h-md-40px"
-                    data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent"
-                    data-kt-menu-placement="bottom-end">
-                    <i class="ki-duotone ki-notification-status fs-1">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                        <span class="path3"></span>
-                        <span class="path4"></span>
-                    </i>
-                </div>
+            
                 <!--begin::Menu-->
                 <div class="menu menu-sub menu-sub-dropdown menu-column w-250px w-lg-325px" data-kt-menu="true">
                     <!--begin::Heading-->
@@ -1540,20 +1524,7 @@
             </div>
             <!--end::User menu-->
             <!--begin::Action-->
-            <div class="app-navbar-item ms-3 ms-lg-4 me-lg-6">
-                <!--begin::Link-->
-                <a href="../dist/authentication/sign-in/basic.html"
-                    class="btn btn-icon btn-custom btn-color-gray-600 btn-active-color-primary w-35px h-35px w-md-40px h-md-40px">
-                    <i class="ki-duotone ki-setting-3 fs-1">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                        <span class="path3"></span>
-                        <span class="path4"></span>
-                        <span class="path5"></span>
-                    </i>
-                </a>
-                <!--end::Link-->
-            </div>
+          
             <!--end::Action-->
             <!--begin::Header menu toggle-->
             <div class="app-navbar-item ms-3 ms-lg-4 ms-n2 me-3 d-flex d-lg-none">
