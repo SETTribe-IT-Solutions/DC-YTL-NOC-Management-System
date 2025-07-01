@@ -33,6 +33,8 @@ if (isset($_POST['submit'])) {
     </script>
     </body>
     </html>
+
+    
     <?php
 }
 if (isset($_GET['delete'])) {
@@ -51,7 +53,7 @@ if (isset($_GET['delete'])) {
         Swal.fire({
             icon: '<?php echo $query ? "success" : "error"; ?>',
             title: '<?php echo $query ? "Deleted!" : "Oops..."; ?>',
-            text: '<?php echo $query ? "NOC Type marked as Inactive." : "Something went wrong!"; ?>',
+            text: '<?php echo $query ? "NOC Type deleted." : "Something went wrong!"; ?>',
         }).then(() => {
             window.location.href = 'nocType.php';
         });
@@ -60,4 +62,39 @@ if (isset($_GET['delete'])) {
     </html>
     <?php
 }
+if (isset($_POST['update'])) {
+    date_default_timezone_set('Asia/Kolkata');
+    
+    $id = $_POST['id']; // ID to identify record to update
+    $type = $_POST['type'];
+    $departmentIdArray = $_POST['departmentId']; // Array from multiselect
+    $departmentIdString = implode(',', $departmentIdArray); // Convert to comma-separated string
+    $updatedDateTime = date('Y-m-d H:i:s');
+
+    $query = mysqli_query($conn, "UPDATE nocTypes 
+        SET type = '$type', 
+            departmentId = '$departmentIdString', 
+            updatedDateTime = '$updatedDateTime' 
+        WHERE id = '$id'");
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<script>
+    Swal.fire({
+        icon: '<?php echo $query ? "success" : "error"; ?>',
+        title: '<?php echo $query ? "Updated!" : "Oops..."; ?>',
+        text: '<?php echo $query ? "NOC Type updated successfully" : "Update failed! Please try again."; ?>',
+    }).then(() => {
+        window.location.href = 'nocType.php';
+    });
+</script>
+</body>
+</html>
+<?php
+}
+
 ?>
