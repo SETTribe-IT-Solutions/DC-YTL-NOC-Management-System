@@ -130,7 +130,7 @@ $applicationId = "NOC-2025-"."".$formatted_count;
         <!--begin::Col-->
         <div class="col-md-6 fv-row fv-plugins-icon-container">
             <label class="fs-5 fw-semibold mb-2">NOC प्रकार निवडा</label>
-             <select name="nocType" id="nocType" class="form-control form-control-solid">
+             <select  data-control="select2" name="nocType" data-placeholder="प्रकार निवडा" id="nocType" class="form-control form-control-solid">
                 <option value="" disabled selected>NOC प्रकार निवडा</option>
                 <?php
                     $sql = "SELECT type,id FROM nocTypes";

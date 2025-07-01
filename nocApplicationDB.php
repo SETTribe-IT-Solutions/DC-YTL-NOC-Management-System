@@ -46,9 +46,13 @@ if (!empty($_FILES['aadharCard']['name'])) {
 }
 
 
-$query_applicationId = mysqli_query($conn,"SELECT id FROM nocApplicationIds");
-$fetchRows = mysqli_num_rows($query_applicationId);
-$applicationId = "NOC-".date('Y')."-".$fetchRows;
+// Step 1: Get the latest applicationId
+$queryGet = mysqli_query($conn, "SELECT COUNT(*) as applicationId FROM `nocApplicationIds` ") or die($conn->error);
+$fetchGet = mysqli_fetch_assoc($queryGet);
+$count = $fetchGet['applicationId'] + 1;
+$formatted_count = sprintf('%03d', $count);
+
+$applicationId = "NOC-2025-"."".$formatted_count;
 
 $insert_applicationId = mysqli_query($conn,"INSERT INTO nocApplicationIds (applicationId,type) VALUES('$applicationId','Civilian')");
 

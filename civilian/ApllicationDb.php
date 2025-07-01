@@ -29,7 +29,7 @@ $createdDate = date('Y-m-d H:i:s');
 mysqli_autocommit($conn, false);
 
 // Step 1: Get the latest applicationId
-$queryGet = mysqli_query($conn, "SELECT COUNT(*) as applicationId FROM `departmentNocApplications` WHERE applicationId!=''") or die($conn->error);
+$queryGet = mysqli_query($conn, "SELECT COUNT(*) as applicationId FROM `nocApplicationIds` ") or die($conn->error);
 $fetchGet = mysqli_fetch_assoc($queryGet);
 $count = $fetchGet['applicationId'] + 1;
 $formatted_count = sprintf('%03d', $count);
@@ -38,6 +38,24 @@ $applicationId = "NOC-2025-"."".$formatted_count;
 
 
 $insertIdLog = mysqli_query($conn, "INSERT INTO nocApplicationIds (applicationId, type) VALUES ('$applicationId', 'Department')") or die($conn->error);
+
+$queryReview = mysqli_query($conn,"SELECT departmentId FROM nocTypes WHERE id='$nocType'");
+$fetchReview = mysqli_fetch_assoc($queryReview);
+$depts = $fetchReview['departmentId'];
+
+$departments = explode(',', $depts);
+foreach ($departments as $departmentId) {
+    // Insert into nocApplicationReviews
+$query1 = $conn->prepare("INSERT INTO nocApplicationReviews (applicationId, departmentId, createdDateTime) VALUES (?, ?, ?)");
+
+$query1->bind_param("sss", $applicationId, $departmentId, $createdDate); // assuming both are strings; use "ii" if integers
+
+if ($query1->execute()) {
+} else {
+}
+    $query1->close();
+}
+
 
 // Step 2: Insert into departmentNocApplications
 $query = mysqli_query($conn, "INSERT INTO `departmentNocApplications` (
@@ -58,12 +76,12 @@ if ($query && $insertIdLog) {
     mysqli_commit($conn);
        $_SESSION['status'] = true;
             $_SESSION['msg'] = "Application Inserted Successfully";
-            header('location:nocApplicationDb.php');
+            header('location:nocApplicationDept.php');
 } else {
     mysqli_rollback($conn);
       $_SESSION['status'] = false;
             $_SESSION['msg'] = "Application Not Inserted";
-            header('location:nocApplicationDb.php');
+            header('location:nocApplicationDept.php');
 }
 
 // End transaction

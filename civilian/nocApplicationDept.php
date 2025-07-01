@@ -176,14 +176,11 @@ $applicationId = "NOC-2025-"."".$formatted_count;
                                                         </div>
                                                     </div>
 
-             <div class="col-md-6 fv-row fv-plugins-icon-container">
-    <label class="fs-5 fw-semibold mb-2">मोबाईल क्रमांक</label>
-     <input type="text" class="form-control form-control-solid"
-                                                            placeholder="मोबाईल क्रमांक" name="mobileNumber">
-      <div
-                                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                        </div>
-                                                    </div>
+               <div class="col-md-6 fv-row fv-plugins-icon-container">
+            <label class="fs-5 fw-semibold mb-2">मोबाईल क्र.</label>
+            <input type="text" class="form-control form-control-solid" name="mobileNumber" placeholder="मोबाईल क्र." maxlength="10" minlength="10" pattern="\d{10}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+        </div>
     </div>
 
 
