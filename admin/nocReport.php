@@ -224,7 +224,7 @@ include("../include/cssLinks.php"); ?>
 			</thead>
 			<tbody class="fw-semibold text-gray-600">
                   <?php
- $result = mysqli_query($conn, "
+$result = mysqli_query($conn, "
     SELECT 
         a.applicationId,
         a.civilianId,
@@ -250,6 +250,8 @@ include("../include/cssLinks.php"); ?>
 
     FROM nocApplications a
     LEFT JOIN civilianRegistrations c ON a.civilianId = c.civilianId
+    INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
+    WHERE r.departmentId = 3
     ORDER BY a.applicationId DESC
 ");
 
@@ -276,13 +278,16 @@ include("../include/cssLinks.php"); ?>
                    <td><?php echo $row['createdDateTime'] ?></td>
 					<td><?php echo $row['status'] ?></td>
                    <td>
-  <button class="btn btn-sm btn-warning me-1" 
-          data-bs-toggle="modal" 
-          data-bs-target="#updateStatusModal" 
-          data-id="<?php echo $row['id']; ?>">
-    Change Status
-  </button>
+ <button class="btn btn-sm btn-warning me-1" 
+        data-bs-toggle="modal" 
+        data-bs-target="#updateStatusModal" 
+        data-id="<?php echo $row['id']; ?>" 
+        data-applicationid="<?php echo $row['applicationId']; ?>">
+  Change Status
+</button>
+
   <!-- Modal -->
+   
 <div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <form method="POST" action="admin/nocReport_DB.php">
@@ -293,6 +298,7 @@ include("../include/cssLinks.php"); ?>
         </div>
         <div class="modal-body">
           <input type="hidden" name="applicationId" id="modalAppId">
+            <input type="hidden" value="<?php echo $row['applicationId'] ?>" name="applicationId" id="modalApplicationId">
 
           <div class="mb-3">
             <label for="status" class="form-label">Status</label>
@@ -306,7 +312,7 @@ include("../include/cssLinks.php"); ?>
 
           <div class="mb-3 d-none" id="remarkDiv">
             <label for="remark" class="form-label">Rejection Remark</label>
-            <textarea class="form-control" name="remark" id="remark" placeholder="Reason for rejection..."></textarea>
+            <textarea class="form-control" name="remarks" id="remark" placeholder="Reason for rejection..."></textarea>
           </div>
         </div>
         <div class="modal-footer">

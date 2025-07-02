@@ -2,45 +2,54 @@
 include('../include/conn.php');
 
 if (isset($_POST['update'])) {
-  echo  $applicationId = $_POST['applicationId'];
-    $status = $_POST['status'];
-    $remark = isset($_POST['remark']) ? $_POST['remark'] : '';
-    
-    // If departmentId is not sent, default to 3
-    $departmentId = isset($_POST['departmentId']) ? $_POST['departmentId'] : 2;
-
+    $applicationId = $_POST['applicationId'] ?? '';
+    $status = $_POST['status'] ?? '';
+    $remarks = $_POST['remarks'] ?? '';
+    $departmentId = $_POST['departmentId'] ?? 3;
+    $applicationId = $_POST['applicationId'];  // Default 2
     $userId = 'userId_001';
    
+    if ($applicationId && $status) {
+        // ✅ Update nocApplications (check actual column names)
+        $updateNocApp = mysqli_query($conn, "
+            UPDATE nocApplications 
+            SET status = '$status', 
+                userId  = '$userId'
+            WHERE applicationId = '$applicationId'
+        ");
 
-    // ✅ Update nocApplications
-    $updateNocApp = mysqli_query($conn, "
-        UPDATE nocApplications 
-        SET status = '$status', 
-            updatedBy = '$userId', 
-           
-        WHERE applicationId = '$applicationId'
-    ");
 
-    // ✅ Update nocApplicationReviews
-    $updateReview = mysqli_query($conn, "
-        UPDATE nocApplicationReviews 
-        SET status = '$status', 
-            remark = '$remark', 
-            reviewedBy = '$userId', 
-        WHERE applicationId = '$applicationId' AND departmentId = '$departmentId'
-    ");
 
-    // ✅ Confirmation
-    if ($updateNocApp && $updateReview) {
-        echo "<script>
-            alert('Status updated successfully.');
-            window.location.href = '../nocReport.php';
-        </script>";
+        // ✅ Update nocApplicationReviews (check column 'remarks' or 'remark')
+        $updateReview = mysqli_query($conn, "
+            UPDATE nocApplicationReviews 
+            SET status = '$status', 
+                remarks = '$remarks', 
+                reviewedBy = '$userId'
+            WHERE applicationId = '$applicationId' AND departmentId = '$departmentId'
+        ");
+        
+      
+    }
+   
+        
+        if ($updateNocApp && $updateReview) {
+            echo "<script>
+                alert('Status updated successfully.');
+                window.location.href = '../admin/nocReport.php';
+            </script>";
+        } else {
+            echo "<script>
+                alert('Something went wrong during update!');
+                window.history.back();
+            </script>";
+        }
     } else {
         echo "<script>
-            alert('Something went wrong!');
+            alert('Missing applicationId or status!');
             window.history.back();
         </script>";
     }
-}
+    
+
 ?>
