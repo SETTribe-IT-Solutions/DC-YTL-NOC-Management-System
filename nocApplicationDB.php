@@ -3,7 +3,6 @@
 include('include/conn.php');
     include('include/sweetAlert.php');
 // Step 1: Collect data from POST
-$applicationId        = "NOC_002";
 $applicationType = $_POST['applicationType'];
 $nocNumber     = $_POST['nocNumber'];
 $nocType       = $_POST['nocType'];
@@ -31,6 +30,8 @@ if (!empty($_FILES['panCard']['name'])) {
     $panCardName = $_FILES['panCard']['name'];
     $panCardTmp = $_FILES['panCard']['tmp_name'];
     $panCardPath = $uploadDir . time() . "_pan_" . basename($panCardName);
+    move_uploaded_file($panCardTmp, $panCardPath) ;
+
 } else {
     $panCardPath = ""; // or handle as required
 }
@@ -39,29 +40,38 @@ if (!empty($_FILES['aadharCard']['name'])) {
     $aadharCardName = $_FILES['aadharCard']['name'];
     $aadharCardTmp = $_FILES['aadharCard']['tmp_name'];
     $aadharCardPath = $uploadDir . time() . "_aadhar_" . basename($aadharCardName);
+    move_uploaded_file($aadharCardTmp, $aadharCardPath);
 } else {
     $aadharCardPath = ""; // or handle as required
 }
-// Upload files only if both are provided
-if (!empty($panCardPath) && !empty($aadharCardPath)) {
-    if (
-        move_uploaded_file($panCardTmp, $panCardPath) &&
-        move_uploaded_file($aadharCardTmp, $aadharCardPath)
-    ) {
-        // echo "Files uploaded successfully.";
-        // Insert $panCardPath and $aadharCardPath into DB if needed
-    } else {
-        // echo "File upload failed.";
-    }
-} else {
-    // echo "Both files are required.";
-}
 
-$query_applicationId = mysqli_query($conn,"SELECT id FROM nocApplicationIds");
-$fetchRows = mysqli_num_rows($query_applicationId);
-$applicationId = "NOC-".date('Y')."-".$fetchRows;
+
+// Step 1: Get the latest applicationId
+$queryGet = mysqli_query($conn, "SELECT COUNT(*) as applicationId FROM `nocApplicationIds` ") or die($conn->error);
+$fetchGet = mysqli_fetch_assoc($queryGet);
+$count = $fetchGet['applicationId'] + 1;
+$formatted_count = sprintf('%03d', $count);
+
+$applicationId = "NOC-2025-"."".$formatted_count;
 
 $insert_applicationId = mysqli_query($conn,"INSERT INTO nocApplicationIds (applicationId,type) VALUES('$applicationId','Civilian')");
+
+$queryReview = mysqli_query($conn,"SELECT departmentId FROM nocTypes WHERE id='$nocType'");
+$fetchReview = mysqli_fetch_assoc($queryReview);
+$depts = $fetchReview['departmentId'];
+
+$departments = explode(',', $depts);
+foreach ($departments as $departmentId) {
+    // Insert into nocApplicationReviews
+$query = $conn->prepare("INSERT INTO nocApplicationReviews (applicationId, departmentId, createdDateTime) VALUES (?, ?, ?)");
+
+$query->bind_param("sss", $applicationId, $departmentId, $createdDateTime); // assuming both are strings; use "ii" if integers
+
+if ($query->execute()) {
+} else {
+}
+    $query->close();
+}
 
 // Step 2: Prepare the statement
 $stmt = $conn->prepare("INSERT INTO nocApplications (
@@ -81,7 +91,7 @@ if ($stmt->execute()) {
 } else {
     $_SESSION['status'] = false;
         $_SESSION['msg'] = "Something went wrong";
-         echo "Error: " . $stmt->error;
+        //  echo "Error: " . $stmt->error;
         header('location:nocApplication.php');
 }
 

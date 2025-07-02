@@ -1,17 +1,28 @@
-<?php session_start() ?>
+<?php
+ session_start();
+ ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);
+  ?>
 <!DOCTYPE html>
 <html lang="en">
 <!--begin::Head-->
 
 <head>
-    <title>Forms</title>
+        <base href=""></base>
+
+    <title>Saul Theme by Keenthemes</title>
     <meta charset="utf-8" />
     <meta name="description" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
     <meta name="keywords"
         content="Saul, bootstrap, bootstrap 5, dmin themes, free admin themes, bootstrap admin, bootstrap dashboard" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <?php include("include/conn.php"); ?>
     <?php include("include/cssLinks.php"); ?>
+
+    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
+<script src="assets/plugins/global/plugins.bundle.js"></script>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -93,6 +104,15 @@
                                         <!--begin::Col-->
                                         <div class="col-md-12 pe-lg-10">
                                             <!--begin::Form-->
+                                             <?php
+ $queryGet = mysqli_query($conn, "SELECT COUNT(*) as applicationId FROM `departmentNocApplications` WHERE applicationId!=''") or die($conn->error);
+$fetchGet = mysqli_fetch_assoc($queryGet);
+$count = $fetchGet['applicationId'] + 1;
+$formatted_count = sprintf('%03d', $count);
+
+$applicationId = "NOC-2025-"."".$formatted_count;
+?>
+
                                <form action="nocApplicationDB.php" class="form mb-15 fv-plugins-bootstrap5 fv-plugins-framework" method="post" id="" enctype="multipart/form-data">
     <h1 class="fw-bold text-gray-900 mb-9">NOC अर्ज सादर करण्याचा फॉर्म</h1>
     <input type="hidden" name="applicationType" value="Civillian">
@@ -102,7 +122,7 @@
         <!--begin::Col-->
         <div class="col-md-6 fv-row fv-plugins-icon-container">
             <label class="fs-5 fw-semibold mb-2">NOC क्रमांक</label>
-            <input type="text" class="form-control form-control-solid" name="nocNumber" placeholder="NOC क्रमांक">
+            <input type="text" class="form-control form-control-solid" value="<?php echo $applicationId; ?>" name="nocNumber" placeholder="NOC क्रमांक" readonly>
             <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
         </div>
         <!--end::Col-->
@@ -110,7 +130,7 @@
         <!--begin::Col-->
         <div class="col-md-6 fv-row fv-plugins-icon-container">
             <label class="fs-5 fw-semibold mb-2">NOC प्रकार निवडा</label>
-             <select name="nocType" id="nocType" class="form-control form-control-solid">
+             <select  data-control="select2" name="nocType" data-placeholder="प्रकार निवडा" id="nocType" class="form-control form-control-solid">
                 <option value="" disabled selected>NOC प्रकार निवडा</option>
                 <?php
                     $sql = "SELECT type,id FROM nocTypes";
@@ -217,7 +237,7 @@
         <!--begin::Col-->
         <div class="col-md-6 fv-row fv-plugins-icon-container">
             <label class="fs-5 fw-semibold mb-2">तालुका</label>
-            <select name="taluka" id="talukaSelect" class="form-control form-control-solid" onchange="getVillages()">
+            <select name="taluka" data-control="select2"  data-placeholder="तालुका निवडा"  id="taluka" class="form-control form-control-solid" onchange="getVillages()">
                 <option value="">तालुका निवडा</option>
                 <?php
                     $sql = "SELECT DISTINCT taluka FROM taluka";
@@ -241,7 +261,7 @@
         <!--begin::Col-->
         <div class="col-md-6 fv-row fv-plugins-icon-container">
             <label class="fs-5 fw-semibold mb-2">गाव</label>
-            <select id="villageSelect" name="village" class="form-control form-control-solid">
+            <select id="villageSelect" name="village"  data-control="select2"  data-placeholder="गाव निवडा" class="form-control form-control-solid">
                 <option value="">गाव निवडा</option>
             </select>
             <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
@@ -349,10 +369,12 @@
          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
          
 
+ 
+
 <script>
     function getVillages() {
-     var taluka = $('#talukaSelect').val();
-      var taluka = document.getElementById("talukaSelect").value;
+     var taluka = $('#taluka').val();
+      var taluka = document.getElementById("taluka").value;
 
     if (taluka !== "") {
       $.ajax({
@@ -396,8 +418,10 @@ function validateFile(input, label) {
       return;
     }
   }
+
 }
 </script>
+<?php  include('include/jsLinks.php'); ?>
 
 </body>
 <!--end::Body-->

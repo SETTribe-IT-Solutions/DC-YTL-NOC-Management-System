@@ -85,15 +85,17 @@ include('../include/sweetAlert.php');
                                             </li> -->
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <!-- <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Civilian Dashboard
-                                            </li> -->
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Dashboard</li>
+
                                             <!--end::Item-->
                                         </ul>
                                         <!--end::Breadcrumb-->
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
+
                                             Hi, Civilian 👋🏻</h1>
+
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
