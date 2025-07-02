@@ -15,7 +15,7 @@ if ($_SESSION['designation'] != 'Civilian') {
     unset($_SESSION['userId']);
     unset($_SESSION['designation']);
     unset($_SESSION['role']);
-    header('location:../login.php?role=civilian&page=index');
+    header('location:../login.php?role=civilian');
     exit;
     die();
 }
@@ -33,6 +33,189 @@ include('../include/sweetAlert.php');
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <?php include("../include/cssLinks.php"); ?>
+
+    <!-- Custom Dashboard Styles -->
+    <style>
+        .dashboard-card {
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .icon-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .icon-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .icon-warning {
+            background: linear-gradient(135deg, #ff0000, #ff0000);
+        }
+
+        .icon-info {
+            background: linear-gradient(135deg, #f6c000, #f6c000);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .trend-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .trend-up {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+
+        .trend-down {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+
+        .chart-container {
+            height: 300px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 18px;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 2s ease-in-out;
+        }
+
+        .progress-primary {
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+        }
+
+        .progress-success {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+
+        .progress-warning {
+            background: linear-gradient(90deg, #ff0000, #ff0000);
+        }
+
+        .progress-info {
+            background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 2px;
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-count {
+            animation: countUp 1s ease-out;
+        }
+    </style>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -58,7 +241,7 @@ include('../include/sweetAlert.php');
                 ?>
                 <!--end::Sidebar-->
                 <!--begin::Main-->
-                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main" style="height: 600px;">
                     <!--begin::Content wrapper-->
                     <div class="d-flex flex-column flex-column-fluid">
                         <!--begin::Toolbar-->
@@ -80,20 +263,12 @@ include('../include/sweetAlert.php');
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item">
+                                            <!-- <li class="breadcrumb-item">
                                                 <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
-                                            </li>
+                                            </li> -->
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Dashboards</li>
-                                            <!--end::Item-->
-                                            <!--begin::Item-->
-                                            <li class="breadcrumb-item">
-                                                <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
-                                            </li>
-                                            <!--end::Item-->
-                                            <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700">Default</li>
+                                            <!-- <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Dashboards</li> -->
                                             <!--end::Item-->
                                         </ul>
                                         <!--end::Breadcrumb-->
@@ -117,389 +292,153 @@ include('../include/sweetAlert.php');
 
                                 <!--begin::Row-->
                                 <div class="row g-5 g-xl-10 mb-xl-10">
-                                    <!--begin::Col-->
-                                    <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
-                                        <!--begin::Card widget 4-->
-                                        <div class="card card-flush h-md-50 mb-5 mb-xl-10">
-                                            <!--begin::Header-->
-                                            <div class="card-header pt-5">
-                                                <!--begin::Title-->
-                                                <div class="card-title d-flex flex-column">
-                                                    <!--begin::Info-->
-                                                    <div class="d-flex align-items-center">
-                                                        <!--begin::Currency-->
-                                                        <span
-                                                            class="fs-4 fw-semibold text-gray-400 me-1 align-self-start">$</span>
-                                                        <!--end::Currency-->
-                                                        <!--begin::Amount-->
-                                                        <span
-                                                            class="fs-2hx fw-bold text-dark me-2 lh-1 ls-n2">69,700</span>
-                                                        <!--end::Amount-->
-                                                        <!--begin::Badge-->
-                                                        <span class="badge badge-light-success fs-base">
-                                                            <i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
-                                                                <span class="path1"></span>
-                                                                <span class="path2"></span>
-                                                            </i>2.2%</span>
-                                                        <!--end::Badge-->
-                                                    </div>
-                                                    <!--end::Info-->
-                                                    <!--begin::Subtitle-->
-                                                    <span class="text-gray-400 pt-1 fw-semibold fs-6">Expected
-                                                        Earnings</span>
-                                                    <!--end::Subtitle-->
+                                    <!-- Current Projects Card -->
+                                    <div class="col-lg-6 col-xxl-3">
+                                        <div class="card dashboard-card h-100">
+                                            <div class="card-body p-9">
+                                                <div class="stat-icon icon-primary">
+                                                    <i class="ki-duotone ki-abstract-26 fs-2x" style="color: white;">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i>
                                                 </div>
-                                                <!--end::Title-->
+                                                <?php
+                                                $userId = $_SESSION['userId'];
+                                                $result = mysqli_query($conn, "SELECT COUNT(id) AS total FROM nocApplications WHERE civilianId = '$userId'");
+                                                $data = mysqli_fetch_assoc($result);
+                                                $total = $data['total'];
+                                                ?>
+                                                <div class="stat-value animate-count" style="font-size: 20px;">
+                                                    एकूण अर्ज: <?php echo $total; ?>
+                                                </div>
+                                                <!-- <div class="stat-label">Current Projects</div> -->
+                                                <div class="trend-indicator trend-up">
+                                                    <i class="ki-duotone ki-arrow-up fs-7"></i>
+                                                    <!-- +12% this month -->
+                                                </div>
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill progress-primary" style="width: 0%"
+                                                        data-width="78%"></div>
+                                                </div>
                                             </div>
-                                            <!--end::Header-->
-                                            <!--begin::Card body-->
-                                            <div class="card-body pt-2 pb-4 d-flex align-items-center">
-                                                <!--begin::Chart-->
-                                                <div class="d-flex flex-center me-5 pt-2">
-                                                    <div id="kt_card_widget_4_chart"
-                                                        style="min-width: 70px; min-height: 70px" data-kt-size="70"
-                                                        data-kt-line="11"></div>
-                                                </div>
-                                                <!--end::Chart-->
-                                                <!--begin::Labels-->
-                                                <div class="d-flex flex-column content-justify-center w-100">
-                                                    <!--begin::Label-->
-                                                    <div class="d-flex fs-6 fw-semibold align-items-center">
-                                                        <!--begin::Bullet-->
-                                                        <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
-                                                        <!--end::Bullet-->
-                                                        <!--begin::Label-->
-                                                        <div class="text-gray-500 flex-grow-1 me-4">Shoes</div>
-                                                        <!--end::Label-->
-                                                        <!--begin::Stats-->
-                                                        <div class="fw-bolder text-gray-700 text-xxl-end">$7,660</div>
-                                                        <!--end::Stats-->
-                                                    </div>
-                                                    <!--end::Label-->
-                                                    <!--begin::Label-->
-                                                    <div class="d-flex fs-6 fw-semibold align-items-center my-3">
-                                                        <!--begin::Bullet-->
-                                                        <div class="bullet w-8px h-6px rounded-2 bg-primary me-3"></div>
-                                                        <!--end::Bullet-->
-                                                        <!--begin::Label-->
-                                                        <div class="text-gray-500 flex-grow-1 me-4">Gaming</div>
-                                                        <!--end::Label-->
-                                                        <!--begin::Stats-->
-                                                        <div class="fw-bolder text-gray-700 text-xxl-end">$2,820</div>
-                                                        <!--end::Stats-->
-                                                    </div>
-                                                    <!--end::Label-->
-                                                    <!--begin::Label-->
-                                                    <div class="d-flex fs-6 fw-semibold align-items-center">
-                                                        <!--begin::Bullet-->
-                                                        <div class="bullet w-8px h-6px rounded-2 me-3"
-                                                            style="background-color: #E4E6EF"></div>
-                                                        <!--end::Bullet-->
-                                                        <!--begin::Label-->
-                                                        <div class="text-gray-500 flex-grow-1 me-4">Others</div>
-                                                        <!--end::Label-->
-                                                        <!--begin::Stats-->
-                                                        <div class="fw-bolder text-gray-700 text-xxl-end">$45,257</div>
-                                                        <!--end::Stats-->
-                                                    </div>
-                                                    <!--end::Label-->
-                                                </div>
-                                                <!--end::Labels-->
-                                            </div>
-                                            <!--end::Card body-->
                                         </div>
-                                        <!--end::Card widget 4-->
-                                        <!--begin::Card widget 5-->
-                                        <div class="card card-flush h-md-50 mb-xl-10">
-                                            <!--begin::Header-->
-                                            <div class="card-header pt-5">
-                                                <!--begin::Title-->
-                                                <div class="card-title d-flex flex-column">
-                                                    <!--begin::Info-->
-                                                    <div class="d-flex align-items-center">
-                                                        <!--begin::Amount-->
-                                                        <span
-                                                            class="fs-2hx fw-bold text-dark me-2 lh-1 ls-n2">1,836</span>
-                                                        <!--end::Amount-->
-                                                        <!--begin::Badge-->
-                                                        <span class="badge badge-light-danger fs-base">
-                                                            <i class="ki-duotone ki-arrow-down fs-5 text-danger ms-n1">
-                                                                <span class="path1"></span>
-                                                                <span class="path2"></span>
-                                                            </i>2.2%</span>
-                                                        <!--end::Badge-->
-                                                    </div>
-                                                    <!--end::Info-->
-                                                    <!--begin::Subtitle-->
-                                                    <span class="text-gray-400 pt-1 fw-semibold fs-6">Orders This
-                                                        Month</span>
-                                                    <!--end::Subtitle-->
-                                                </div>
-                                                <!--end::Title-->
-                                            </div>
-                                            <!--end::Header-->
-                                            <!--begin::Card body-->
-                                            <div class="card-body d-flex align-items-end pt-0">
-                                                <!--begin::Progress-->
-                                                <div class="d-flex align-items-center flex-column mt-3 w-100">
-                                                    <div class="d-flex justify-content-between w-100 mt-auto mb-2">
-                                                        <span class="fw-bolder fs-6 text-dark">1,048 to Goal</span>
-                                                        <span class="fw-bold fs-6 text-gray-400">62%</span>
-                                                    </div>
-                                                    <div class="h-8px mx-3 w-100 bg-light-success rounded">
-                                                        <div class="bg-success rounded h-8px" role="progressbar"
-                                                            style="width: 62%;" aria-valuenow="50" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                                <!--end::Progress-->
-                                            </div>
-                                            <!--end::Card body-->
-                                        </div>
-                                        <!--end::Card widget 5-->
                                     </div>
-                                    <!--end::Col-->
-                                    <!--begin::Col-->
-                                    <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
-                                        <!--begin::Card widget 6-->
-                                        <div class="card card-flush h-md-50 mb-5 mb-xl-10">
-                                            <!--begin::Header-->
-                                            <div class="card-header pt-5">
-                                                <!--begin::Title-->
-                                                <div class="card-title d-flex flex-column">
-                                                    <!--begin::Info-->
-                                                    <div class="d-flex align-items-center">
-                                                        <!--begin::Currency-->
-                                                        <span
-                                                            class="fs-4 fw-semibold text-gray-400 me-1 align-self-start">$</span>
-                                                        <!--end::Currency-->
-                                                        <!--begin::Amount-->
-                                                        <span
-                                                            class="fs-2hx fw-bold text-dark me-2 lh-1 ls-n2">2,420</span>
-                                                        <!--end::Amount-->
-                                                        <!--begin::Badge-->
-                                                        <span class="badge badge-light-success fs-base">
-                                                            <i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
-                                                                <span class="path1"></span>
-                                                                <span class="path2"></span>
-                                                            </i>2.6%</span>
-                                                        <!--end::Badge-->
-                                                    </div>
-                                                    <!--end::Info-->
-                                                    <!--begin::Subtitle-->
-                                                    <span class="text-gray-400 pt-1 fw-semibold fs-6">Average Daily
-                                                        Sales</span>
-                                                    <!--end::Subtitle-->
+
+
+                                    <!-- Project Finance Card -->
+                                    <div class="col-lg-6 col-xxl-3">
+                                        <div class="card dashboard-card h-100">
+                                            <div class="card-body p-9">
+                                                <div class="stat-icon icon-success">
+                                                    <i class="ki-duotone ki-check-circle fs-2x" style="color: white;">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i>
                                                 </div>
-                                                <!--end::Title-->
-                                            </div>
-                                            <!--end::Header-->
-                                            <!--begin::Card body-->
-                                            <div class="card-body d-flex align-items-end px-0 pb-0">
-                                                <!--begin::Chart-->
-                                                <div id="kt_card_widget_6_chart" class="w-100" style="height: 80px">
+
+                                                <?php
+                                                $q1 = mysqli_query($con, "SELECT COUNT(*) AS count1 FROM nocApplications WHERE civilianId = '$userId' AND status = 'Approved'");
+                                                $data1 = mysqli_fetch_assoc($q1);
+                                                $count1 = $data1['count1'];
+                                                ?>
+
+                                                <div class="stat-value animate-count" style="font-size: 20px;">
+                                                    मंजुर अर्ज: <?php echo $count1; ?>
                                                 </div>
-                                                <!--end::Chart-->
+
+                                                <!-- <div class="stat-label">Project Finance</div> -->
+                                                <div class="trend-indicator trend-up">
+                                                    <i class="ki-duotone ki-arrow-up fs-7"></i>
+                                                    <!-- +8.2% revenue -->
+                                                </div>
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill progress-success" style="width: 0%"
+                                                        data-width="65%"></div>
+                                                </div>
                                             </div>
-                                            <!--end::Card body-->
                                         </div>
-                                        <!--end::Card widget 6-->
-                                        <!--begin::Card widget 7-->
-                                        <div class="card card-flush h-md-50 mb-xl-10">
-                                            <!--begin::Header-->
-                                            <div class="card-header pt-5">
-                                                <!--begin::Title-->
-                                                <div class="card-title d-flex flex-column">
-                                                    <!--begin::Amount-->
-                                                    <span class="fs-2hx fw-bold text-dark me-2 lh-1 ls-n2">6.3k</span>
-                                                    <!--end::Amount-->
-                                                    <!--begin::Subtitle-->
-                                                    <span class="text-gray-400 pt-1 fw-semibold fs-6">New Customers This
-                                                        Month</span>
-                                                    <!--end::Subtitle-->
-                                                </div>
-                                                <!--end::Title-->
-                                            </div>
-                                            <!--end::Header-->
-                                            <!--begin::Card body-->
-                                            <div class="card-body d-flex flex-column justify-content-end pe-0">
-                                                <!--begin::Title-->
-                                                <span class="fs-6 fw-bolder text-gray-800 d-block mb-2">Today’s
-                                                    Heroes</span>
-                                                <!--end::Title-->
-                                                <!--begin::Users group-->
-                                                <div class="symbol-group symbol-hover flex-nowrap">
-                                                    <div class="symbol symbol-35px symbol-circle"
-                                                        data-bs-toggle="tooltip" title="Alan Warden">
-                                                        <span
-                                                            class="symbol-label bg-warning text-inverse-warning fw-bold">A</span>
-                                                    </div>
-                                                    <div class="symbol symbol-35px symbol-circle"
-                                                        data-bs-toggle="tooltip" title="Michael Eberon">
-                                                        <img alt="Pic" src="assets/media/avatars/300-11.jpg" />
-                                                    </div>
-                                                    <div class="symbol symbol-35px symbol-circle"
-                                                        data-bs-toggle="tooltip" title="Susan Redwood">
-                                                        <span
-                                                            class="symbol-label bg-primary text-inverse-primary fw-bold">S</span>
-                                                    </div>
-                                                    <div class="symbol symbol-35px symbol-circle"
-                                                        data-bs-toggle="tooltip" title="Melody Macy">
-                                                        <img alt="Pic" src="assets/media/avatars/300-2.jpg" />
-                                                    </div>
-                                                    <div class="symbol symbol-35px symbol-circle"
-                                                        data-bs-toggle="tooltip" title="Perry Matthew">
-                                                        <span
-                                                            class="symbol-label bg-danger text-inverse-danger fw-bold">P</span>
-                                                    </div>
-                                                    <div class="symbol symbol-35px symbol-circle"
-                                                        data-bs-toggle="tooltip" title="Barry Walter">
-                                                        <img alt="Pic" src="assets/media/avatars/300-12.jpg" />
-                                                    </div>
-                                                    <a href="#" class="symbol symbol-35px symbol-circle"
-                                                        data-bs-toggle="modal" data-bs-target="#kt_modal_view_users">
-                                                        <span
-                                                            class="symbol-label bg-light text-gray-400 fs-8 fw-bold">+42</span>
-                                                    </a>
-                                                </div>
-                                                <!--end::Users group-->
-                                            </div>
-                                            <!--end::Card body-->
-                                        </div>
-                                        <!--end::Card widget 7-->
                                     </div>
-                                    <!--end::Col-->
-                                    <!--begin::Col-->
-                                    <div class="col-lg-12 col-xl-12 col-xxl-6 mb-5 mb-xl-0">
-                                        <!--begin::Chart widget 3-->
-                                        <div class="card card-flush overflow-hidden h-md-100">
-                                            <!--begin::Header-->
-                                            <div class="card-header py-5">
-                                                <!--begin::Title-->
-                                                <h3 class="card-title align-items-start flex-column">
-                                                    <span class="card-label fw-bold text-dark">Sales This Months</span>
-                                                    <span class="text-gray-400 mt-1 fw-semibold fs-6">Users from all
-                                                        channels</span>
-                                                </h3>
-                                                <!--end::Title-->
-                                                <!--begin::Toolbar-->
-                                                <div class="card-toolbar">
-                                                    <!--begin::Menu-->
-                                                    <button
-                                                        class="btn btn-icon btn-color-gray-400 btn-active-color-primary justify-content-end"
-                                                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"
-                                                        data-kt-menu-overflow="true">
-                                                        <i class="ki-duotone ki-dots-square fs-1">
-                                                            <span class="path1"></span>
-                                                            <span class="path2"></span>
-                                                            <span class="path3"></span>
-                                                            <span class="path4"></span>
-                                                        </i>
-                                                    </button>
-                                                    <!--begin::Menu 2-->
-                                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px"
-                                                        data-kt-menu="true">
-                                                        <!--begin::Menu item-->
-                                                        <div class="menu-item px-3">
-                                                            <div class="menu-content fs-6 text-dark fw-bold px-3 py-4">
-                                                                Quick Actions</div>
-                                                        </div>
-                                                        <!--end::Menu item-->
-                                                        <!--begin::Menu separator-->
-                                                        <div class="separator mb-3 opacity-75"></div>
-                                                        <!--end::Menu separator-->
-                                                        <!--begin::Menu item-->
-                                                        <div class="menu-item px-3">
-                                                            <a href="#" class="menu-link px-3">New Ticket</a>
-                                                        </div>
-                                                        <!--end::Menu item-->
-                                                        <!--begin::Menu item-->
-                                                        <div class="menu-item px-3">
-                                                            <a href="#" class="menu-link px-3">New Customer</a>
-                                                        </div>
-                                                        <!--end::Menu item-->
-                                                        <!--begin::Menu item-->
-                                                        <div class="menu-item px-3" data-kt-menu-trigger="hover"
-                                                            data-kt-menu-placement="right-start">
-                                                            <!--begin::Menu item-->
-                                                            <a href="#" class="menu-link px-3">
-                                                                <span class="menu-title">New Group</span>
-                                                                <span class="menu-arrow"></span>
-                                                            </a>
-                                                            <!--end::Menu item-->
-                                                            <!--begin::Menu sub-->
-                                                            <div class="menu-sub menu-sub-dropdown w-175px py-4">
-                                                                <!--begin::Menu item-->
-                                                                <div class="menu-item px-3">
-                                                                    <a href="#" class="menu-link px-3">Admin Group</a>
-                                                                </div>
-                                                                <!--end::Menu item-->
-                                                                <!--begin::Menu item-->
-                                                                <div class="menu-item px-3">
-                                                                    <a href="#" class="menu-link px-3">Staff Group</a>
-                                                                </div>
-                                                                <!--end::Menu item-->
-                                                                <!--begin::Menu item-->
-                                                                <div class="menu-item px-3">
-                                                                    <a href="#" class="menu-link px-3">Member Group</a>
-                                                                </div>
-                                                                <!--end::Menu item-->
-                                                            </div>
-                                                            <!--end::Menu sub-->
-                                                        </div>
-                                                        <!--end::Menu item-->
-                                                        <!--begin::Menu item-->
-                                                        <div class="menu-item px-3">
-                                                            <a href="#" class="menu-link px-3">New Contact</a>
-                                                        </div>
-                                                        <!--end::Menu item-->
-                                                        <!--begin::Menu separator-->
-                                                        <div class="separator mt-3 opacity-75"></div>
-                                                        <!--end::Menu separator-->
-                                                        <!--begin::Menu item-->
-                                                        <div class="menu-item px-3">
-                                                            <div class="menu-content px-3 py-3">
-                                                                <a class="btn btn-primary btn-sm px-4" href="#">Generate
-                                                                    Reports</a>
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Menu item-->
-                                                    </div>
-                                                    <!--end::Menu 2-->
-                                                    <!--end::Menu-->
+
+
+
+                                    <!-- Our Clients Card -->
+                                    <div class="col-lg-6 col-xxl-3">
+                                        <div class="card dashboard-card h-100">
+                                            <div class="card-body p-9">
+                                                <div class="stat-icon icon-warning">
+
+
+                                                    <i class="ki-duotone ki-cross-circle fs-2x" style="color: white;">
+                                                        <span class=" path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i>
                                                 </div>
-                                                <!--end::Toolbar-->
-                                            </div>
-                                            <!--end::Header-->
-                                            <!--begin::Card body-->
-                                            <div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
-                                                <!--begin::Statistics-->
-                                                <div class="px-9 mb-5">
-                                                    <!--begin::Statistics-->
-                                                    <div class="d-flex mb-2">
-                                                        <span class="fs-4 fw-semibold text-gray-400 me-1">$</span>
-                                                        <span
-                                                            class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">14,094</span>
-                                                    </div>
-                                                    <!--end::Statistics-->
-                                                    <!--begin::Description-->
-                                                    <span class="fs-6 fw-semibold text-gray-400">Another $48,346 to
-                                                        Goal</span>
-                                                    <!--end::Description-->
+                                                <?php
+                                                $q1 = mysqli_query($con, "SELECT COUNT(*) AS count1 FROM nocApplications WHERE civilianId = '$userId' AND status = 'Rejected'");
+                                                $data1 = mysqli_fetch_assoc($q1);
+                                                $count1 = $data1['count1'];
+                                                ?>
+
+                                                <div class="stat-value animate-count" style="font-size: 20px;">
+                                                    नामंजुर अर्ज: <?php echo $count1; ?>
                                                 </div>
-                                                <!--end::Statistics-->
-                                                <!--begin::Chart-->
-                                                <div id="kt_charts_widget_3" class="min-h-auto ps-4 pe-6"
-                                                    style="height: 300px"></div>
-                                                <!--end::Chart-->
+                                                <!-- <div class="stat-label">Our Clients</div> -->
+                                                <div class="trend-indicator trend-up">
+                                                    <i class="ki-duotone ki-arrow-up fs-7"></i>
+                                                    <!-- +3 new clients -->
+                                                </div>
+
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill progress-warning" style="width: 0%"
+                                                        data-width="89%"></div>
+                                                </div>
                                             </div>
-                                            <!--end::Card body-->
                                         </div>
-                                        <!--end::Chart widget 3-->
                                     </div>
-                                    <!--end::Col-->
+
+                                    <!-- Success Rate Card -->
+                                    <div class="col-lg-6 col-xxl-3">
+                                        <div class="card dashboard-card h-100">
+                                            <div class="card-body p-9">
+
+                                                <!-- 🟦 Info circle with ! icon -->
+                                                <div class="stat-icon icon-info">
+                                                    <i class="ki-duotone ki-information-5 fs-2x" style="color: white;">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+
+
+                                                </div>
+
+                                                <?php
+                                                $q1 = mysqli_query($con, "SELECT COUNT(*) AS count1 FROM nocApplications WHERE civilianId = '$userId' AND (status = 'Under Review' OR status = 'Submitted')");
+                                                $data1 = mysqli_fetch_assoc($q1);
+                                                $count1 = $data1['count1'];
+
+                                                ?>
+
+                                                <div class="stat-value animate-count" style="font-size: 20px;">
+                                                    प्रलंबित अर्ज: <?php echo $count1; ?>
+                                                </div>
+
+                                                <div class="trend-indicator trend-up">
+                                                    <i class="ki-duotone ki-arrow-up fs-7"></i>
+                                                </div>
+
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill progress-info" style="width: 0%"
+                                                        data-width="94%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
-                                <!--end::Row-->
+                                <!--end::Stats Row-->
+
+
 
                             </div>
                             <!--end::Content container-->

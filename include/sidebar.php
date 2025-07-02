@@ -54,7 +54,7 @@ session_start();
                 <!--end:Menu item-->
 
                 <!--begin:Menu item-->
-                <div class="menu-item" onclick="window.location.href='#'">
+                <div class="menu-item" onclick="window.location.href='civilian/nocReport.php'">
                     <!--begin:Menu link-->
                     <span class="menu-link">
                         <span class="menu-icon">
@@ -66,26 +66,6 @@ session_start();
                             </i>
                         </span>
                         <span class="menu-title">NOC Applications</span>
-                    </span>
-                    <!--end:Menu link-->
-
-                </div>
-                <!--end:Menu item-->
-
-                <!--begin:Menu item-->
-
-                <div class="menu-item" onclick="window.location.href='civilian/trackNoc.php?applicationId=noc_001'">
-                    <!--begin:Menu link-->
-                    <span class="menu-link">
-                        <span class="menu-icon">
-                            <i class="ki-duotone ki-element-11 fs-1">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                            </i>
-                        </span>
-                        <span class="menu-title">Track NOC</span>
                     </span>
                     <!--end:Menu link-->
 
@@ -116,7 +96,7 @@ session_start();
                     <!--end:Menu item-->
                     <!--begin:Menu item-->
                     <!--officer/nocReport.php-->
-                    <div class="menu-item" onclick="window.location.href='#'">
+                    <div class="menu-item" onclick="window.location.href='civilian/nocReport.php'">
                         <!--begin:Menu link-->
                         <span class="menu-link">
                             <span class="menu-icon">

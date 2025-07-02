@@ -262,33 +262,36 @@ error_reporting(0);
 
                                 <!--begin::Input group-->
                                 <div class="fv-row mb-8 position-relative">
-    <!--begin::Wrapper-->
-    <div class="d-flex flex-stack mb-2">
-        <!--begin::Label-->
-        <label class="form-label fw-bold fs-6 mb-0" style="color: #1e3c72;">Password</label>
-        <!--end::Label-->
-        <!--begin::Link-->
-        <a href="forgot_password.php" class="fs-6 fw-bold" style="color: #ff6600;">
+                                    <!--begin::Wrapper-->
+                                    <div class="d-flex flex-stack mb-2">
+                                        <!--begin::Label-->
+                                        <label class="form-label fw-bold fs-6 mb-0"
+                                            style="color: #1e3c72;">Password</label>
+                                        <!--end::Label-->
+                                        <!--begin::Link-->
+                                        <!-- <a href="forgot_password.php" class="fs-6 fw-bold" style="color: #ff6600;">
             Forgot Password?
-        </a>
-        <!--end::Link-->
-    </div>
-    <!--end::Wrapper-->
+        </a> -->
+                                        <!--end::Link-->
+                                    </div>
+                                    <!--end::Wrapper-->
 
-    <!--begin::Input with toggle icon-->
-    <div class="position-relative">
-        <input id="password-input" class="form-control form-control-lg form-control-solid pe-10"
-            type="password" name="password" placeholder="Enter your password"
-            required autocomplete="off" />
-        
-        <!-- Toggle Eye Icon -->
-        <span class="position-absolute top-50 end-0 translate-middle-y me-3" onclick="togglePassword()"
-            style="cursor: pointer;">
-            <i id="toggle-icon" class="bi bi-eye-slash-fill fs-4" style="color: #1e3c72;"></i>
-        </span>
-    </div>
-    <!--end::Input with toggle icon-->
-</div>
+                                    <!--begin::Input with toggle icon-->
+                                    <div class="position-relative">
+                                        <input id="password-input"
+                                            class="form-control form-control-lg form-control-solid pe-10"
+                                            type="password" name="password" placeholder="Enter your password" required
+                                            autocomplete="off" />
+
+                                        <!-- Toggle Eye Icon -->
+                                        <span class="position-absolute top-50 end-0 translate-middle-y me-3"
+                                            onclick="togglePassword()" style="cursor: pointer;">
+                                            <i id="toggle-icon" class="bi bi-eye-slash-fill fs-4"
+                                                style="color: #1e3c72;"></i>
+                                        </span>
+                                    </div>
+                                    <!--end::Input with toggle icon-->
+                                </div>
 
 
 
@@ -353,21 +356,21 @@ error_reporting(0);
     <!--end::Javascript-->
 
     <script>
-    function togglePassword() {
-        const passwordInput = document.getElementById('password-input');
-        const toggleIcon = document.getElementById('toggle-icon');
+        function togglePassword() {
+            const passwordInput = document.getElementById('password-input');
+            const toggleIcon = document.getElementById('toggle-icon');
 
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            toggleIcon.classList.remove('bi-eye-slash-fill');
-            toggleIcon.classList.add('bi-eye-fill');
-        } else {
-            passwordInput.type = 'password';
-            toggleIcon.classList.remove('bi-eye-fill');
-            toggleIcon.classList.add('bi-eye-slash-fill');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('bi-eye-slash-fill');
+                toggleIcon.classList.add('bi-eye-fill');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('bi-eye-fill');
+                toggleIcon.classList.add('bi-eye-slash-fill');
+            }
         }
-    }
-</script>
+    </script>
 
 </body>
 <!--end::Body-->

@@ -90,7 +90,7 @@ error_reporting(0);
             overflow: hidden;
         }
 
-       
+
 
         .login-form>* {
             position: relative;
@@ -148,21 +148,20 @@ error_reporting(0);
 
 
         .login-form {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    width: 100%;
-    max-width: 600px;
-    position: relative;
-    overflow: hidden;
-}
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+        }
 
-.form-label{
+        .form-label {
 
-    font-weight: bold !important;
-}
-
+            font-weight: bold !important;
+        }
     </style>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
     <script>var defaultThemeMode = "light"; var themeMode; if (document.documentElement) { if (document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if (localStorage.getItem("data-bs-theme") !== null) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }
@@ -227,167 +226,176 @@ error_reporting(0);
                     <!--begin::Wrapper-->
                     <div class="w-lg-700px p-10 p-lg-15 mx-auto" style="padding-top: 1rem !important;">
                         <!--begin::Form-->
-                        
-
-                            <div class="register-form login-form">
-        <h3 class="text-center mb-4">युजर नोंदणी</h3>
-        <form method="post" action="registrationDB.php" enctype="multipart/form-data">
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="form-label">पुर्ण नाव</label><span style="color: red;">*</span>
-                    <input type="text" name="name" class="form-control" required>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">पत्ता</label><span style="color: red;">*</span>
-                    <input type="text" name="address" class="form-control" required>
-                </div>
-            </div>
-                <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="form-label">तालुका निवडा</label><span style="color: red;">*</span>
-                    <select name="taluka" id="taluka" class="form-select" required>
-                        <option value="" selected disabled>-- निवडा --</option>
-                        <?php
-                        include("include/conn.php");
-                        $res = mysqli_query($con, "SELECT DISTINCT taluka FROM taluka");
-                        while ($row = mysqli_fetch_assoc($res)) {
-                            $taluka = htmlspecialchars($row['taluka']);
-                            echo "<option value='$taluka'>$taluka</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label">गाव निवडा</label><span style="color: red;">*</span>
-                    <select name="village" id="village" class="form-select" required>
-                        <option value="" selected disabled>-- गाव निवडा --</option>
-                    </select>
-                </div>
-            </div>
 
 
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="form-label">आधार क्रमांक</label><span style="color: red;">*</span>
-                    <input type="text" name="aadharNo" class="form-control" maxlength="12" pattern="\d{12}" required>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">ईमेल</label><span style="color: red;">*</span>
-                    <input type="email" name="emailId" class="form-control" required>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="form-label">ओळखपत्र अपलोड करा</label><span style="color: red;">*</span>
-                    <input type="file" name="identificationCertificate" class="form-control" required>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">मोबाईल क्रमांक</label><span style="color: red;">*</span>
-                    <input type="text" name="mobileNo" class="form-control" maxlength="10" pattern="\d{10}" required>
-                </div>
-            </div>
-           <div class="row mb-3">
-                <!--<div class="col-md-6">
+                        <div class="register-form login-form">
+                            <h3 class="text-center mb-4">युजर नोंदणी</h3>
+                            <form method="post" action="registrationDB.php" enctype="multipart/form-data">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">पुर्ण नाव</label><span style="color: red;">*</span>
+                                        <input type="text" name="name" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">पत्ता</label><span style="color: red;">*</span>
+                                        <input type="text" name="address" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">तालुका निवडा</label><span style="color: red;">*</span>
+                                        <select name="taluka" id="taluka" class="form-select" required>
+                                            <option value="" selected disabled>-- निवडा --</option>
+                                            <?php
+                                            include("include/conn.php");
+                                            $res = mysqli_query($con, "SELECT DISTINCT taluka FROM taluka");
+                                            while ($row = mysqli_fetch_assoc($res)) {
+                                                $taluka = htmlspecialchars($row['taluka']);
+                                                echo "<option value='$taluka'>$taluka</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">गाव निवडा</label><span style="color: red;">*</span>
+                                        <select name="village" id="village" class="form-select" required>
+                                            <option value="" selected disabled>-- गाव निवडा --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">आधार क्रमांक</label><span style="color: red;">*</span>
+                                        <input type="text" name="aadharNo" class="form-control" maxlength="12"
+                                            pattern="\d{12}" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">ईमेल</label><span style="color: red;">*</span>
+                                        <input type="email" name="emailId" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">ओळखपत्र अपलोड करा</label><span
+                                            style="color: red;">*</span>
+                                        <input type="file" name="identificationCertificate" accept="image/*, .pdf"
+                                            class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">मोबाईल क्रमांक</label><span
+                                            style="color: red;">*</span>
+                                        <input type="text" name="mobileNo" class="form-control" maxlength="10"
+                                            pattern="\d{10}" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <!--<div class="col-md-6">
                 <label class="form-label">पासवर्ड</label><span style="color: red;">*</span>
                 <input type="number" name="password" class="form-control" required>
             </div>    -->
 
-            
-  <div class="col-md-6 position-relative">
-    <label class="form-label">पासवर्ड</label><span style="color: red;">*</span>
-    <div class="input-group">
-      <input type="password" name="password" id="passwordInput" class="form-control" required>
-      <span class="input-group-text" onclick="togglePassword()" style="cursor: pointer;">
-        <i id="eyeIcon" class="fa fa-eye"></i>
-      </span>
-    </div>
-  </div>
 
-            <div class="col-md-6">
-                <label class="form-label">OTP टाका</label><span style="color: red;">*</span>
-                <input type="text" name="otp" class="form-control" maxlength="6" required>
-            </div>
-            </div>
-            <div class="d-grid mb-3">
-                <button type="submit" name="submit" class="btn btn-lg btn-government w-100 mb-5" style="background-color:#7e41c3; border:none;">नोंदणी करा</button>
-            </div>
-            <div class="text-center">
-                <a href="login.php">आधीच खाते आहे? लॉगिन करा</a>
-            </div>
+                                    <div class="col-md-6 position-relative">
+                                        <label class="form-label">पासवर्ड</label><span style="color: red;">*</span>
+                                        <div class="input-group">
+                                            <input type="password" name="password" id="passwordInput"
+                                                class="form-control" required>
+                                            <span class="input-group-text" onclick="togglePassword()"
+                                                style="cursor: pointer;">
+                                                <i id="eyeIcon" class="fa fa-eye"></i>
+                                            </span>
+                                        </div>
+                                    </div>
 
-            
-        </form>
+                                    <div class="col-md-6">
+                                        <label class="form-label">OTP टाका</label><span style="color: red;">*</span>
+                                        <input type="text" name="otp" class="form-control" maxlength="6" required>
+                                    </div>
+                                </div>
+                                <div class="d-grid mb-3">
+                                    <button type="submit" name="submit" class="btn btn-lg btn-government w-100 mb-5"
+                                        style="background-color:#7e41c3; border:none;">नोंदणी करा</button>
+                                </div>
+                                <div class="text-center">
+                                    <a href="login.php?role=Civilian">आधीच खाते आहे? लॉगिन करा</a>
+                                </div>
 
-          <div class="d-flex flex-center flex-wrap fs-6 p-5 pb-0">
-                    <!--begin::Links-->
-                    <div class="d-flex flex-center fw-semibold fs-6">
-                        <div class="text-muted text-hover-primary px-2">Developed & Maintained By <a
-                                href="https://settribe.com/" style="color: #09969a;" target="_blank">SETTribe</a></div>
-                        <!-- <a href="#" class="text-muted text-hover-primary px-2">Contact Support</a>
+
+                            </form>
+
+                            <div class="d-flex flex-center flex-wrap fs-6 p-5 pb-0">
+                                <!--begin::Links-->
+                                <div class="d-flex flex-center fw-semibold fs-6">
+                                    <div class="text-muted text-hover-primary px-2">Developed & Maintained By <a
+                                            href="https://settribe.com/" style="color: #09969a;"
+                                            target="_blank">SETTribe</a></div>
+                                    <!-- <a href="#" class="text-muted text-hover-primary px-2">Contact Support</a>
                         <a href="#" class="text-muted text-hover-primary px-2">Terms & Conditions</a> -->
+                                </div>
+                                <!--end::Links-->
+                            </div>
+                        </div>
                     </div>
-                    <!--end::Links-->
+                    <!--end::Form-->
                 </div>
-    </div>
-</div>
-                        <!--end::Form-->
-                    </div>
-                    <!--end::Wrapper-->
-                </div>
-                <!--end::Content-->
-                <!--begin::Footer-->
-              
-                <!--end::Footer-->
+                <!--end::Wrapper-->
             </div>
-            <!--end::Body-->
+            <!--end::Content-->
+            <!--begin::Footer-->
+
+            <!--end::Footer-->
         </div>
-        <!--end::Authentication - Sign-in-->
+        <!--end::Body-->
+    </div>
+    <!--end::Authentication - Sign-in-->
     </div>
     <!--end::Root-->
     <!--begin::Javascript-->
     <?php include("include/jsLinks.php"); ?>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$('#taluka').on('change', function () {
-    var selectedTaluka = $(this).val();
-    $.ajax({
-        url: 'get_villages.php',
-        type: 'GET',
-        data: { taluka: selectedTaluka },
-        success: function (data) {
-            $('#village').empty().append('<option value="" disabled selected>-- गाव निवडा --</option>');
-            if (Array.isArray(data)) {
-                data.forEach(function (village) {
-                    $('#village').append('<option value="' + village + '">' + village + '</option>');
-                });
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('#taluka').on('change', function () {
+            var selectedTaluka = $(this).val();
+            $.ajax({
+                url: 'get_villages.php',
+                type: 'GET',
+                data: { taluka: selectedTaluka },
+                success: function (data) {
+                    $('#village').empty().append('<option value="" disabled selected>-- गाव निवडा --</option>');
+                    if (Array.isArray(data)) {
+                        data.forEach(function (village) {
+                            $('#village').append('<option value="' + village + '">' + village + '</option>');
+                        });
+                    }
+                },
+                error: function (xhr) {
+                    alert("गाव माहिती मिळवता आली नाही.");
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById("passwordInput");
+            const eyeIcon = document.getElementById("eyeIcon");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                eyeIcon.classList.remove("fa-eye");
+                eyeIcon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                eyeIcon.classList.remove("fa-eye-slash");
+                eyeIcon.classList.add("fa-eye");
             }
-        },
-        error: function (xhr) {
-            alert("गाव माहिती मिळवता आली नाही.");
-            console.error(xhr.responseText);
         }
-    });
-});
-</script>
-
-<script>
-  function togglePassword() {
-    const passwordInput = document.getElementById("passwordInput");
-    const eyeIcon = document.getElementById("eyeIcon");
-
-    if (passwordInput.type === "password") {
-      passwordInput.type = "text";
-      eyeIcon.classList.remove("fa-eye");
-      eyeIcon.classList.add("fa-eye-slash");
-    } else {
-      passwordInput.type = "password";
-      eyeIcon.classList.remove("fa-eye-slash");
-      eyeIcon.classList.add("fa-eye");
-    }
-  }
-</script>
+    </script>
 
     <!--end::Javascript-->
 </body>

@@ -11,9 +11,9 @@ if (isset($_REQUEST['logIn'])) {
     $role = $_GET['role'];
 
 
-    if ($role == "civilian") {
+    if ($role == "Civilian") {
         $sql = "SELECT * FROM civilianRegistrations WHERE `mobileNo` = '$mobileNo' AND `password` = '$password' AND status = 'Active'";
-    } else if ($role == "officer") {
+    } else if ($role == "Officer") {
         $sql = "SELECT * FROM users WHERE `mobileNo` = '$mobileNo' AND `password` = '$password' AND status = 'Active'";
 
     }
@@ -26,7 +26,8 @@ if (isset($_REQUEST['logIn'])) {
         $result = mysqli_fetch_assoc($query);
 
         if ($result['mobileNo'] == $mobileNo && $result['password'] == $password) {
-            if ($role == "civilian") {
+            $_SESSION['name'] = $result['name'];
+            if ($role == "Civilian") {
                 $_SESSION['userId'] = $result['civilianId'];
                 $_SESSION['designation'] = "Civilian";
                 $_SESSION['role'] = "Civilian";
@@ -37,7 +38,7 @@ if (isset($_REQUEST['logIn'])) {
                 }
 
                 echo "<script>window.location = 'civilian/index.php';</script>";
-            } else if ($role == "officer") {
+            } else if ($role == "Officer") {
                 $_SESSION['userId'] = $result['userId'];
                 $_SESSION['designation'] = $result['designation'];
                 $_SESSION['role'] = "Officer";
