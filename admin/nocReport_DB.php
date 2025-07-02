@@ -32,24 +32,75 @@ if (isset($_POST['update'])) {
       
     }
    
-        
-        if ($updateNocApp && $updateReview) {
-            echo "<script>
-                alert('Status updated successfully.');
-                window.location.href = '../admin/nocReport.php';
-            </script>";
-        } else {
-            echo "<script>
-                alert('Something went wrong during update!');
-                window.history.back();
-            </script>";
-        }
-    } else {
-        echo "<script>
-            alert('Missing applicationId or status!');
+      if ($updateNocApp && $updateReview) {
+    echo "
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+    </head>
+    <body>
+        <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Status updated successfully.',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            window.location.href = '../admin/nocReport.php';
+        });
+        </script>
+    </body>
+    </html>
+    ";
+    exit;
+}
+else {
+    echo "
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+    </head>
+    <body>
+        <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Something went wrong during update.',
+            confirmButtonText: 'Back'
+        }).then(() => {
             window.history.back();
-        </script>";
-    }
+        });
+        </script>
+    </body>
+    </html>";
+    exit;
+}
+}
+else {
+    echo "
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+    </head>
+    <body>
+        <script>
+        Swal.fire({
+            icon: 'warning',
+            title: 'Missing Data!',
+            text: 'applicationId or status is missing.',
+            confirmButtonText: 'Back'
+        }).then(() => {
+            window.history.back();
+        });
+        </script>
+    </body>
+    </html>";
+    exit;
+}
+
     
 
 ?>

@@ -198,23 +198,16 @@ include("../include/cssLinks.php"); ?>
 			<thead>
 				<!--begin::Table row-->
 				<tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase">
-                    <th class="min-w-100px">Aplication ID</th>
-                    <th class="min-w-100px">Civilian ID</th>
-                    <th class="min-w-100px">NOC Number</th>
-                    <th class="min-w-100px">NOC Subject</th>
-                    <th class="min-w-100px">NOC Type ID</th>
-                    <th class="min-w-100px">Land DESC</th>
-                    <th class="min-w-100px">GAT NO</th>
-					<th class="min-w-100px">अर्जदारचे नाव</th>
-					<th class="min-w-100px">मोबाईल क्र</th>
-                    <th class="min-w-100px">NOC प्रकार</th>
-                    <th class="min-w-100px">पूर्ण पत्ता</th>
-					<th class="min-w-100px">आधार क्र</th>
-					<th class="min-w-100px">इमेल</th>
-                    <th class="min-w-100px">जन्मतारीख</th>
-                    <th class="min-w-100px">पेन कार्ड पहा</th>
-                    <th class="min-w-100px">आधार कार्ड पहा</th>
-                    <th class="min-w-100px">तारीख</th>
+                    <th class="min-w-100px">NOC क्रमंक</th>
+                    <th class="min-w-100px">Department</th>
+                    <th class="min-w-100px">विषय</th>
+                    <th class="min-w-100px">जमिनीची माहेती</th>
+                    <th class="min-w-100px">तालुका</th>
+                    <th class="min-w-100px">गाव</th>
+                    <th class="min-w-100px">गट विकास</th>
+                    <th class="min-w-100px">संपर्क अधिकार्याचा मोबाईल क्रमंक</th>
+                    <th class="min-w-100px">संपर्क अधिकार्याचा ईमेल ID</th>
+                    <th class="min-w-100px">NOC प्रकार निवडा</th>
                     <th class="min-w-100px">स्थिती</th>
                      <th class="min-w-100px">Action</th>
 
@@ -222,131 +215,12 @@ include("../include/cssLinks.php"); ?>
 				</tr>
 				<!--end::Table row-->
 			</thead>
-			<tbody class="fw-semibold text-gray-600">
+			 <tbody class="fw-semibold text-gray-600">
                   <?php
 $result = mysqli_query($conn, "
     SELECT 
-        a.applicationId,
-        a.civilianId,
-        a.nocNumber,
-        a.nocSubject,
-        a.nocTypeId,
-        a.landDesc,
-        a.taluka,
-        a.village,
-        a.gatNo,
-        a.panCard,
-        a.aadharCard,
-        a.status,
-        a.createdDateTime,
-
-        -- From civilianRegistrations table
-        c.name,
-        c.address,
-        c.aadharNo,
-        c.emailId,
-        c.dob,
-        c.mobileNo
-
-    FROM nocApplications a
-     INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
-    LEFT JOIN civilianRegistrations c ON a.civilianId = c.civilianId
-    WHERE r.departmentId = 3
-    ORDER BY a.applicationId DESC
-");
-
-        $i = 1;
-          while($row = mysqli_fetch_assoc($result)){
- ?>
-				<tr class="odd">
-                    <td><?php echo $row['applicationId'] ?></td>
-                    <td><?php echo $row['civilianId'] ?></td>
-                    <td><?php echo $row['nocNumber'] ?></td>
-                    <td><?php echo $row['nocSubject'] ?></td>
-                    <td><?php echo $row['nocTypeId'] ?></td>
-                    <td><?php echo $row['landDesc'] ?></td>
-                     <td><?php echo $row['gatNo'] ?></td>
-					<td><?php echo $row['name'] ?></td>
-					<td><?php echo $row['mobileNo'] ?></td>
-					<td><?php echo $row['nocTypeId'] ?></td>
-                    <td><?php echo $row['address'] ?></td>
-                    <td><?php echo $row['aadharNo'] ?></td>
-                    <td><?php echo $row['emailId'] ?></td>
-                    <td><?php echo $row['dob'] ?></td>
-                     <td><?php echo $row['panCard'] ?></td> 
-                    <td><?php echo $row['aadharCard'] ?></td>
-                   <td><?php echo $row['createdDateTime'] ?></td>
-					<td>
-  <?php
-    $status = $row['status'];
-
-    if ($status == 'Approved') {
-        $color = 'text-success'; 
-    } else if ($status == 'Rejected') {
-        $color = 'text-danger'; 
-    } else {
-        $color = 'text-warning'; 
-    }
-  ?>
-  <span class="<?php echo $color; ?>"><?php echo $status; ?></span>
-</td>
-
-                   <td>
- <button class="btn btn-sm btn-warning me-1" 
-        data-bs-toggle="modal" 
-        data-bs-target="#updateStatusModal" 
-        data-id="<?php echo $row['id']; ?>" 
-        data-applicationid="<?php echo $row['applicationId']; ?>">
-  Change Status
-</button>
-
-  <!-- Modal -->
-   
-<div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form method="POST" action="admin/nocReport_DB.php">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="updateStatusModalLabel">Update Application Status</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" name="applicationId" id="modalAppId">
-            <input type="hidden" value="<?php echo $row['applicationId'] ?>" name="applicationId" id="modalApplicationId">
-
-          <div class="mb-3">
-            <label for="status" class="form-label">Status</label>
-            <select class="form-select" name="status" id="statusSelect" required>
-              <option value="">Select</option>
-                <option value="Under Review">Under Review</option>
-              <option value="Approved">Approved</option>
-              <option value="Rejected">Rejected</option>
-            </select>
-          </div>
-
-          <div class="mb-3 d-none" id="remarkDiv">
-            <label for="remark" class="form-label">Rejection Remark</label>
-            <textarea class="form-control" name="remarks" id="remark" placeholder="Reason for rejection..."></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" name="update" class="btn btn-success">Submit</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-</td>
-
-					
-				</tr>
-                <?php } ?>
-			</tbody>
-            <tbody class="fw-semibold text-gray-600">
-                  <?php
-$result = mysqli_query($conn, "
-    SELECT 
+    a.nocTypeId,
+    a.departmentId,
         a.applicationId,
         a.nocSubject,
         a.nocTypeId,
@@ -354,6 +228,8 @@ $result = mysqli_query($conn, "
         a.taluka,
         a.village,
         a.gatNo,
+        a.mobileNo,
+        a.emailId,
         a.status,
         a.createdDateTime
 
@@ -370,23 +246,16 @@ $result = mysqli_query($conn, "
           while($row = mysqli_fetch_assoc($result)){
  ?>
 				<tr class="odd">
-                    <td><?php echo $row['applicationId'] ?></td>
-                    <td><?php echo $row['civilianId'] ?></td>
-                    <td><?php echo $row['nocNumber'] ?></td>
-                    <td><?php echo $row['nocSubject'] ?></td>
                     <td><?php echo $row['nocTypeId'] ?></td>
+                    <td><?php echo $row['departmentId'] ?></td>
+                    <td><?php echo $row['nocSubject'] ?></td>
                     <td><?php echo $row['landDesc'] ?></td>
+                    <td><?php echo $row['taluka'] ?></td>
+                    <td><?php echo $row['village'] ?></td>
                      <td><?php echo $row['gatNo'] ?></td>
-					<td><?php echo $row['name'] ?></td>
 					<td><?php echo $row['mobileNo'] ?></td>
+					<td><?php echo $row['emailId'] ?></td>
 					<td><?php echo $row['nocTypeId'] ?></td>
-                    <td><?php echo $row['address'] ?></td>
-                    <td><?php echo $row['aadharNo'] ?></td>
-                    <td><?php echo $row['emailId'] ?></td>
-                    <td><?php echo $row['dob'] ?></td>
-                     <td><?php echo $row['panCard'] ?></td> 
-                    <td><?php echo $row['aadharCard'] ?></td>
-                   <td><?php echo $row['createdDateTime'] ?></td>
 					<td>
   <?php
     $status = $row['status'];
