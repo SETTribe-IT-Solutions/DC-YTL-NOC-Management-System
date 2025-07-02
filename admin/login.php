@@ -9,13 +9,14 @@ error_reporting(0);
 <!--begin::Head-->
 
 <head>
+    <base href="../">
     <title>NOC Portal - Maharashtra Shashan</title>
     <meta charset="utf-8" />
     <meta name="description" content="No Objection Certificate Portal - Maharashtra Government" />
     <meta name="keywords" content="NOC, No Objection Certificate, Maharashtra Government, Maharashtra Shashan" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <?php
-    include("include/cssLinks.php");
+    include("../include/cssLinks.php");
     ?>
     <style>
         .government-header {
@@ -222,8 +223,7 @@ error_reporting(0);
                     <div class="w-lg-700px p-10 p-lg-15 mx-auto">
                         <!--begin::Form-->
                         <div class="login-form">
-                            <form class="form w-100" method="post" id="kt_sign_in_form"
-                                action="login_db.php?role=<?php echo $_GET['role'] ?>">
+                            <form class="form w-100" method="post" id="kt_sign_in_form" action="admin/login_db.php">
                                 <!--begin::Heading-->
                                 <div class="text-center mb-8">
                                     <!--begin::Title-->
@@ -316,7 +316,7 @@ error_reporting(0);
         </div>
         <!--end::Authentication - Sign-in-->
         <?php
-        include('include/sweetAlert.php');
+        include('../include/sweetAlert.php');
         if (isset($_SESSION['msg'])) {
             $status = $_SESSION['status'];
             $msg = $_SESSION['msg'];
@@ -333,7 +333,7 @@ error_reporting(0);
     <!--end::Root-->
     <!--begin::Javascript-->
     <?php
-    include('include/jsLinks.php');
+    include('../include/jsLinks.php');
     ?>
     <!--end::Javascript-->
 </body>

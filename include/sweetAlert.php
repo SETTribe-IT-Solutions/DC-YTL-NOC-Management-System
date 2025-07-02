@@ -6,7 +6,8 @@ function setSession($status, $msg)
     $_SESSION['msg'] = $msg;
 }
 ?>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+<script src="assets/plugins/global/plugins.bundle.js"></script>
 <script>
     const Toast = Swal.mixin({
         toast: true,

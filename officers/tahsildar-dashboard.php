@@ -6,16 +6,16 @@ error_reporting(0);
 if (!isset($_SESSION['userId'])) {
     unset($_SESSION['designation']);
     unset($_SESSION['role']);
-    header('location:../login.php?role=civilian&page=index');
+    header('location:../login.php?role=officer&page=department-dashboard');
     exit;
     die();
 }
 
-if ($_SESSION['designation'] != 'Civilian') {
+if ($_SESSION['designation'] != 'Tahsildar') {
     unset($_SESSION['userId']);
     unset($_SESSION['designation']);
     unset($_SESSION['role']);
-    header('location:../login.php?role=civilian&page=index');
+    header('location:../login.php?role=officer&page=department-dashboard');
     exit;
     die();
 }
@@ -30,6 +30,9 @@ include('../include/sweetAlert.php');
     <base href="../">
     <title>Saul Theme by Keenthemes</title>
     <meta charset="utf-8" />
+    <meta name="description" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
+    <meta name="keywords"
+        content="Saul, bootstrap, bootstrap 5, dmin themes, free admin themes, bootstrap admin, bootstrap dashboard" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <?php include("../include/cssLinks.php"); ?>
@@ -85,7 +88,7 @@ include('../include/sweetAlert.php');
                                             </li> -->
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <!-- <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Civilian Dashboard
+                                            <!-- <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Tahsildar Dashboard
                                             </li> -->
                                             <!--end::Item-->
                                         </ul>
@@ -93,7 +96,7 @@ include('../include/sweetAlert.php');
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
-                                            Hi, Civilian 👋🏻</h1>
+                                            Hi, Tahsildar 👋🏻</h1>
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
