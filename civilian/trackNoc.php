@@ -79,6 +79,17 @@ include('../include/sweetAlert.php');
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
+                                                <a href="civilian/nocReport.php">NOC Applications
+                                                </a>
+                                            </li>
+                                            <!--end::Item-->
+                                            <!--begin::Item-->
+                                            <li class="breadcrumb-item">
+                                                <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                                            </li>
+                                            <!--end::Item-->
+                                            <!--begin::Item-->
                                             <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC अर्जाची ट्रॅकिंग
                                             </li>
                                             <!--end::Item-->
@@ -109,6 +120,11 @@ include('../include/sweetAlert.php');
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
+                                    <!--begin::Actions-->
+                                    <a href="civilian/nocReport.php" class="btn btn-sm btn-success ms-3 px-4 py-3">
+                                        Back
+                                    </a>
+                                    <!--end::Actions-->
                                 </div>
                                 <!--end::Toolbar wrapper-->
                             </div>
