@@ -52,6 +52,7 @@ if (isset($_REQUEST['logIn'])) {
                     echo "<script>window.location = 'officers/tahsildar-dashboard.php';</script>";
                 } else if ($result['designation'] == "Department") {
                     echo "<script>window.location = 'officers/department-dashboard.php';</script>";
+                    $_SESSION['departmentId'] = $result['departmentId'];
 
                 }
             } else {

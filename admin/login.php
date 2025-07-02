@@ -235,24 +235,17 @@ error_reporting(0);
                                         Access your No Objection Certificate applications
                                     </div>
                                     <!--end::Subtitle-->
-                                    <!--begin::Link-->
-                                    <div class="text-gray-500 fw-semibold fs-6">New User?
-                                        <a href="registration.php" class="fw-bold" style="color: #ff6600;">Register
-                                            Here</a>
-                                    </div>
-                                    <!--end::Link-->
                                 </div>
                                 <!--begin::Heading-->
 
                                 <!--begin::Input group-->
                                 <div class="fv-row mb-8">
                                     <!--begin::Label-->
-                                    <label class="form-label fs-6 fw-bold" style="color: #1e3c72;">Mobile No</label>
+                                    <label class="form-label fs-6 fw-bold" style="color: #1e3c72;">Username</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
-                                    <input class="form-control form-control-lg form-control-solid" required type="tel"
-                                        name="mobileNo" minlength="10" maxlength="10" placeholder="Enter your mobile no"
-                                        autocomplete="off" />
+                                    <input class="form-control form-control-lg form-control-solid" required type="text"
+                                        name="username" placeholder="Enter your username" autocomplete="off" />
                                     <!--end::Input-->
                                 </div>
                                 <!--end::Input group-->
