@@ -300,34 +300,37 @@ include('../include/conn.php');
                                 <!--begin::Row-->
                                 <div class="row g-6 g-xl-9 mb-8">
                                     <!-- Current Projects Card -->
-                                   <div class="col-lg-6 col-xxl-3">
-                                    <div class="card dashboard-card h-100">
-                                        <div class="card-body p-9">
-                                            <div class="stat-icon icon-primary">
-                                                <i class="ki-duotone ki-abstract-26 fs-2x" style="color: white;">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                            </div>
-                                            <?php
-                                            $result = mysqli_query($conn, "SELECT COUNT(id) AS total FROM nocApplicationIds");
-                                            $data = mysqli_fetch_assoc($result);
-                                            $total = $data['total'];
-                                            ?>
-                                            <div class="stat-value animate-count" style="font-size: 20px;">
-                                                एकूण अर्ज: <?php echo $total; ?>
-                                            </div>
-                                            <!-- <div class="stat-label">Current Projects</div> -->
-                                            <div class="trend-indicator trend-up">
-                                                <i class="ki-duotone ki-arrow-up fs-7"></i>
-                                                <!-- +12% this month -->
-                                            </div>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill progress-primary" style="width: 0%" data-width="78%"></div>
-                                            </div>
+                                <div class="col-lg-6 col-xxl-3">
+                                <div class="card dashboard-card h-100">
+                                    <div class="card-body p-9">
+                                        <div class="stat-icon icon-primary">
+                                            <i class="ki-duotone ki-abstract-26 fs-2x" style="color: white;">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </div>
+
+                                        <?php
+                                        $result = mysqli_query($conn, "SELECT COUNT(DISTINCT village) AS total FROM users WHERE taluka = 'Yavatmal'");
+                                        $data = mysqli_fetch_assoc($result);
+                                        $total = $data['total'];
+                                        ?>
+
+                                        <div class="stat-value animate-count" style="font-size: 20px;">
+                                            एकूण गावे: <?php echo $total; ?>
+                                        </div>
+
+                                        <div class="trend-indicator trend-up">
+                                            <i class="ki-duotone ki-arrow-up fs-7"></i>
+                                        </div>
+
+                                        <div class="progress-bar">
+                                            <div class="progress-fill progress-primary" style="width: 0%" data-width="78%"></div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
 
 
                                     <!-- Project Finance Card -->
@@ -453,46 +456,35 @@ include('../include/conn.php');
                                 </div>
                                 <!--end::Stats Row-->
 <?php
-// $conn = mysqli_connect("217.21.88.4","u952673419_NOC_Portal","ST@NOCYavatmal1","u952673419_NOC_Portal") or die("Connection could not established");
+// Yavatmal taluka ke villages count chart
+$query2 = "
+SELECT taluka, COUNT(DISTINCT village) AS village_count 
+FROM users 
+WHERE taluka = 'Yavatmal'
+GROUP BY taluka";
 
-// TALUKA-WISE DATA
-$query1 = "
-SELECT taluka, 
-       COUNT(*) AS total, 
-       SUM(CASE WHEN status = 'Approved' THEN 1 ELSE 0 END) AS approved
-FROM (
-    SELECT taluka, status FROM nocApplications
-    UNION ALL
-    SELECT taluka, status FROM departmentNocApplications
-) AS combined
-GROUP BY taluka
-ORDER BY taluka";
+$res2 = mysqli_query($con, $query2) or die("Village Count Query Error: " . mysqli_error($con));
+$taluka_villages = $village_counts = [];
 
-$res1 = mysqli_query($con, $query1) or die("Taluka Query Error: " . mysqli_error($con));
-$talukas = $totals = $approveds = [];
-while ($row = mysqli_fetch_assoc($res1)) {
-    $talukas[] = $row['taluka'];
-    $totals[] = $row['total'];
-    $approveds[] = $row['approved'];
+while ($row = mysqli_fetch_assoc($res2)) {
+    $taluka_villages[] = $row['taluka'];
+    $village_counts[] = $row['village_count'];
 }
-
-// Use same taluka data for second chart
-$months = $talukas;
-$monthly_totals = $totals;
-$monthly_approveds = $approveds;
 ?>
+
                                 <!--begin::Charts Row-->
-                               <div class="main-heading">NOC अर्जांचा तालुकानिहाय अहवाल</div>
+                               <!-- <div class="main-heading">NOC अर्जांचा तालुकानिहाय अहवाल</div> -->
                                 <div class="chart-row">
                                     <div class="chart-container chart-box">
-                                        <div class="chart-title">तालुकानिहाय अर्जांचा अहवाल</div>
-                                        <canvas id="talukaChart"></canvas>
+                                        <div class="chart-title">तालुकानिहाय गावांची संख्या </div>
+                                        <canvas id="villageChart"></canvas>
                                     </div>
 
-                                    <div class="chart-container chart-box">
+
+                                    <!-- <div class="chart-container chart-box">
                                         <div class="chart-title">तालुकानिहाय अर्जांची संख्या (मंजूर व एकूण)</div>
                                         <canvas id="monthChart"></canvas>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <!--end::Charts Row-->
                             </div>
@@ -559,20 +551,15 @@ $monthly_approveds = $approveds;
     
     <!-- Dashboard Enhancement Script -->
 <script>
-const talukaChart = new Chart(document.getElementById('talukaChart'), {
+const villageChart = new Chart(document.getElementById('villageChart'), {
     type: 'bar',
     data: {
-        labels: <?php echo json_encode($talukas); ?>,
+        labels: <?php echo json_encode($taluka_villages); ?>,
         datasets: [
             {
-                label: 'एकूण',
-                backgroundColor: '#7cb5ec',
-                data: <?php echo json_encode($totals); ?>
-            },
-            {
-                label: 'मंजूर',
-                backgroundColor: '#434348',
-                data: <?php echo json_encode($approveds); ?>
+                label: 'गावे (Distinct Villages)',
+                backgroundColor: '#90ed7d',
+                data: <?php echo json_encode($village_counts); ?>
             }
         ]
     },
@@ -582,43 +569,14 @@ const talukaChart = new Chart(document.getElementById('talukaChart'), {
             y: {
                 beginAtZero: true,
                 ticks: {
-                    stepSize: 10
-                }
-            }
-        }
-    }
-});
-
-const monthChart = new Chart(document.getElementById('monthChart'), {
-    type: 'bar',
-    data: {
-        labels: <?php echo json_encode($months); ?>,
-        datasets: [
-            {
-                label: 'एकूण',
-                backgroundColor: '#7cb5ec',
-                data: <?php echo json_encode($monthly_totals); ?>
-            },
-            {
-                label: 'मंजूर',
-                backgroundColor: '#434348',
-                data: <?php echo json_encode($monthly_approveds); ?>
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    stepSize: 10
+                    stepSize: 5
                 }
             }
         }
     }
 });
 </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Animate counters
