@@ -93,7 +93,7 @@ include('../include/sweetAlert.php');
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC Application Report
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC अर्जाची ट्रॅकिंग अहवाल
                                             </li>
                                             <!--end::Item-->
                                         </ul>
@@ -101,7 +101,7 @@ include('../include/sweetAlert.php');
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1">
-                                           Department Report
+                                            NOC Applications
                                         </h1>
                                         <!--end::Title-->
                                     </div>
@@ -172,17 +172,17 @@ include('../include/sweetAlert.php');
         <tr class="text-start text-black-500 fw-bold fs-7 text-uppercase">
             <th>NOC क्रमांक</th>
             <th>NOC प्रकार</th>
-            <!-- <th>पूर्ण नाव</th>
-            <th>पत्ता</th> -->
+            <th>पूर्ण नाव</th>
+            <th>पत्ता</th>
             <th>ईमेल ID</th>
             <th>मोबाईल क्र.</th>
-            <!-- <th>आधार क्रमांक</th> -->
+            <th>आधार क्रमांक</th>
             <th>जमिनीची तपशील</th>
             <th>तालुका</th>
             <th>गाव</th>
             <th>गट क्रमांक</th>
-            <!-- <th>आधार कार्ड अपलोड करा</th>
-            <th>पॅन कार्ड अपलोड करा</th> -->
+            <th>आधार कार्ड अपलोड करा</th>
+            <th>पॅन कार्ड अपलोड करा</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -190,7 +190,7 @@ include('../include/sweetAlert.php');
         <?php
         // civilianId filter हटा दिया गया
         $sql = "SELECT na.*, nt.type AS nocType 
-                FROM departmentNocApplications na
+                FROM nocApplications na
                 LEFT JOIN nocTypes nt ON nt.id = na.nocTypeId
                 WHERE na.taluka = '$taluka'
                 ORDER BY na.createdDateTime DESC ";
@@ -201,17 +201,17 @@ include('../include/sweetAlert.php');
             <tr class="odd">
                 <td><?= $r['applicationId']; ?></td>
                 <td><?= $r['nocType']; ?></td>
-                <!-- <td><?= $r['name']; ?></td>
-                <td><?= $r['address']; ?></td> -->
+                <td><?= $r['name']; ?></td>
+                <td><?= $r['address']; ?></td>
                 <td><?= $r['emailId']; ?></td>
                 <td><?= $r['mobileNo']; ?></td>
-                <!-- <td><?= $r['aadharNo']; ?></td> -->
+                <td><?= $r['aadharNo']; ?></td>
                 <td><?= $r['landDesc']; ?></td>
                 <td><?= $r['taluka']; ?></td>
                 <td><?= $r['village']; ?></td>
                 <td><?= $r['gatNo']; ?></td>
-                <!-- <td><?= $r['aadharCard'] ? '<a href="' . $r['aadharCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?></td>
-                <td><?= $r['panCard'] ? '<a href="' . $r['panCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?></td> -->
+                <td><?= $r['aadharCard'] ? '<a href="' . $r['aadharCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?></td>
+                <td><?= $r['panCard'] ? '<a href="' . $r['panCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?></td>
                 <td>
                     <a href="civilian/trackNoc.php?applicationId=<?= $r['applicationId'] ?>">
                         <button type="button" class="btn btn-primary btn-sm">Track</button>

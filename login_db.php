@@ -42,6 +42,7 @@ if (isset($_REQUEST['logIn'])) {
                 $_SESSION['userId'] = $result['userId'];
                 $_SESSION['designation'] = $result['designation'];
                 $_SESSION['role'] = "Officer";
+                 $_SESSION['taluka'] = $result['taluka'];
                 if (isset($_POST['signed'])) {
                     setcookie('userId', $result['userId'], time() + (86400 * 30), '/');
                     setcookie('designation', "Officer", time() + (86400 * 30), '/');
