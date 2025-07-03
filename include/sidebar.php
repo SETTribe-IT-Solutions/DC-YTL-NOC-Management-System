@@ -35,7 +35,7 @@
                 </div>
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
-                <div class="menu-item" onclick="window.location.href='nocApplication.php'">
+                <div class="menu-item" onclick="window.location.href='civilian/nocApplication.php'">
                     <!--begin:Menu link-->
                     <span class="menu-link">
                         <span class="menu-icon">
