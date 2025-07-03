@@ -68,14 +68,14 @@ include("../include/cssLinks.php"); ?>
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOB विनंती अर्ज अहवाल (Department)</li>
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC विनंती अर्ज अहवाल (Department)</li>
                                             <!--end::Item-->
                                         </ul>
                                         <!--end::Breadcrumb-->
                                         <!--begin::Title-->
-                                        <h1
+                                        <!-- <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
-                                           NOB विनंती अर्ज अहवाल (Department)</h1>
+                                           NOC विनंती अर्ज अहवाल (Department)</h1> -->
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
@@ -99,7 +99,7 @@ include("../include/cssLinks.php"); ?>
                                             <form action=""
                                                 class="form mb-15 fv-plugins-bootstrap5 fv-plugins-framework"
                                                 method="post" id="kt_contact_form">
-                                                <h1 class="fw-bold text-gray-900 mb-9">NOB विनंती अर्ज अहवाल (Department)</h1>
+                                                <h1 class="fw-bold text-gray-900 mb-9">NOC विनंती अर्ज अहवाल (Department)</h1>
 
                                                 <!--begin::Input group-->
                                                 <div class="row mb-5">
@@ -146,7 +146,7 @@ include("../include/cssLinks.php"); ?>
                                                         <!--begin::Label-->
                                                         <div class="mb-10">
     <label for="" class="form-label">सुरुवात तारीख</label>
-    <input class="form-control" name="startDate" placeholder="सुरुवात तारीख" id="kt_datepicker_1"/>
+    <input class="form-control form-control-solid" name="startDate" placeholder="सुरुवात तारीख" id="kt_datepicker_1"/>
 </div>
                                                     </div>
                                                     <!--end::Col-->
@@ -207,7 +207,7 @@ include("../include/cssLinks.php"); ?>
                     <th class="min-w-100px">गट विकास</th>
                     <th class="min-w-100px">संपर्क अधिकार्याचा मोबाईल क्रमंक</th>
                     <th class="min-w-100px">संपर्क अधिकार्याचा ईमेल ID</th>
-                    <th class="min-w-100px">NOC प्रकार निवडा</th>
+                    <th class="min-w-100px">NOC प्रकार</th>
                     <th class="min-w-100px">स्थिती</th>
                      <th class="min-w-100px">Action</th>
 
@@ -220,8 +220,9 @@ include("../include/cssLinks.php"); ?>
 $result = mysqli_query($conn, "
     SELECT 
         a.nocTypeId,
+        t.type AS type,             -- ⬅️ type from nocTypes table
         a.departmentId,
-        d.departmentName AS departmentName, -- <- department name from departments table
+        d.departmentName AS departmentName, -- ⬅️ department name from departments
         a.applicationId,
         a.nocSubject,
         a.landDesc,
@@ -234,17 +235,19 @@ $result = mysqli_query($conn, "
         a.createdDateTime
     FROM departmentNocApplications a
     INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
-    INNER JOIN departments d ON a.departmentId = d.id -- <- join with departments table
+    INNER JOIN departments d ON a.departmentId = d.id
+    INNER JOIN nocTypes t ON a.nocTypeId = t.id         -- ⬅️ JOIN with nocTypes using nocTypeId
     WHERE r.departmentId = 3
     ORDER BY a.applicationId DESC
 ");
+
 
 
         $i = 1;
           while($row = mysqli_fetch_assoc($result)){
  ?>
 				<tr class="odd">
-                    <td><?php echo $row['nocTypeId'] ?></td>
+                    <td style="text-align: center;"><?php echo $row['nocTypeId'] ?></td>
                     <td><?php echo $row['departmentName'] ?></td>
                     <td><?php echo $row['nocSubject'] ?></td>
                     <td><?php echo $row['landDesc'] ?></td>
@@ -253,7 +256,7 @@ $result = mysqli_query($conn, "
                     <td><?php echo $row['gatNo'] ?></td>
 					<td><?php echo $row['mobileNo'] ?></td>
 					<td><?php echo $row['emailId'] ?></td>
-					<td><?php echo $row['nocTypeId'] ?></td>
+					<td><?php echo $row['type'] ?></td>
 					<td>
   <?php
     $status = $row['status'];
