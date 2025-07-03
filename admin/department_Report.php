@@ -68,14 +68,14 @@ include("../include/cssLinks.php"); ?>
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOB विनंती अहवाल</li>
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOB विनंती अर्ज अहवाल (Department)</li>
                                             <!--end::Item-->
                                         </ul>
                                         <!--end::Breadcrumb-->
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
-                                            NOB विनंती अहवाल</h1>
+                                           NOB विनंती अर्ज अहवाल (Department)</h1>
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
@@ -99,7 +99,7 @@ include("../include/cssLinks.php"); ?>
                                             <form action=""
                                                 class="form mb-15 fv-plugins-bootstrap5 fv-plugins-framework"
                                                 method="post" id="kt_contact_form">
-                                                <h1 class="fw-bold text-gray-900 mb-9">NOB विनंती अहवाल</h1>
+                                                <h1 class="fw-bold text-gray-900 mb-9">NOB विनंती अर्ज अहवाल (Department)</h1>
 
                                                 <!--begin::Input group-->
                                                 <div class="row mb-5">
@@ -219,11 +219,11 @@ include("../include/cssLinks.php"); ?>
                   <?php
 $result = mysqli_query($conn, "
     SELECT 
-    a.nocTypeId,
-    a.departmentId,
+        a.nocTypeId,
+        a.departmentId,
+        d.departmentName AS departmentName, -- <- department name from departments table
         a.applicationId,
         a.nocSubject,
-        a.nocTypeId,
         a.landDesc,
         a.taluka,
         a.village,
@@ -232,27 +232,25 @@ $result = mysqli_query($conn, "
         a.emailId,
         a.status,
         a.createdDateTime
-
-        -- From civilianRegistrations table
-    
-
     FROM departmentNocApplications a
-     INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
+    INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
+    INNER JOIN departments d ON a.departmentId = d.id -- <- join with departments table
     WHERE r.departmentId = 3
     ORDER BY a.applicationId DESC
 ");
+
 
         $i = 1;
           while($row = mysqli_fetch_assoc($result)){
  ?>
 				<tr class="odd">
                     <td><?php echo $row['nocTypeId'] ?></td>
-                    <td><?php echo $row['departmentId'] ?></td>
+                    <td><?php echo $row['departmentName'] ?></td>
                     <td><?php echo $row['nocSubject'] ?></td>
                     <td><?php echo $row['landDesc'] ?></td>
                     <td><?php echo $row['taluka'] ?></td>
                     <td><?php echo $row['village'] ?></td>
-                     <td><?php echo $row['gatNo'] ?></td>
+                    <td><?php echo $row['gatNo'] ?></td>
 					<td><?php echo $row['mobileNo'] ?></td>
 					<td><?php echo $row['emailId'] ?></td>
 					<td><?php echo $row['nocTypeId'] ?></td>
@@ -284,7 +282,7 @@ $result = mysqli_query($conn, "
    
 <div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form method="POST" action="admin/nocReport_DB.php">
+    <form method="POST" action="admin/department_Report_DB.php">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="updateStatusModalLabel">Update Application Status</h5>
