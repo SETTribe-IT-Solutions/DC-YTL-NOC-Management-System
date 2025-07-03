@@ -9,16 +9,14 @@ error_reporting(0);
 <!--begin::Head-->
 
 <head>
+    <base href="../">
     <title>NOC Portal - Maharashtra Shashan</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
     <meta charset="utf-8" />
     <meta name="description" content="No Objection Certificate Portal - Maharashtra Government" />
     <meta name="keywords" content="NOC, No Objection Certificate, Maharashtra Government, Maharashtra Shashan" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <?php
-    include("include/cssLinks.php");
+    include("../include/cssLinks.php");
     ?>
     <style>
         .government-header {
@@ -225,8 +223,7 @@ error_reporting(0);
                     <div class="w-lg-700px p-10 p-lg-15 mx-auto">
                         <!--begin::Form-->
                         <div class="login-form">
-                            <form class="form w-100" method="post" id="kt_sign_in_form"
-                                action="login_db.php?role=<?php echo $_GET['role'] ?>">
+                            <form class="form w-100" method="post" id="kt_sign_in_form" action="admin/login_db.php">
                                 <!--begin::Heading-->
                                 <div class="text-center mb-8">
                                     <!--begin::Title-->
@@ -238,30 +235,23 @@ error_reporting(0);
                                         Access your No Objection Certificate applications
                                     </div>
                                     <!--end::Subtitle-->
-                                    <!--begin::Link-->
-                                    <div class="text-gray-500 fw-semibold fs-6">New User?
-                                        <a href="registration.php" class="fw-bold" style="color: #ff6600;">Register
-                                            Here</a>
-                                    </div>
-                                    <!--end::Link-->
                                 </div>
                                 <!--begin::Heading-->
 
                                 <!--begin::Input group-->
                                 <div class="fv-row mb-8">
                                     <!--begin::Label-->
-                                    <label class="form-label fs-6 fw-bold" style="color: #1e3c72;">Mobile No</label>
+                                    <label class="form-label fs-6 fw-bold" style="color: #1e3c72;">Username</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
-                                    <input class="form-control form-control-lg form-control-solid" required type="tel"
-                                        name="mobileNo" minlength="10" maxlength="10" placeholder="Enter your mobile no"
-                                        autocomplete="off" />
+                                    <input class="form-control form-control-lg form-control-solid" required type="text"
+                                        name="username" placeholder="Enter your username" autocomplete="off" />
                                     <!--end::Input-->
                                 </div>
                                 <!--end::Input group-->
 
                                 <!--begin::Input group-->
-                                <div class="fv-row mb-8 position-relative">
+                                <div class="fv-row mb-8">
                                     <!--begin::Wrapper-->
                                     <div class="d-flex flex-stack mb-2">
                                         <!--begin::Label-->
@@ -269,32 +259,17 @@ error_reporting(0);
                                             style="color: #1e3c72;">Password</label>
                                         <!--end::Label-->
                                         <!--begin::Link-->
-                                        <!-- <a href="forgot_password.php" class="fs-6 fw-bold" style="color: #ff6600;">
-            Forgot Password?
-        </a> -->
+                                        <a href="forgot_password.php" class="fs-6 fw-bold" style="color: #ff6600;">
+                                            Forgot Password?
+                                        </a>
                                         <!--end::Link-->
                                     </div>
                                     <!--end::Wrapper-->
-
-                                    <!--begin::Input with toggle icon-->
-                                    <div class="position-relative">
-                                        <input id="password-input"
-                                            class="form-control form-control-lg form-control-solid pe-10"
-                                            type="password" name="password" placeholder="Enter your password" required
-                                            autocomplete="off" />
-
-                                        <!-- Toggle Eye Icon -->
-                                        <span class="position-absolute top-50 end-0 translate-middle-y me-3"
-                                            onclick="togglePassword()" style="cursor: pointer;">
-                                            <i id="toggle-icon" class="bi bi-eye-slash-fill fs-4"
-                                                style="color: #1e3c72;"></i>
-                                        </span>
-                                    </div>
-                                    <!--end::Input with toggle icon-->
+                                    <!--begin::Input-->
+                                    <input class="form-control form-control-lg form-control-solid" type="password"
+                                        name="password" placeholder="Enter your password" required autocomplete="off" />
+                                    <!--end::Input-->
                                 </div>
-
-
-
                                 <!--end::Input group-->
 
                                 <!--begin::Actions-->
@@ -334,7 +309,7 @@ error_reporting(0);
         </div>
         <!--end::Authentication - Sign-in-->
         <?php
-        include('include/sweetAlert.php');
+        include('../include/sweetAlert.php');
         if (isset($_SESSION['msg'])) {
             $status = $_SESSION['status'];
             $msg = $_SESSION['msg'];
@@ -351,27 +326,9 @@ error_reporting(0);
     <!--end::Root-->
     <!--begin::Javascript-->
     <?php
-    include('include/jsLinks.php');
+    include('../include/jsLinks.php');
     ?>
     <!--end::Javascript-->
-
-    <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('password-input');
-            const toggleIcon = document.getElementById('toggle-icon');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('bi-eye-slash-fill');
-                toggleIcon.classList.add('bi-eye-fill');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('bi-eye-fill');
-                toggleIcon.classList.add('bi-eye-slash-fill');
-            }
-        }
-    </script>
-
 </body>
 <!--end::Body-->
 
