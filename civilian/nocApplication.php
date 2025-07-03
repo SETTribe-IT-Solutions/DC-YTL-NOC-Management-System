@@ -9,7 +9,7 @@ error_reporting(0);
 <!--begin::Head-->
 
 <head>
-    <base href="">
+    <base href="../">
     </base>
 
     <title>NOC Application</title>
@@ -19,13 +19,13 @@ error_reporting(0);
         content="Saul, bootstrap, bootstrap 5, dmin themes, free admin themes, bootstrap admin, bootstrap dashboard" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <?php include("include/conn.php"); ?>
-    <?php include("include/cssLinks.php"); ?>
+    <?php include("../include/conn.php"); ?>
+    <?php include("../include/cssLinks.php"); ?>
 
-    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 
 
-    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 
 </head>
 <!--end::Head-->
@@ -43,14 +43,14 @@ error_reporting(0);
         <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
             <!--begin::Header-->
             <?php
-            include("include/header.php");
-            include('include/conn.php');
+            include("../include/header.php");
+            include('../include/conn.php');
             ?>
             <!--end::Header-->
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                <?php include("include/sidebar.php"); ?>
+                <?php include("../include/sidebar.php"); ?>
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -120,18 +120,25 @@ error_reporting(0);
                                                 $userId = $_SESSION['userId'];
                                                 $queryCivilian = mysqli_query($conn, "SELECT * FROM `civilianRegistrations` WHERE civilianId='$userId'");
                                                 $resultCivilian = mysqli_fetch_assoc($queryCivilian);
+                                                $civilianRow = mysqli_num_rows($queryCivilian);
                                                 $name = $resultCivilian['name'];
                                                 $aadharNo = $resultCivilian['aadharNo'];
                                                 $address = $resultCivilian['address'];
                                                 $mobileNo = $resultCivilian['mobileNo'];
                                                 $emailId = $resultCivilian['emailId'];
 
+                                                if ($civilianRow == 0) {
+                                                    $readonly = "";
+                                                }else {
+                                                    $readonly = "readonly";
+                                                }
+
 
                                                 ?>
 
                                                 <form action="nocApplicationDB.php"
                                                     class="form mb-15 fv-plugins-bootstrap5 fv-plugins-framework p"
-                                                    method="post" id="" enctype="multipart/form-data">
+                                                    method="pgitost" id="" enctype="multipart/form-data">
                                                     <h1 class="fw-bold text-gray-900 mb-9">NOC अर्ज सादर करण्याचा फॉर्म
                                                     </h1>
                                                     <input type="hidden" name="applicationType" value="Civillian">
@@ -144,7 +151,7 @@ error_reporting(0);
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
                                                                 value="<?php echo $applicationId; ?>" name="nocNumber"
-                                                                placeholder="NOC क्रमांक" readonly>
+                                                                placeholder="NOC क्रमांक" <?php echo $readonly; ?>>
                                                             <div
                                                                 class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                                             </div>
@@ -201,7 +208,7 @@ error_reporting(0);
                                                             <label class="fs-5 fw-semibold mb-2">पूर्ण नाव <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
-                                                                value="<?php echo $name; ?>" readonly name="fullName"
+                                                                value="<?php echo $name; ?>" <?php echo $readonly; ?> name="fullName"
                                                                 placeholder="पूर्ण नाव">
                                                             <div
                                                                 class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
@@ -218,7 +225,7 @@ error_reporting(0);
                                                             <label class="fs-5 fw-semibold mb-2">आधार क्रमांक <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control" name="aadharNo"
-                                                                placeholder="आधार क्रमांक" readonly
+                                                                placeholder="आधार क्रमांक" <?php echo $readonly; ?>
                                                                 value="<?php echo $aadharNo; ?>" maxlength="12"
                                                                 minlength="12" pattern="\d{12}"
                                                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')"
@@ -233,7 +240,7 @@ error_reporting(0);
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-semibold mb-2">पत्ता <span
                                                                     class="text-danger">*</span></label>
-                                                            <input type="text" readonly class="form-control"
+                                                            <input type="text" <?php echo $readonly; ?> class="form-control"
                                                                 value="<?php echo $address; ?>" name="address"
                                                                 placeholder="पत्ता" required>
                                                             <div
@@ -250,7 +257,7 @@ error_reporting(0);
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-semibold mb-2">इमेल ID <span
                                                                     class="text-danger">*</span></label>
-                                                            <input type="email" readonly class="form-control"
+                                                            <input type="email" <?php echo $readonly; ?> class="form-control"
                                                                 value="<?php echo $emailId; ?>" name="email"
                                                                 placeholder="इमेल ID" required>
                                                             <div
@@ -264,7 +271,7 @@ error_reporting(0);
                                                             <label class="fs-5 fw-semibold mb-2">मोबाईल क्र. <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control" name="mobileNo"
-                                                                placeholder="मोबाईल क्र." readonly maxlength="10"
+                                                                placeholder="मोबाईल क्र." <?php echo $readonly; ?> maxlength="10"
                                                                 value="<?php echo $mobileNo; ?>" minlength="10"
                                                                 pattern="\d{10}"
                                                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')"
@@ -419,7 +426,7 @@ error_reporting(0);
                     <!--end::Content wrapper-->
                     <!--begin::Footer-->
                     <?php
-                    include('include/footer.php')
+                    include('../include/footer.php')
                         ?>
                     <!--end::Footer-->
                 </div>
@@ -439,8 +446,8 @@ error_reporting(0);
     </div>
     <!--end::Scrolltop-->
     <?php
-    include('include/jsLinks.php');
-    include('include/sweetAlert.php');
+    include('../include/jsLinks.php');
+    include('../include/sweetAlert.php');
     if (isset($_SESSION['msg'])) {
         $status = $_SESSION['status'];
         $msg = $_SESSION['msg'];
@@ -510,9 +517,9 @@ error_reporting(0);
 
         }
     </script>
-    <?php include('include/jsLinks.php'); ?>
-    <script src="assets/plugins/global/plugins.bundle.js"></script>
-    <script src="assets/js/scripts.bundle.js"></script>
+    <?php include('../include/jsLinks.php'); ?>
+    <script src="../assets/plugins/global/plugins.bundle.js"></script>
+    <script src="../assets/js/scripts.bundle.js"></script>
     <script>
         $("#dob").flatpickr();
     </script>

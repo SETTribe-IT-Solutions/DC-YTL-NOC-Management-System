@@ -113,7 +113,7 @@ $applicationId = "NOC-2025-"."".$formatted_count;
                                       ?>
                                     
                                             <!--begin::Form-->
-                                            <form action="civilian/ApllicationDb.php" 
+                                            <form action="officers/ApplicationDb.php" 
                                                 class="form mb-15 fv-plugins-bootstrap5 fv-plugins-framework"
                                                 method="post" id="kt_contact_form">
                                                 <!-- <h1 class="fw-bold text-gray-900 mb-9">Send Us Email</h1> -->
@@ -343,7 +343,7 @@ $("#kt_datepicker_2").flatpickr();
     function getTaluka(){
         var taluka = $("#taluka").val();
        
-       $.ajax('civilian/getTaluka.php', {
+       $.ajax('ajax/getTaluka.php', {
             type: 'POST',  
             data: { taluka : taluka },  
             success: function (data) {
