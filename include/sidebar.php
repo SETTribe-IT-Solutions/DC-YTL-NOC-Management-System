@@ -137,7 +137,7 @@
                         <!--end:Menu item-->
 
                         <!--begin:Menu item-->
-                        <div class="menu-item" onclick="window.location.href='#'">
+                        <div class="menu-item" onclick="window.location.href='officers/aplication_Report.php'">
                             <!--begin:Menu link-->
 
                             <span class="menu-link">
