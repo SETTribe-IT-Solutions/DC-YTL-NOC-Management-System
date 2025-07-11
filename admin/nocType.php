@@ -132,7 +132,7 @@
 <div class="col-md-6 fv-row fv-plugins-icon-container">
     <label class="fs-5 fw-semibold mb-2">Department</label>
 
-    <select class="form-select form-select-solid rounded-start-0 border-start"
+    <select class="form-select form-select-solid"
             data-control="select2"
             data-placeholder="Select an option"
             name="departmentId[]" multiple="multiple" required>

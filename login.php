@@ -3,6 +3,12 @@ session_start();
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
+
+if (empty($_REQUEST['role'])) {
+    header("Location: index.html");
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
