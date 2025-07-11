@@ -465,7 +465,7 @@ include('../include/conn.php');
                                             $data1 = mysqli_fetch_assoc($q1);
                                             $count1 = $data1['count1'];
 
-                                                <?php
+                                              
                                                 $q1 = mysqli_query($con, "SELECT COUNT(*) AS count1 FROM nocApplications WHERE status = 'Under Review'");
                                                 $data1 = mysqli_fetch_assoc($q1);
                                                 $count1 = $data1['count1'];

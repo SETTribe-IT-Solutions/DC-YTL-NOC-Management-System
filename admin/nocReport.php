@@ -200,7 +200,6 @@ include("../include/cssLinks.php"); ?>
 				<tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase">
                     <th class="min-w-100px">Aplication ID</th>
                     <th class="min-w-100px">Civilian ID</th>
-                    <th class="min-w-100px">NOC Number</th>
                     <th class="min-w-100px">NOC Subject</th>
                     <th class="min-w-100px">NOC Type ID</th>
                     <th class="min-w-100px">Land DESC</th>
@@ -228,7 +227,6 @@ $result = mysqli_query($conn, "
     SELECT 
         a.applicationId,
         a.civilianId,
-        a.nocNumber,
         a.nocSubject,
         a.nocTypeId,
         a.landDesc,
@@ -261,7 +259,6 @@ $result = mysqli_query($conn, "
 				<tr class="odd">
                     <td><?php echo $row['applicationId'] ?></td>
                     <td><?php echo $row['civilianId'] ?></td>
-                    <td><?php echo $row['nocNumber'] ?></td>
                     <td><?php echo $row['nocSubject'] ?></td>
                     <td><?php echo $row['nocTypeId'] ?></td>
                     <td><?php echo $row['landDesc'] ?></td>
@@ -371,21 +368,14 @@ $result = mysqli_query($conn, "
  ?>
 				<tr class="odd">
                     <td><?php echo $row['applicationId'] ?></td>
-                    <td><?php echo $row['civilianId'] ?></td>
-                    <td><?php echo $row['nocNumber'] ?></td>
                     <td><?php echo $row['nocSubject'] ?></td>
                     <td><?php echo $row['nocTypeId'] ?></td>
                     <td><?php echo $row['landDesc'] ?></td>
                      <td><?php echo $row['gatNo'] ?></td>
-					<td><?php echo $row['name'] ?></td>
 					<td><?php echo $row['mobileNo'] ?></td>
 					<td><?php echo $row['nocTypeId'] ?></td>
-                    <td><?php echo $row['address'] ?></td>
-                    <td><?php echo $row['aadharNo'] ?></td>
                     <td><?php echo $row['emailId'] ?></td>
                     <td><?php echo $row['dob'] ?></td>
-                     <td><?php echo $row['panCard'] ?></td> 
-                    <td><?php echo $row['aadharCard'] ?></td>
                    <td><?php echo $row['createdDateTime'] ?></td>
 					<td>
   <?php
