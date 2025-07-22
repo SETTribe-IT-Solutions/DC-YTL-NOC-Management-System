@@ -3,6 +3,7 @@ session_start();
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
+
 if (!isset($_SESSION['userId'])) {
     unset($_SESSION['designation']);
     unset($_SESSION['role']);

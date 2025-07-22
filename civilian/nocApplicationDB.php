@@ -1,11 +1,9 @@
 <?php
 session_start();
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
-error_reporting(0);
+
 if (isset($_POST['submit'])) {
-    include('include/conn.php');
-    include('include/sweetAlert.php');
+    include('../include/conn.php');
+    include('../include/sweetAlert.php');
 
 
     // Step 1: Collect data from POST
@@ -133,7 +131,7 @@ if (isset($_POST['submit'])) {
     // Step 4: Execute and check
     if ($stmt->execute()) {
         $_SESSION['status'] = true;
-        $_SESSION['msg'] = "Application Submeitted successfully";
+        $_SESSION['msg'] = "Application Submitted successfully.";
     } else {
         $_SESSION['status'] = false;
         $_SESSION['msg'] = "Something went wrong";

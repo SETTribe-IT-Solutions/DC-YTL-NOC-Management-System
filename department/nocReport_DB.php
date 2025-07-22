@@ -1,14 +1,17 @@
 <?php
+session_start();
 include('../include/conn.php');
 
 if (isset($_POST['update'])) {
     $applicationId = $_POST['applicationId'] ?? '';
     $status = $_POST['status'] ?? '';
     $remarks = $_POST['remarks'] ?? '';
-    $departmentId = $_POST['departmentId'] ?? 3;
+    $departmentId = $_POST['departmentId'];
     $applicationId = $_POST['applicationId'];  // Default 2
-    $userId = 'userId_001';
-   
+    $userId = $_SESSION['userId'];
+    $dateTime = date('Y-m-d H:i:s');
+
+
     if ($applicationId && $status) {
         // ✅ Update nocApplications (check actual column names)
         $updateNocApp = mysqli_query($conn, "
@@ -25,15 +28,15 @@ if (isset($_POST['update'])) {
             UPDATE nocApplicationReviews 
             SET status = '$status', 
                 remarks = '$remarks', 
-                reviewedBy = '$userId'
+                reviewedBy = '$userId',
+                reviewedDateTime = '$dateTime'
             WHERE applicationId = '$applicationId' AND departmentId = '$departmentId'
         ");
-        
-      
+
     }
-   
-      if ($updateNocApp && $updateReview) {
-    echo "
+
+    if ($updateNocApp && $updateReview) {
+        echo "
     <!DOCTYPE html>
     <html>
     <head>
@@ -47,16 +50,15 @@ if (isset($_POST['update'])) {
             text: 'Status updated successfully.',
             confirmButtonText: 'OK'
         }).then(() => {
-            window.location.href = '../admin/nocReport.php';
+            window.location.href = '../department/nocReport.php';
         });
         </script>
     </body>
     </html>
     ";
-    exit;
-}
-else {
-    echo "
+        exit;
+    } else {
+        echo "
     <!DOCTYPE html>
     <html>
     <head>
@@ -75,10 +77,9 @@ else {
         </script>
     </body>
     </html>";
-    exit;
-}
-}
-else {
+        exit;
+    }
+} else {
     echo "
     <!DOCTYPE html>
     <html>
@@ -101,6 +102,6 @@ else {
     exit;
 }
 
-    
+
 
 ?>
