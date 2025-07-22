@@ -31,7 +31,7 @@
             ?>
             <!--end::Header-->
             <!--begin::Wrapper-->
-            <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
+            <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper" style="margin-top: 13%;">
                 <!--begin::Sidebar-->
                 <?php include("include/sidebar.php"); ?>
                 <!--end::Sidebar-->
