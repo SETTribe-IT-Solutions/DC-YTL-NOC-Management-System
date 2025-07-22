@@ -36,7 +36,7 @@
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                <?php include("../include/sidebar.php"); ?>
+                <?php include("../include/admin-sidebar.php"); ?>
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -66,14 +66,14 @@
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Blank</li>
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">विभाग निर्मिती</li>
                                             <!--end::Item-->
                                         </ul>
                                         <!--end::Breadcrumb-->
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
-                                            Blank</h1>
+                                            विभाग निर्मिती</h1>
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
@@ -116,9 +116,9 @@
   <?php if (isset($_REQUEST['edit'])) { ?>
         <input type="hidden" name="id" value="<?php echo $result['id']; ?>">
 
-  <button type="submit" name="update" class="btn btn-warning w-100 mt-3">Update</button>
+  <button type="submit" name="update" class="btn btn-warning w-100 mt-3" style="width: 10% !important;">Update</button>
 <?php } else { ?>
-  <button type="submit" name="submit" class="btn btn-primary w-100 mt-3">Submit</button>
+  <button type="submit" name="submit" class="btn btn-primary w-100 mt-3" style="width: 10% !important;">Submit</button>
 <?php } ?>
   </form>
 

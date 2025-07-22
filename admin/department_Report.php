@@ -10,13 +10,12 @@
     <meta name="keywords"
         content="Saul, bootstrap, bootstrap 5, dmin themes, free admin themes, bootstrap admin, bootstrap dashboard" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css"/>
+     <link href="assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css"/>
 <script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
 
     <?php
-    include('../include/conn.php');
-    include("../include/cssLinks.php");
-     ?>
+      include('../include/conn.php');
+include("../include/cssLinks.php"); ?>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -39,7 +38,7 @@
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                <?php include("../include/admin-sidebar.php"); ?>
+                <?php include("../include/sidebar.php"); ?>
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -69,14 +68,14 @@
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC प्रकार निर्मिती</li>
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOB विनंती अर्ज अहवाल (Department)</li>
                                             <!--end::Item-->
                                         </ul>
                                         <!--end::Breadcrumb-->
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
-                                            NOC प्रकार निर्मिती</h1>
+                                           NOB विनंती अर्ज अहवाल (Department)</h1>
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
@@ -94,96 +93,90 @@
                                 <div class="card p-lg-17">
                                     <!--begin::Body-->
                                     <div class="row mb-3">
-                                        <?php if (isset($_REQUEST['edit'])) {
-            $id = $_REQUEST['edit'];
-            $query = mysqli_query($conn,"select * from nocTypes WHERE id = $id");
-            $result = mysqli_fetch_assoc($query);
-              $selectedDepartments = explode(',', $result['departmentId']);
-           ?>
-           <?php } ?>
                                         <!--begin::Col-->
                                         <div class="col-md-12 pe-lg-10">
                                             <!--begin::Form-->
-                                            <form action="admin/nocType_DB.php"  class="form mb-15 fv-plugins-bootstrap5 fv-plugins-framework" method="POST" id="kt_contact_form">
-                                                <h1 class="fw-bold text-gray-900 mb-9">NOC प्रकार निर्मिती</h1>
+                                            <form action=""
+                                                class="form mb-15 fv-plugins-bootstrap5 fv-plugins-framework"
+                                                method="post" id="kt_contact_form">
+                                                <h1 class="fw-bold text-gray-900 mb-9">NOB विनंती अर्ज अहवाल (Department)</h1>
 
                                                 <!--begin::Input group-->
-                                             
-                                                
                                                 <div class="row mb-5">
                                                     <!--begin::Col-->
-                                                    <div class="col-md-6 fv-row fv-plugins-icon-container">
-                                                        <!--begin::Label-->
-                                                        <label class="fs-5 fw-semibold mb-2">NOC Type</label>
-                                                        <!--end::Label-->
+                                                    <div class="col-md-3 fv-row fv-plugins-icon-container">
+    <label class="fs-5 fw-semibold mb-2">NOC प्रकार निवडा</label>
 
-                                                        <!--begin::Input-->
-                                                        <input type="text" class="form-control form-control-solid"
-                                                            placeholder="NOC Type" value="<?php echo $result['type'];  ?>" name="type">
-                                                        <!--end::Input-->
-                                                        <div
-                                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                        </div>
+    <select class="form-select form-select-solid rounded-start-0 border-start"
+            data-control="select2"
+            data-placeholder="Select an option"
+            name="" required>
+        <option></option>
+         <?php
+        $nocQuery = mysqli_query($conn, "SELECT id, type FROM nocTypes WHERE status = 'Active'");
+        while ($row = mysqli_fetch_assoc($nocQuery)) {
+            echo '<option value="' . $row['id'] . '">' . $row['type'] . '</option>';
+        }
+        ?>
+
+    
+    </select>
+</div>
+                                                    <!--end::Col-->
+
+                                                    <!--begin::Col-->
+                                                   <div class="col-md-3 fv-row fv-plugins-icon-container">
+    <label class="fs-5 fw-semibold mb-2">Department</label>
+
+    <select class="form-select form-select-solid rounded-start-0 border-start"
+            data-control="select2"
+            data-placeholder="Select an option"
+            name=""  required>
+        <option></option>
+        <?php
+        $deptQuery = mysqli_query($conn, "SELECT id, departmentName FROM departments WHERE status = 'Active'");
+        while ($row = mysqli_fetch_assoc($deptQuery)) {
+            echo '<option value="' . $row['id'] . '">' . $row['departmentName'] . '</option>';
+        }
+        ?>
+
+    </select>
+</div>
+                                                        <div class="col-md-3 fv-row fv-plugins-icon-container">
+                                                        <!--begin::Label-->
+                                                        <div class="mb-10">
+    <label for="" class="form-label">सुरुवात तारीख</label>
+    <input class="form-control" name="startDate" placeholder="सुरुवात तारीख" id="kt_datepicker_1"/>
+</div>
                                                     </div>
                                                     <!--end::Col-->
 
                                                     <!--begin::Col-->
-                                                    
-<div class="col-md-6 fv-row fv-plugins-icon-container">
-    <label class="fs-5 fw-semibold mb-2">Department</label>
-
-    <select class="form-select form-select-solid"
-            data-control="select2"
-            data-placeholder="Select an option"
-            name="departmentId[]" multiple="multiple" required>
-        <option></option>
-
-         <?php
-    // Fetch all active departments
-    $deptResult = mysqli_query($conn, "SELECT id, departmentName FROM departments WHERE status = 'Active'");
-    while ($rows = mysqli_fetch_assoc($deptResult)) {
-        // Check if this department ID is in the selected list
-                                                         if (isset($_REQUEST['edit'])) { 
-        $selected = in_array($rows['id'], $selectedDepartments) ? 'selected' : '';
-
-                                                         }
-
-        echo '<option value="' . $rows['id'] . '" ' . $selected . '>' . $rows['departmentName'] . '</option>';
-    }
-    ?>
-    </select>
+                                                    <div class="col-md-3 fv-row fv-plugins-icon-container">
+                                                        <!--end::Label-->
+                                                       <div class="mb-0">
+    <label for="" class="form-label">अंतिम तारीख</label>
+    <input class="form-control form-control-solid" name="endDate" placeholder="अंतिम तारीख" id="kt_datepicker_2"/>
 </div>
+                                                    </div>
                                                     <!--end::Col-->
                                                     
                                                 </div>
-                                                <?php if (isset($_REQUEST['edit'])) { ?>
-        <input type="hidden" name="id" value="<?php echo $result['id']; ?>">
-         <button href="#" type="submit" name="update" class="btn btn-warning">Update</button>
-         <?php } else { ?>
-        <button href="#" class="btn btn-success" type="submit" name="submit">Submit</button>
-        <?php } ?>
-                                               
                                                 <!--end::Input group-->
 
-                                                <!--begin::Input group-->
-                                          
-                                                <!--end::Input group-->
+                                            
 
-                                                <!--begin::Input group-->
-                                             
-                                                <!--end::Input group-->
+                                                <button href="#" class="btn btn-success" type="submit" name="submit">Show</button>
 
                                                 <!--begin::Submit-->
-                                              
+                                                
                                                 <!--end::Submit-->
                                             </form>
                                             <!--end::Form-->
-
-                                            
                                         </div>
                                         <!--end::Col-->
-                                        <div class="card card-p-0 card-flush">
-	<div class="card-header align-items-center py-5 gap-2 gap-md-5">
+
+                                        <div class="card-header align-items-center py-5 gap-2 gap-md-5">
 		<div class="card-title">
 			<!--begin::Search-->
 			<div class="d-flex align-items-center position-relative my-1">
@@ -199,50 +192,131 @@
 		</div>
 		
 	</div>
-	<div class="card-body">
+<div class="card-body">
+       <div class="table-responsive">
 		<table class="table align-middle border rounded table-row-dashed fs-6 g-5" id="kt_datatable_example">
 			<thead>
 				<!--begin::Table row-->
 				<tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase">
-					<th class="min-w-100px">SR . NO</th>
-					<th class="min-w-100px">NOC Type</th>
-					<th class="min-w-100px">Deprtment</th>
-					<th class="min-w-100px">Action</th>
+                    <th class="min-w-100px">NOC क्रमंक</th>
+                    <th class="min-w-100px">Department</th>
+                    <th class="min-w-100px">विषय</th>
+                    <th class="min-w-100px">जमिनीची माहेती</th>
+                    <th class="min-w-100px">तालुका</th>
+                    <th class="min-w-100px">गाव</th>
+                    <th class="min-w-100px">गट विकास</th>
+                    <th class="min-w-100px">संपर्क अधिकार्याचा मोबाईल क्रमंक</th>
+                    <th class="min-w-100px">संपर्क अधिकार्याचा ईमेल ID</th>
+                    <th class="min-w-100px">NOC प्रकार निवडा</th>
+                    <th class="min-w-100px">स्थिती</th>
+                     <th class="min-w-100px">Action</th>
+
 					
 				</tr>
 				<!--end::Table row-->
 			</thead>
-			<tbody class="fw-semibold text-gray-600">
+			 <tbody class="fw-semibold text-gray-600">
                   <?php
-       $result = mysqli_query($conn, "
-    SELECT n.id, n.type, n.departmentId, 
-           GROUP_CONCAT(d.departmentName SEPARATOR ', ') AS departmentNames
-    FROM nocTypes n
-    LEFT JOIN departments d ON FIND_IN_SET(d.id, n.departmentId)
-    WHERE n.status = 'Active'
-    GROUP BY n.id
+$result = mysqli_query($conn, "
+    SELECT 
+        a.nocTypeId,
+        a.departmentId,
+        d.departmentName AS departmentName, -- <- department name from departments table
+        a.applicationId,
+        a.nocSubject,
+        a.landDesc,
+        a.taluka,
+        a.village,
+        a.gatNo,
+        a.mobileNo,
+        a.emailId,
+        a.status,
+        a.createdDateTime
+    FROM departmentNocApplications a
+    INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
+    INNER JOIN departments d ON a.departmentId = d.id -- <- join with departments table
+    WHERE r.departmentId = 3
+    ORDER BY a.applicationId DESC
 ");
 
-          $i = 1;
+
+        $i = 1;
           while($row = mysqli_fetch_assoc($result)){
-
-
-          
-          ?>
+ ?>
 				<tr class="odd">
-					<td><?php echo $i++ ?></td>
-					<td><?php echo $row['type'] ?></td>
-					<td><?php echo $row['departmentNames'] ?></td>
-					<td data-order="2022-03-10T14:40:00+05:00">
-                        <a href="admin/nocType.php?edit=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning me-1">
-                    <i class="fas fa-edit"></i>
-                  </a>
-                <a href="#" 
-   class="btn btn-sm btn-danger delete-btn" 
-   data-href="admin/nocType_DB.php?delete=<?php echo $row['id']; ?>">
-   <i class="fas fa-trash-alt"></i>
-</a>
-                    </td>
+                    <td><?php echo $row['nocTypeId'] ?></td>
+                    <td><?php echo $row['departmentName'] ?></td>
+                    <td><?php echo $row['nocSubject'] ?></td>
+                    <td><?php echo $row['landDesc'] ?></td>
+                    <td><?php echo $row['taluka'] ?></td>
+                    <td><?php echo $row['village'] ?></td>
+                    <td><?php echo $row['gatNo'] ?></td>
+					<td><?php echo $row['mobileNo'] ?></td>
+					<td><?php echo $row['emailId'] ?></td>
+					<td><?php echo $row['nocTypeId'] ?></td>
+					<td>
+  <?php
+    $status = $row['status'];
+
+    if ($status == 'Approved') {
+        $color = 'text-success'; 
+    } else if ($status == 'Rejected') {
+        $color = 'text-danger'; 
+    } else {
+        $color = 'text-warning'; 
+    }
+  ?>
+  <span class="<?php echo $color; ?>"><?php echo $status; ?></span>
+</td>
+
+                   <td>
+ <button class="btn btn-sm btn-warning me-1" 
+        data-bs-toggle="modal" 
+        data-bs-target="#updateStatusModal" 
+        data-id="<?php echo $row['id']; ?>" 
+        data-applicationid="<?php echo $row['applicationId']; ?>">
+  Change Status
+</button>
+
+  <!-- Modal -->
+   
+<div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="POST" action="admin/department_Report_DB.php">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateStatusModalLabel">Update Application Status</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="applicationId" id="modalAppId">
+            <input type="hidden" value="<?php echo $row['applicationId'] ?>" name="applicationId" id="modalApplicationId">
+
+          <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-select" name="status" id="statusSelect" required>
+              <option value="">Select</option>
+                <option value="Under Review">Under Review</option>
+              <option value="Approved">Approved</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+
+          <div class="mb-3 d-none" id="remarkDiv">
+            <label for="remark" class="form-label">Rejection Remark</label>
+            <textarea class="form-control" name="remarks" id="remark" placeholder="Reason for rejection..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" name="update" class="btn btn-success">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+</td>
+
 					
 				</tr>
                 <?php } ?>
@@ -250,10 +324,8 @@
 		</table>
 	</div>
 </div>
-                                      
                                     </div>
                                     <!--end::Body-->
-                                    
                                 </div>
                                 <!--end::Contact-->
                             </div>
@@ -283,12 +355,36 @@
         </i>
     </div>
     <!--end::Scrolltop-->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const modal = document.getElementById('updateStatusModal');
+  const modalAppId = document.getElementById('modalAppId');
+  const statusSelect = document.getElementById('statusSelect');
+  const remarkDiv = document.getElementById('remarkDiv');
+
+  // Fill the application ID from button
+  modal.addEventListener('show.bs.modal', function (event) {
+    const button = event.relatedTarget;
+    const appId = button.getAttribute('data-id');
+    modalAppId.value = appId;
+  });
+
+  // Toggle Remark field
+  statusSelect.addEventListener('change', function () {
+    if (this.value === 'Rejected') {
+      remarkDiv.classList.remove('d-none');
+    } else {
+      remarkDiv.classList.add('d-none');
+    }
+  });
+});
+</script>
 
     <?php
     include('../include/jsLinks.php')
         ?>
 
-        <script>
+          <script>
             "use strict";
 
 // Class definition
@@ -385,37 +481,13 @@ KTUtil.onDOMContentLoaded(function () {
     KTDatatablesExample.init();
 });
         </script>
+        <script>
+            $("#kt_datepicker_1").flatpickr();
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const deleteButtons = document.querySelectorAll('.delete-btn');
-
-    deleteButtons.forEach(btn => {
-      btn.addEventListener('click', function (e) {
-        e.preventDefault(); // prevent default <a> behavior
-        const href = this.getAttribute('data-href');
-
-        Swal.fire({
-          title: "Are you sure?",
-          text: "you want to delete NOC Type?",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, delete it!"
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.href = href;
-          }
-        });
-      });
-    });
-  });
-</script>
-
+$("#kt_datepicker_2").flatpickr();
+        </script>
 </body>
-<!--end::Body-->
 
+<!--end::Body-->
 
 </html>

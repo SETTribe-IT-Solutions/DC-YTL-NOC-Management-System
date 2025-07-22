@@ -1,5 +1,5 @@
 <link rel="canonical" href="https://preview.keenthemes.com/saul-html-free" />
-<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+<link rel="shortcut icon" href="assets/media/logos/Seal_of_Maharashtra.png" />
 <!--begin::Fonts(mandatory for all pages)-->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 <!--end::Fonts-->

@@ -23,23 +23,32 @@
                         <img
                             src="https://images.seeklogo.com/logo-png/29/2/indian-government-logo-png_seeklogo-290980.png">
                     </div>
-                    <h2 class="text-[#101914] text-lg font-bold leading-tight tracking-[-0.015em]">NOC Management System
+                    <h2 class="text-[#101914] text-lg font-bold leading-tight tracking-[-0.015em]">NOC
+                        Management System
                     </h2>
                 </div>
                 <div class="flex flex-1 justify-end gap-8">
                     <div class="flex items-center gap-9">
-                        <a class="text-[#101914] text-sm font-medium leading-normal" href="#">Home</a>
-                        <a class="text-[#101914] text-sm font-medium leading-normal" href="#">About</a>
-                        <a class="text-[#101914] text-sm font-medium leading-normal" href="#">Services</a>
-                        <a class="text-[#101914] text-sm font-medium leading-normal" href="#">Contact</a>
+                        <a class="text-[#101914] text-sm font-medium leading-normal" href="#home">Home</a>
+                        <a class="text-[#101914] text-sm font-medium leading-normal" href="#about">About</a>
+                        <a class="text-[#101914] text-sm font-medium leading-normal" href="#features">Features</a>
+                        <a class="text-[#101914] text-sm font-medium leading-normal" href="#contact">Contact</a>
                     </div>
                     <div class="flex gap-2">
-                        <a href="login.php">
+                        <a href="login.php?role=Civilian">
                             <button
                                 class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#50cd88] text-[#fff] text-sm font-bold leading-normal tracking-[0.015em]">
-                                <span class="truncate">Login</span>
+                                <span class="truncate">Civilian Login</span>
                             </button>
                         </a>
+
+                        <a href="login.php?role=Officer">
+                            <button
+                                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#50cd88] text-[#fff] text-sm font-bold leading-normal tracking-[0.015em]">
+                                <span class="truncate">Officer Login</span>
+                            </button>
+                        </a>
+
                         <a href="registration.php">
                             <button
                                 class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#e9f1ed] text-[#101914] text-sm font-bold leading-normal tracking-[0.015em]">
@@ -51,7 +60,7 @@
             </header>
             <div class="px-40 flex flex-1 justify-center py-5">
                 <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-                    <h2
+                    <h2 id="home"
                         class="text-[#101914] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">
                         Yavatmal Collector Office</h2>
                     <div class="@container">
@@ -81,7 +90,7 @@
                     </div>
                     <div class="flex flex-col gap-10 px-4 py-10 @container">
                         <div class="flex flex-col gap-4">
-                            <h1
+                            <h1 id="features"
                                 class="text-[#101914] tracking-light text-[32px] font-bold leading-tight @[480px]:text-4xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em] max-w-[720px]">
                                 Key Features
                             </h1>
@@ -186,7 +195,8 @@
                             </div>
                         </div>
                     </div>
-                    <h2 class="text-[#101914] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
+                    <h2 id="about"
+                        class="text-[#101914] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
                         About the NOC</h2>
                     <p class="text-[#101914] text-base font-normal leading-normal pb-3 pt-1 px-4">
                         The Network Operations Center (NOC) is a centralized facility responsible for monitoring,
@@ -195,14 +205,15 @@
                         your network. We use advanced tools and technologies to proactively
                         identify and resolve issues, minimizing downtime and maximizing performance.
                     </p>
-                    <h2 class="text-[#101914] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
+                    <h2 id="contact"
+                        class="text-[#101914] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
                         Contact Us</h2>
                     <p class="text-[#101914] text-base font-normal leading-normal pb-3 pt-1 px-4">
                         If you have any questions or would like to learn more about our NOC management system, please
                         don't hesitate to contact us. Our team is ready to assist you with any
                         inquiries.
                     </p>
-                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                    <!-- <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
                         <label class="flex flex-col min-w-40 flex-1">
                             <input placeholder="Your Email"
                                 class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#101914] focus:outline-0 focus:ring-0 border-none bg-[#e9f1ed] focus:border-none h-14 placeholder:text-[#5a8c70] p-4 text-base font-normal leading-normal"
@@ -214,7 +225,7 @@
                             class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#50cd88] text-[#fff] text-sm font-bold leading-normal tracking-[0.015em]">
                             <span class="truncate">Submit</span>
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <footer class="flex justify-center">

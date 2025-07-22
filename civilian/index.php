@@ -1,7 +1,21 @@
 <?php
 session_start();
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);
 if (!isset($_SESSION['userId'])) {
-    header('location:../login.php');
+    unset($_SESSION['designation']);
+    unset($_SESSION['role']);
+    header('location:../login.php?role=civilian&page=index');
+    exit;
+    die();
+}
+
+if ($_SESSION['designation'] != 'Civilian') {
+    unset($_SESSION['userId']);
+    unset($_SESSION['designation']);
+    unset($_SESSION['role']);
+    header('location:../login.php?role=civilian');
     exit;
     die();
 }
@@ -18,7 +32,190 @@ include('../include/sweetAlert.php');
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <?php include("include/cssLinks.php"); ?>
+    <?php include("../include/cssLinks.php"); ?>
+
+    <!-- Custom Dashboard Styles -->
+    <style>
+        .dashboard-card {
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .icon-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .icon-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .icon-warning {
+            background: linear-gradient(135deg, #ff0000, #ff0000);
+        }
+
+        .icon-info {
+            background: linear-gradient(135deg, #f6c000, #f6c000);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .trend-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .trend-up {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+
+        .trend-down {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+
+        .chart-container {
+            height: 300px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 18px;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 2s ease-in-out;
+        }
+
+        .progress-primary {
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+        }
+
+        .progress-success {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+
+        .progress-warning {
+            background: linear-gradient(90deg, #ff0000, #ff0000);
+        }
+
+        .progress-info {
+            background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 2px;
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-count {
+            animation: countUp 1s ease-out;
+        }
+    </style>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -34,17 +231,17 @@ include('../include/sweetAlert.php');
         <!--begin::Page-->
         <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
             <!--begin::Header-->
-            <?php
-            include("../include/header.php");
-            ?>
+            <?php include('../include/header.php'); ?>
             <!--end::Header-->
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                <?php include("../include/sidebar.php"); ?>
+                <?php
+                include('../include/sidebar.php');
+                ?>
                 <!--end::Sidebar-->
                 <!--begin::Main-->
-                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main" style="height: 600px;">
                     <!--begin::Content wrapper-->
                     <div class="d-flex flex-column flex-column-fluid">
                         <!--begin::Toolbar-->
@@ -66,19 +263,19 @@ include('../include/sweetAlert.php');
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item">
+                                            <!-- <li class="breadcrumb-item">
                                                 <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
-                                            </li>
+                                            </li> -->
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Blank</li>
+                                            <!-- <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Dashboards</li> -->
                                             <!--end::Item-->
                                         </ul>
                                         <!--end::Breadcrumb-->
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
-                                            Blank</h1>
+                                            Dashboard</h1>
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
@@ -92,121 +289,176 @@ include('../include/sweetAlert.php');
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->
                             <div id="kt_app_content_container" class="app-container container-fluid">
-                                <!--begin::Contact-->
-                                <div class="card p-lg-17">
-                                    <!--begin::Body-->
-                                    <div class="row mb-3">
-                                        <!--begin::Col-->
-                                        <div class="col-md-12 pe-lg-10">
-                                            <!--begin::Form-->
-                                            <form action=""
-                                                class="form mb-15 fv-plugins-bootstrap5 fv-plugins-framework"
-                                                method="post" id="kt_contact_form">
-                                                <h1 class="fw-bold text-gray-900 mb-9">Send Us Email</h1>
 
-                                                <!--begin::Input group-->
-                                                <div class="row mb-5">
-                                                    <!--begin::Col-->
-                                                    <div class="col-md-6 fv-row fv-plugins-icon-container">
-                                                        <!--begin::Label-->
-                                                        <label class="fs-5 fw-semibold mb-2">Name</label>
-                                                        <!--end::Label-->
-
-                                                        <!--begin::Input-->
-                                                        <input type="text" class="form-control form-control-solid"
-                                                            placeholder="" name="name">
-                                                        <!--end::Input-->
-                                                        <div
-                                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                        </div>
-                                                    </div>
-                                                    <!--end::Col-->
-
-                                                    <!--begin::Col-->
-                                                    <div class="col-md-6 fv-row fv-plugins-icon-container">
-                                                        <!--end::Label-->
-                                                        <label class="fs-5 fw-semibold mb-2">Email</label>
-                                                        <!--end::Label-->
-
-                                                        <!--end::Input-->
-                                                        <input type="text" class="form-control form-control-solid"
-                                                            placeholder="" name="email">
-                                                        <!--end::Input-->
-                                                        <div
-                                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                        </div>
-                                                    </div>
-                                                    <!--end::Col-->
+                                <!--begin::Row-->
+                                <div class="row g-5 g-xl-10 mb-xl-10">
+                                    <!-- Current Projects Card -->
+                                    <div class="col-lg-6 col-xxl-3">
+                                        <div class="card dashboard-card h-100">
+                                            <div class="card-body p-9">
+                                                <div class="stat-icon icon-primary">
+                                                    <i class="ki-duotone ki-abstract-26 fs-2x" style="color: white;">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i>
                                                 </div>
-                                                <!--end::Input group-->
-
-                                                <!--begin::Input group-->
-                                                <div class="d-flex flex-column mb-5 fv-row">
-                                                    <!--begin::Label-->
-                                                    <label class="fs-5 fw-semibold mb-2">Subject</label>
-                                                    <!--end::Label-->
-
-                                                    <!--begin::Input-->
-                                                    <input class="form-control form-control-solid" placeholder=""
-                                                        name="subject">
-                                                    <!--end::Input-->
+                                                <?php
+                                                $userId = $_SESSION['userId'];
+                                                $result = mysqli_query($conn, "SELECT COUNT(id) AS total FROM nocApplications WHERE civilianId = '$userId'");
+                                                $data = mysqli_fetch_assoc($result);
+                                                $total = $data['total'];
+                                                ?>
+                                                <div class="stat-value animate-count" style="font-size: 20px;">
+                                                    एकूण अर्ज: <?php echo $total; ?>
                                                 </div>
-                                                <!--end::Input group-->
-
-                                                <!--begin::Input group-->
-                                                <div class="d-flex flex-column mb-10 fv-row fv-plugins-icon-container">
-                                                    <label class="fs-6 fw-semibold mb-2">Message</label>
-
-                                                    <textarea class="form-control form-control-solid" rows="6"
-                                                        name="message" placeholder="">        </textarea>
-                                                    <div
-                                                        class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                    </div>
+                                                <!-- <div class="stat-label">Current Projects</div> -->
+                                                <div class="trend-indicator trend-up">
+                                                    <i class="ki-duotone ki-arrow-up fs-7"></i>
+                                                    <!-- +12% this month -->
                                                 </div>
-                                                <!--end::Input group-->
-
-                                                <!--begin::Submit-->
-                                                <button type="submit" class="btn btn-primary"
-                                                    id="kt_contact_submit_button">
-
-                                                    <!--begin::Indicator label-->
-                                                    <span class="indicator-label">
-                                                        Send Feedback</span>
-                                                    <!--end::Indicator label-->
-
-                                                    <!--begin::Indicator progress-->
-                                                    <span class="indicator-progress">
-                                                        Please wait... <span
-                                                            class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                                                    </span>
-                                                    <!--end::Indicator progress--> </button>
-                                                <!--end::Submit-->
-                                            </form>
-                                            <!--end::Form-->
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill progress-primary" style="width: 0%"
+                                                        data-width="78%"></div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <!--end::Col-->
-
                                     </div>
-                                    <!--end::Body-->
+
+
+                                    <!-- Project Finance Card -->
+                                    <div class="col-lg-6 col-xxl-3">
+                                        <div class="card dashboard-card h-100">
+                                            <div class="card-body p-9">
+                                                <div class="stat-icon icon-success">
+                                                    <i class="ki-duotone ki-check-circle fs-2x" style="color: white;">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i>
+                                                </div>
+
+                                                <?php
+                                                $q1 = mysqli_query($con, "SELECT COUNT(*) AS count1 FROM nocApplications WHERE civilianId = '$userId' AND status = 'Approved'");
+                                                $data1 = mysqli_fetch_assoc($q1);
+                                                $count1 = $data1['count1'];
+                                                ?>
+
+                                                <div class="stat-value animate-count" style="font-size: 20px;">
+                                                    मंजुर अर्ज: <?php echo $count1; ?>
+                                                </div>
+
+                                                <!-- <div class="stat-label">Project Finance</div> -->
+                                                <div class="trend-indicator trend-up">
+                                                    <i class="ki-duotone ki-arrow-up fs-7"></i>
+                                                    <!-- +8.2% revenue -->
+                                                </div>
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill progress-success" style="width: 0%"
+                                                        data-width="65%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <!-- Our Clients Card -->
+                                    <div class="col-lg-6 col-xxl-3">
+                                        <div class="card dashboard-card h-100">
+                                            <div class="card-body p-9">
+                                                <div class="stat-icon icon-warning">
+
+
+                                                    <i class="ki-duotone ki-cross-circle fs-2x" style="color: white;">
+                                                        <span class=" path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i>
+                                                </div>
+                                                <?php
+                                                $q1 = mysqli_query($con, "SELECT COUNT(*) AS count1 FROM nocApplications WHERE civilianId = '$userId' AND status = 'Rejected'");
+                                                $data1 = mysqli_fetch_assoc($q1);
+                                                $count1 = $data1['count1'];
+                                                ?>
+
+                                                <div class="stat-value animate-count" style="font-size: 20px;">
+                                                    नामंजुर अर्ज: <?php echo $count1; ?>
+                                                </div>
+                                                <!-- <div class="stat-label">Our Clients</div> -->
+                                                <div class="trend-indicator trend-up">
+                                                    <i class="ki-duotone ki-arrow-up fs-7"></i>
+                                                    <!-- +3 new clients -->
+                                                </div>
+
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill progress-warning" style="width: 0%"
+                                                        data-width="89%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Success Rate Card -->
+                                    <div class="col-lg-6 col-xxl-3">
+                                        <div class="card dashboard-card h-100">
+                                            <div class="card-body p-9">
+
+                                                <!-- 🟦 Info circle with ! icon -->
+                                                <div class="stat-icon icon-info">
+                                                    <i class="ki-duotone ki-information-5 fs-2x" style="color: white;">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+
+
+                                                </div>
+
+                                                <?php
+                                                $q1 = mysqli_query($con, "SELECT COUNT(*) AS count1 FROM nocApplications WHERE civilianId = '$userId' AND (status = 'Under Review' OR status = 'Submitted')");
+                                                $data1 = mysqli_fetch_assoc($q1);
+                                                $count1 = $data1['count1'];
+
+                                                ?>
+
+                                                <div class="stat-value animate-count" style="font-size: 20px;">
+                                                    प्रलंबित अर्ज: <?php echo $count1; ?>
+                                                </div>
+
+                                                <div class="trend-indicator trend-up">
+                                                    <i class="ki-duotone ki-arrow-up fs-7"></i>
+                                                </div>
+
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill progress-info" style="width: 0%"
+                                                        data-width="94%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
-                                <!--end::Contact-->
+                                <!--end::Stats Row-->
+
+
+
                             </div>
                             <!--end::Content container-->
                         </div>
                         <!--end::Content-->
                     </div>
                     <!--end::Content wrapper-->
-                    <!--begin::Footer-->
-                    <?php
-                    include('include/footer.php')
-                        ?>
-                    <!--end::Footer-->
                 </div>
-                <!--end:::Main-->
+                <!--end::Content wrapper-->
+                <!--begin::Footer-->
+                <?php
+                include('../include/footer.php')
+                    ?>
+                <!--end::Footer-->
             </div>
-            <!--end::Wrapper-->
+            <!--end:::Main-->
         </div>
-        <!--end::Page-->
+        <!--end::Wrapper-->
+    </div>
+    <!--end::Page-->
     </div>
     <!--end::App-->
     <!--begin::Scrolltop-->
@@ -219,7 +471,7 @@ include('../include/sweetAlert.php');
     <!--end::Scrolltop-->
 
     <?php
-    include('include/jsLinks.php')
+    include('../include/jsLinks.php')
         ?>
 </body>
 <!--end::Body-->
