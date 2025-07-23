@@ -1,5 +1,7 @@
 <?php
 include('../include/conn.php');
+session_start();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -294,7 +296,7 @@ include('../include/conn.php');
                                                 <a href="../dist/index.html" class="text-gray-500">
                                                     <i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
                                                 </a>
-                                            </li>
+                                            </li> 
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <li class="breadcrumb-item">
