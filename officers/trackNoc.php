@@ -359,12 +359,9 @@ include('../include/sweetAlert.php');
                                                                         नोट: सभावना हुआलेली आवश्यकताओं का ध्यान व सत्ये,
                                                                         अनुपालन उपलब्ध करे.
                                                                     </div>
-                                                                    <a href="noc_certificate.pdf" download>
-                                                                        <button class="btn-download">
-                                                                            <i class="fas fa-download me-2"></i>Download
-                                                                        </button>
-                                                                        <a>
-
+                                                                    <button class="btn-download">
+                                                                        <i class="fas fa-download me-2"></i>Download
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>

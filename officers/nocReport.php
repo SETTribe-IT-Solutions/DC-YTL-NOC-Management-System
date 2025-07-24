@@ -126,21 +126,19 @@ include('../include/sweetAlert.php');
                                                 <!--begin::Table row-->
                                                 <tr class="text-start text-dark-900 fw-bold fs-6 text-uppercase">
                                                     <th class="min-w-70px">Sr. No.</th>
-                                                    <th>NOC क्रमांक</th>
-                                                    <th>NOC प्रकार निवडा</th>
-                                                    <th>जन्मतारीख</th>
-                                                    <th>पूर्ण नाव</th>
-                                                    <th>आधार क्रमांक</th>
-                                                    <th>पत्ता</th>
-                                                    <th>ईमेल ID</th>
-                                                    <th>मोबाईल क्र.</th>
-                                                    <th>जमिनीची तपशील</th>
-                                                    <th>विषय</th>
-                                                    <th>तालुका</th>
-                                                    <th>गाव</th>
-                                                    <th>गट क्रमांक</th>
-                                                    <th>आधार कार्ड अपलोड करा</th>
-                                                    <th>पॅन कार्ड अपलोड करा</th>
+                                                    <th class="min-w-100px">NOC क्रमंक</th>
+                                                    <th class="min-w-100px">NOC प्रकार</th>
+                                                    <th class="min-w-100px">Department</th>
+                                                    <th class="min-w-100px">विषय</th>
+                                                    <th class="min-w-100px">जमिनीची माहेती</th>
+                                                    <th class="min-w-100px">तालुका</th>
+                                                    <th class="min-w-100px">गाव</th>
+                                                    <th class="min-w-100px">गट विकास</th>
+                                                    <th class="min-w-100px">संपर्क अधिकार्याचा मोबाईल क्रमंक
+                                                    </th>
+                                                    <th class="min-w-100px">संपर्क अधिकार्याचा ईमेल ID</th>
+                                                    <th class="min-w-100px">NOC प्रकार निवडा</th>
+                                                    <th class="min-w-100px">स्थिती</th>
                                                     <th>Action</th>
                                                 </tr>
                                                 <!--end::Table row-->
@@ -149,7 +147,7 @@ include('../include/sweetAlert.php');
                                                 <?php
                                                 $i = 1;
                                                 $userId = $_SESSION['userId'];
-                                                $sql = "SELECT * FROM nocApplications WHERE civilianId='$userId' ORDER BY createdDateTime DESC";
+                                                $sql = "SELECT * FROM departmentNocApplications WHERE userId='$userId' ORDER BY createdDateTime DESC";
                                                 $q = mysqli_query($con, $sql);
                                                 while ($r = mysqli_fetch_assoc($q)) {
                                                     $sql0 = "SELECT type FROM nocTypes WHERE id='{$r['nocTypeId']}'";
@@ -160,22 +158,31 @@ include('../include/sweetAlert.php');
                                                     ?>
                                                     <tr class="odd">
                                                         <td><?= $i++ ?></td>
-                                                        <td><?= $r['applicationId']; ?></td>
-                                                        <td><?= $r['nocType']; ?></td>
-                                                        <td><?= $r['dob']; ?></td>
-                                                        <td><?= $r['name']; ?></td>
-                                                        <td><?= $r['aadharNo']; ?></td>
-                                                        <td><?= $r['address']; ?></td>
-                                                        <td><?= $r['emailId']; ?></td>
-                                                        <td><?= $r['mobileNo']; ?></td>
-                                                        <td><?= $r['landDesc']; ?></td>
-                                                        <td><?= $r['landDesc']; ?></td>
-                                                        <td><?= $r['taluka']; ?></td>
-                                                        <td><?= $r['village']; ?></td>
-                                                        <td><?= $r['gatNo']; ?></td>
-                                                        <td><?= $r['aadharCard'] ? '<a href="' . $r['aadharCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?>
-                                                        </td>
-                                                        <td><?= $r['panCard'] ? '<a href="' . $r['panCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?>
+                                                        <td><?php echo $r['applicationId'] ?></td>
+                                                        <td><?php echo $r1['type'] ?></td>
+                                                        <td><?php echo $r['departmentName'] ?></td>
+                                                        <td><?php echo $r['nocSubject'] ?></td>
+                                                        <td><?php echo $r['landDesc'] ?></td>
+                                                        <td><?php echo $r['taluka'] ?></td>
+                                                        <td><?php echo $r['village'] ?></td>
+                                                        <td><?php echo $r['gatNo'] ?></td>
+                                                        <td><?php echo $r['mobileNo'] ?></td>
+                                                        <td><?php echo $r['emailId'] ?></td>
+                                                        <td><?php echo $r['nocTypeId'] ?></td>
+                                                        <td>
+                                                            <?php
+                                                            $status = $r['status'];
+
+                                                            if ($status == 'Approved') {
+                                                                $color = 'text-success';
+                                                            } else if ($status == 'Rejected') {
+                                                                $color = 'text-danger';
+                                                            } else {
+                                                                $color = 'text-warning';
+                                                            }
+                                                            ?>
+                                                            <span
+                                                                class="<?php echo $color; ?>"><?php echo $status; ?></span>
                                                         </td>
                                                         <td>
                                                             <a

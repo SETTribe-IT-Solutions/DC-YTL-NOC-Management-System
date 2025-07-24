@@ -1,5 +1,15 @@
 <?php
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);
 session_start();
+if (!isset($_SESSION['userId'])) {
+    unset($_SESSION['designation']);
+    unset($_SESSION['role']);
+    header('location:../index.html');
+    exit;
+    die();
+}
 include('../include/conn.php');
 ?>
 <!DOCTYPE html>
@@ -303,22 +313,14 @@ include('../include/conn.php');
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Dashboards</li>
-                                            <!--end::Item-->
-                                            <!--begin::Item-->
-                                            <li class="breadcrumb-item">
-                                                <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
-                                            </li>
-                                            <!--end::Item-->
-                                            <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700">Default</li>
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">डॅशबोर्ड</li>
                                             <!--end::Item-->
                                         </ul>
                                         <!--end::Breadcrumb-->
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
-                                            Dashboard</h1>
+                                            डॅशबोर्ड</h1>
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
@@ -359,10 +361,10 @@ include('../include/conn.php');
                                                     <i class="ki-duotone ki-arrow-up fs-7"></i>
                                                 </div>
 
-                                                <div class="progress-bar">
+                                                <!-- <div class="progress-bar">
                                                     <div class="progress-fill progress-primary" style="width: 0%"
                                                         data-width="78%"></div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -401,10 +403,10 @@ include('../include/conn.php');
                                                     <i class="ki-duotone ki-arrow-up fs-7"></i>
                                                     <!-- +8.2% revenue -->
                                                 </div>
-                                                <div class="progress-bar">
+                                                <!-- <div class="progress-bar">
                                                     <div class="progress-fill progress-success" style="width: 0%"
                                                         data-width="65%"></div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -442,10 +444,10 @@ include('../include/conn.php');
                                                     <!-- <i class="fas fa-arrow-up fs-7"></i> -->
                                                 </div>
 
-                                                <div class="progress-bar">
+                                                <!-- <div class="progress-bar">
                                                     <div class="progress-fill progress-warning" style="width: 0%"
                                                         data-width="89%"></div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -484,10 +486,10 @@ include('../include/conn.php');
                                                     <!-- <i class="fas fa-arrow-up fs-7"></i> -->
                                                 </div>
 
-                                                <div class="progress-bar">
+                                                <!-- <div class="progress-bar">
                                                     <div class="progress-fill progress-info" style="width: 0%"
                                                         data-width="94%"></div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -495,200 +497,281 @@ include('../include/conn.php');
 
                                 </div>
                                 <!--end::Stats Row-->
-                                <?php
-                                // Yavatmal taluka ke villages count chart
-                                $query2 = "
-SELECT taluka, COUNT(DISTINCT village) AS village_count 
-FROM users 
-WHERE taluka = 'Yavatmal'
-GROUP BY taluka";
 
-                                $res2 = mysqli_query($con, $query2) or die("Village Count Query Error: " . mysqli_error($con));
-                                $taluka_villages = $village_counts = [];
+                                <div class="row g-6 g-xl-9 mb-8">
+                                    <div class="col-lg-12">
+                                        <div class="card card-flush ">
+                                            <div class="card-header pt-5">
+                                                <!--begin::Title-->
+                                                <h3 class="card-title align-items-start flex-column">
+                                                    <span class="card-label fw-bold text-gray-900">NOC प्रलंबित
+                                                        अर्ज</span>
+                                                </h3>
+                                                <!--end::Title-->
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div class="table-responsive">
+                                                    <table class="table table-rounded table-striped border gy-7 gs-7"
+                                                        id="datatable">
+                                                        <thead>
+                                                            <!--begin::Table row-->
+                                                            <tr
+                                                                class="text-start text-dark-500 fw-bold fs-7 text-uppercase">
+                                                                <th class="min-w-70px">Sr. No.</th>
+                                                                <th class="min-w-100px">NOC क्रमंक</th>
+                                                                <th class="min-w-100px">NOC विषय</th>
+                                                                <th class="min-w-100px">NOC प्रकार</th>
+                                                                <th class="min-w-100px">अर्जदारचे नाव</th>
+                                                                <th class="min-w-100px">मोबाईल क्र</th>
+                                                            </tr>
+                                                            <!--end::Table row-->
+                                                        </thead>
+                                                        <tbody class="fw-semibold text-gray-600">
+                                                            <?php
+                                                            $departmentId = $_SESSION['departmentId'];
+                                                            $result = mysqli_query($conn, "
+    SELECT 
+        a.applicationId,
+        a.civilianId,
+        a.nocSubject,
+        a.nocTypeId,
+        a.landDesc,
+        a.taluka,
+        a.village,
+        a.gatNo,
+        a.panCard,
+        a.aadharCard,
+        a.status,
+        a.createdDateTime,
 
-                                while ($row = mysqli_fetch_assoc($res2)) {
-                                    $taluka_villages[] = $row['taluka'];
-                                    $village_counts[] = $row['village_count'];
-                                }
-                                ?>
+        -- From civilianRegistrations table
+        c.name,
+        c.address,
+        c.aadharNo,
+        c.emailId,
+        c.dob,
+        c.mobileNo
 
-                                <!--begin::Charts Row-->
-                                <!-- <div class="main-heading">NOC अर्जांचा तालुकानिहाय अहवाल</div> -->
-                                <div class="chart-row">
-                                    <div class="chart-container chart-box">
-                                        <div class="chart-title">तालुकानिहाय गावांची संख्या </div>
-                                        <canvas id="villageChart"></canvas>
+    FROM nocApplications a
+     INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
+    LEFT JOIN civilianRegistrations c ON a.civilianId = c.civilianId
+    WHERE r.departmentId = $departmentId  AND r.status = 'Pending'
+    ORDER BY a.createdDateTime DESC
+");
+
+                                                            $i = 1;
+                                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                                $civilianId = $row['civilianId'];
+                                                                $q = mysqli_query($con, "SELECT name FROM civilianRegistrations WHERE civilianId = '$civilianId'");
+                                                                $r = mysqli_fetch_assoc($q);
+
+                                                                $nocType = $row['nocTypeId'];
+                                                                $q1 = mysqli_query($con, "SELECT type FROM nocTypes WHERE id = '$nocType'");
+                                                                $r1 = mysqli_fetch_assoc($q1);
+                                                                ?>
+                                                                <tr class="odd">
+                                                                    <td><?= $i++ ?></td>
+                                                                    <td><?php echo $row['applicationId'] ?></td>
+
+                                                                    <td><?php echo $row['nocSubject'] ?></td>
+                                                                    <td><?php echo $r1['type'] ?></td>
+                                                                    <td><?php echo $r['name'] ?></td>
+                                                                    <td><?php echo $row['mobileNo'] ?></td>
+                                                                </tr>
+                                                            <?php } ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <?php
+                                    // Yavatmal taluka ke villages count chart
+                                    // $query2 = "SELECT taluka, COUNT(DISTINCT village) AS village_count FROM users WHERE taluka = 'Yavatmal' GROUP BY taluka";
+                                    
+                                    // $res2 = mysqli_query($con, $query2) or die("Village Count Query Error: " . mysqli_error($con));
+                                    // $taluka_villages = $village_counts = [];
+                                    
+                                    // while ($row = mysqli_fetch_assoc($res2)) {
+                                    //     $taluka_villages[] = $row['taluka'];
+                                    //     $village_counts[] = $row['village_count'];
+                                    // }
+                                    ?>
 
-
-                                    <!-- <div class="chart-container chart-box">
-                                        <div class="chart-title">तालुकानिहाय अर्जांची संख्या (मंजूर व एकूण)</div>
-                                        <canvas id="monthChart"></canvas>
-                                    </div> -->
+                                    <!--begin::Charts Row-->
+                                    <!-- <div class="main-heading">NOC अर्जांचा तालुकानिहाय अहवाल</div> -->
+                                    <!-- <div class="row g-6 g-xl-9 mb-8">
+                                    <div class="col-lg-12 col-xxl-6">
+                                        <div class="chart-row">
+                                            <div class="chart-container chart-box">
+                                                <div class="chart-title">तालुकानिहाय गावांची संख्या </div>
+                                                <canvas id="villageChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                    <!--end::Charts Row-->
                                 </div>
-                                <!--end::Charts Row-->
+                                <!--end::Content container-->
                             </div>
-                            <!--end::Content container-->
+                            <!--end::Content-->
                         </div>
-                        <!--end::Content-->
+                        <!--end::Content wrapper-->
+                        <!--begin::Footer-->
+                        <?php include('../include/footer.php'); ?>
+                        <!--end::Footer-->
                     </div>
-                    <!--end::Content wrapper-->
-                    <!--begin::Footer-->
-                    <div id="kt_app_footer"
-                        class="app-footer align-items-center justify-content-center justify-content-md-between flex-column flex-md-row py-3">
-                        <!--begin::Copyright-->
-                        <div class="text-dark order-2 order-md-1">
-                            <span class="text-muted fw-semibold me-1">2023&copy;</span>
-                            <a href="https://keenthemes.com" target="_blank"
-                                class="text-gray-800 text-hover-primary">Keenthemes</a>
-                        </div>
-                        <!--end::Copyright-->
-                        <!--begin::Menu-->
-                        <ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
-                            <li class="menu-item">
-                                <a href="https://keenthemes.com" target="_blank" class="menu-link px-2">About</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="https://devs.keenthemes.com" target="_blank" class="menu-link px-2">Support</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="https://keenthemes.com/products/saul-html-pro" target="_blank"
-                                    class="menu-link px-2">Purchase</a>
-                            </li>
-                        </ul>
-                        <!--end::Menu-->
-                    </div>
-                    <!--end::Footer-->
+                    <!--end:::Main-->
                 </div>
-                <!--end:::Main-->
+                <!--end::Wrapper-->
             </div>
-            <!--end::Wrapper-->
+            <!--end::Page-->
         </div>
-        <!--end::Page-->
-    </div>
-    <!--end::App-->
-    <!--begin::Scrolltop-->
-    <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
-        <i class="ki-duotone ki-arrow-up">
-            <span class="path1"></span>
-            <span class="path2"></span>
-        </i>
-    </div>
-    <!--end::Scrolltop-->
-    <!--begin::Javascript-->
-    <?php
-    include('../include/jsLinks.php');
-    ?>
-    <!--end::Vendors Javascript-->
-    <!--begin::Custom Javascript(used for this page only)-->
-    <script src="assets/js/widgets.bundle.js"></script>
-    <script src="assets/js/custom/widgets.js"></script>
-    <script src="assets/js/custom/apps/chat/chat.js"></script>
-    <script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-    <script src="assets/js/custom/utilities/modals/create-account.js"></script>
-    <script src="assets/js/custom/utilities/modals/create-app.js"></script>
-    <script src="assets/js/custom/utilities/modals/users-search.js"></script>
+        <!--end::App-->
+        <!--begin::Scrolltop-->
+        <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
+            <i class="ki-duotone ki-arrow-up">
+                <span class="path1"></span>
+                <span class="path2"></span>
+            </i>
+        </div>
+        <!--end::Scrolltop-->
+        <!--begin::Javascript-->
+        <?php
+        include('../include/jsLinks.php');
+        ?>
+        <!--end::Vendors Javascript-->
+        <!--begin::Custom Javascript(used for this page only)-->
+        <script src="assets/js/widgets.bundle.js"></script>
+        <script src="assets/js/custom/widgets.js"></script>
+        <script src="assets/js/custom/apps/chat/chat.js"></script>
+        <script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
+        <script src="assets/js/custom/utilities/modals/create-account.js"></script>
+        <script src="assets/js/custom/utilities/modals/create-app.js"></script>
+        <script src="assets/js/custom/utilities/modals/users-search.js"></script>
 
-    <!-- Dashboard Enhancement Script -->
-    <script>
-        const villageChart = new Chart(document.getElementById('villageChart'), {
-            type: 'bar',
-            data: {
-                labels: <?php echo json_encode($taluka_villages); ?>,
-                datasets: [
-                    {
-                        label: 'गावे (Distinct Villages)',
-                        backgroundColor: '#90ed7d',
-                        data: <?php echo json_encode($village_counts); ?>
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 5
+        <!-- Dashboard Enhancement Script -->
+        <script>
+
+            $("#datatable").DataTable({
+
+                "scrollCollapse": true,
+                "language": {
+                    "lengthMenu": "Show _MENU_",
+                },
+                "dom":
+                    "<'row mb-2'" +
+                    "<'col-sm-6 d-flex align-items-center justify-conten-start dt-toolbar'l>" +
+                    "<'col-sm-6 d-flex align-items-center justify-content-end dt-toolbar'f>" +
+                    ">" +
+
+                    "<'table-responsive'tr>" +
+
+                    "<'row'" +
+                    "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
+                    "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
+                    ">"
+            });
+
+
+            const villageChart = new Chart(document.getElementById('villageChart'), {
+                type: 'bar',
+                data: {
+                    labels: <?php echo json_encode($taluka_villages); ?>,
+                    datasets: [
+                        {
+                            label: 'गावे (Distinct Villages)',
+                            backgroundColor: '#90ed7d',
+                            data: <?php echo json_encode($village_counts); ?>
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 5
+                            }
                         }
                     }
                 }
-            }
-        });
-    </script>
+            });
+        </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Animate counters
-            function animateCounter(element, target, duration = 2000) {
-                const start = 0;
-                const startTime = performance.now();
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Animate counters
+                function animateCounter(element, target, duration = 2000) {
+                    const start = 0;
+                    const startTime = performance.now();
 
-                function updateCounter(currentTime) {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
+                    function updateCounter(currentTime) {
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
 
-                    let current;
-                    if (target === '237') {
-                        current = Math.floor(progress * 237);
-                    } else if (target === '49') {
-                        current = Math.floor(progress * 49);
-                    } else {
-                        element.textContent = target;
-                        return;
+                        let current;
+                        if (target === '237') {
+                            current = Math.floor(progress * 237);
+                        } else if (target === '49') {
+                            current = Math.floor(progress * 49);
+                        } else {
+                            element.textContent = target;
+                            return;
+                        }
+
+                        element.textContent = current;
+
+                        if (progress < 1) {
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            element.textContent = target;
+                        }
                     }
 
-                    element.textContent = current;
-
-                    if (progress < 1) {
-                        requestAnimationFrame(updateCounter);
-                    } else {
-                        element.textContent = target;
-                    }
+                    requestAnimationFrame(updateCounter);
                 }
 
-                requestAnimationFrame(updateCounter);
-            }
+                // Animate progress bars
+                function animateProgressBars() {
+                    const progressBars = document.querySelectorAll('.progress-fill');
+                    progressBars.forEach((bar, index) => {
+                        setTimeout(() => {
+                            const targetWidth = bar.getAttribute('data-width');
+                            bar.style.width = targetWidth;
+                        }, index * 200);
+                    });
+                }
 
-            // Animate progress bars
-            function animateProgressBars() {
-                const progressBars = document.querySelectorAll('.progress-fill');
-                progressBars.forEach((bar, index) => {
-                    setTimeout(() => {
-                        const targetWidth = bar.getAttribute('data-width');
-                        bar.style.width = targetWidth;
-                    }, index * 200);
-                });
-            }
+                // Initialize animations
+                setTimeout(() => {
+                    const counters = document.querySelectorAll('.animate-count');
+                    counters.forEach(counter => {
+                        const target = counter.getAttribute('data-value') || counter.textContent;
+                        if (target !== '$3,290.00' && target !== '94.2%') {
+                            animateCounter(counter, target);
+                        }
+                    });
 
-            // Initialize animations
-            setTimeout(() => {
-                const counters = document.querySelectorAll('.animate-count');
-                counters.forEach(counter => {
-                    const target = counter.getAttribute('data-value') || counter.textContent;
-                    if (target !== '$3,290.00' && target !== '94.2%') {
-                        animateCounter(counter, target);
-                    }
-                });
+                    animateProgressBars();
+                }, 500);
 
-                animateProgressBars();
-            }, 500);
+                // Add hover effects
+                const cards = document.querySelectorAll('.dashboard-card');
+                cards.forEach(card => {
+                    card.addEventListener('mouseenter', function () {
+                        this.style.transform = 'translateY(-8px)';
+                    });
 
-            // Add hover effects
-            const cards = document.querySelectorAll('.dashboard-card');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function () {
-                    this.style.transform = 'translateY(-8px)';
-                });
-
-                card.addEventListener('mouseleave', function () {
-                    this.style.transform = 'translateY(0)';
+                    card.addEventListener('mouseleave', function () {
+                        this.style.transform = 'translateY(0)';
+                    });
                 });
             });
-        });
-    </script>
-    <!--end::Custom Javascript-->
-    <!--end::Javascript-->
+        </script>
+        <!--end::Custom Javascript-->
+        <!--end::Javascript-->
 </body>
 <!--end::Body-->
 

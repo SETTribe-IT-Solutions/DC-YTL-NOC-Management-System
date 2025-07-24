@@ -5,6 +5,7 @@ $designation = $_SESSION['designation'];
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
+include('../include/conn.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +47,6 @@ error_reporting(0);
             <!--begin::Header-->
             <?php
             include("../include/header.php");
-            include('../include/conn.php');
             ?>
             <!--end::Header-->
             <!--begin::Wrapper-->
@@ -63,6 +63,7 @@ if ($designation === 'admin') {
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+
                     <!--begin::Content wrapper-->
                     <div class="d-flex flex-column flex-column-fluid">
                         <!--begin::Toolbar-->
@@ -78,7 +79,7 @@ if ($designation === 'admin') {
                                         <ul class="breadcrumb breadcrumb-separatorless fw-semibold mb-6">
                                             <!--begin::Item-->
                                             <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
-                                                <a href="../dist/index.html" class="text-gray-500">
+                                                <a href="civilian/index.php" class="text-gray-500">
                                                     <i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
                                                 </a>
                                             </li>
@@ -89,14 +90,17 @@ if ($designation === 'admin') {
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC</li>
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC साठी अर्ज करा
+                                            </li>
                                             <!--end::Item-->
                                         </ul>
                                         <!--end::Breadcrumb-->
                                         <!--begin::Title-->
-                                        <!-- <h1
-                                            class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
-                                            NOC</h1> -->
+                                        <!--begin::Title-->
+                                        <h1
+                                            class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1">
+                                            NOC साठी अर्ज करा
+                                        </h1>
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
@@ -112,6 +116,7 @@ if ($designation === 'admin') {
                             <div id="kt_app_content_container" class="app-container container-fluid">
                                 <!--begin::Contact-->
                                 <div class="card">
+
                                     <!--begin::Body-->
                                     <div class="card-body">
                                         <div class="row mb-3">
@@ -138,18 +143,16 @@ if ($designation === 'admin') {
 
                                                 if ($civilianRow == 0) {
                                                     $readonly = "";
-                                                }else {
+                                                } else {
                                                     $readonly = "readonly";
                                                 }
 
 
                                                 ?>
 
-                                                <form action="nocApplicationDB.php"
+                                                <form action="civilian/nocApplicationDB.php"
                                                     class="form mb-15 fv-plugins-bootstrap5 fv-plugins-framework p"
-                                                    method="pgitost" id="" enctype="multipart/form-data">
-                                                    <h1 class="fw-bold text-gray-900 mb-9">NOC अर्ज सादर करण्याचा फॉर्म
-                                                    </h1>
+                                                    method="POST" id="" enctype="multipart/form-data">
                                                     <input type="hidden" name="applicationType" value="Civillian">
 
                                                     <!--begin::Input group-->
@@ -217,8 +220,8 @@ if ($designation === 'admin') {
                                                             <label class="fs-5 fw-semibold mb-2">पूर्ण नाव <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
-                                                                value="<?php echo $name; ?>" <?php echo $readonly; ?> name="fullName"
-                                                                placeholder="पूर्ण नाव">
+                                                                value="<?php echo $name; ?>" <?php echo $readonly; ?>
+                                                                name="fullName" placeholder="पूर्ण नाव">
                                                             <div
                                                                 class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                                             </div>
@@ -249,9 +252,9 @@ if ($designation === 'admin') {
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-semibold mb-2">पत्ता <span
                                                                     class="text-danger">*</span></label>
-                                                            <input type="text" <?php echo $readonly; ?> class="form-control"
-                                                                value="<?php echo $address; ?>" name="address"
-                                                                placeholder="पत्ता" required>
+                                                            <input type="text" <?php echo $readonly; ?>
+                                                                class="form-control" value="<?php echo $address; ?>"
+                                                                name="address" placeholder="पत्ता" required>
                                                             <div
                                                                 class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                                             </div>
@@ -266,9 +269,9 @@ if ($designation === 'admin') {
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-semibold mb-2">इमेल ID <span
                                                                     class="text-danger">*</span></label>
-                                                            <input type="email" <?php echo $readonly; ?> class="form-control"
-                                                                value="<?php echo $emailId; ?>" name="email"
-                                                                placeholder="इमेल ID" required>
+                                                            <input type="email" <?php echo $readonly; ?>
+                                                                class="form-control" value="<?php echo $emailId; ?>"
+                                                                name="email" placeholder="इमेल ID" required>
                                                             <div
                                                                 class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                                             </div>
@@ -280,9 +283,9 @@ if ($designation === 'admin') {
                                                             <label class="fs-5 fw-semibold mb-2">मोबाईल क्र. <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control" name="mobileNo"
-                                                                placeholder="मोबाईल क्र." <?php echo $readonly; ?> maxlength="10"
-                                                                value="<?php echo $mobileNo; ?>" minlength="10"
-                                                                pattern="\d{10}"
+                                                                placeholder="मोबाईल क्र." <?php echo $readonly; ?>
+                                                                maxlength="10" value="<?php echo $mobileNo; ?>"
+                                                                minlength="10" pattern="\d{10}"
                                                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                                                 required>
                                                             <div
@@ -338,7 +341,7 @@ if ($designation === 'admin') {
                                                                 if ($stmt->execute()) {
                                                                     $result = $stmt->get_result();
                                                                     while ($row = $result->fetch_assoc()) {
-                                                                        echo "<option>" . htmlspecialchars($row['taluka']) . "</option>";
+                                                                        echo "<option value='" . htmlspecialchars($row['taluka']) . "'>" . htmlspecialchars($row['taluka']) . "</option>";
                                                                     }
                                                                 } else {
                                                                     echo "Query execution failed: ";
@@ -461,9 +464,9 @@ if ($designation === 'admin') {
         $status = $_SESSION['status'];
         $msg = $_SESSION['msg'];
         if ($status != true) {
-            toastMsg('error', $msg);
+            sweetMsg('error', $msg);
         } else {
-            toastMsg('success', $msg);
+            sweetMsg('success', $msg);
         }
         unset($_SESSION['status']);
         unset($_SESSION['msg']);
