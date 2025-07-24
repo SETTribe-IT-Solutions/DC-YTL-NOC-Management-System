@@ -392,6 +392,8 @@
                                         <!--end:Menu link-->
                                     </div>
                                     <!--end:Menu item-->
+                                </div>
+                            </div>
 
                 <?php
             }
