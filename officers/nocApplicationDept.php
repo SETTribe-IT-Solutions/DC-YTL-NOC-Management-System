@@ -1,5 +1,8 @@
 <?php
 session_start();
+
+$designation = $_SESSION['designation'];
+
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
@@ -39,13 +42,22 @@ error_reporting(0);
         <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
             <!--begin::Header-->
             <?php
+           
             include("../include/header.php");
+           
             ?>
             <!--end::Header-->
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                <?php include("../include/sidebar.php"); ?>
+               <?php
+
+if ($designation === 'admin') {
+    include("../include/admin-sidebar.php");
+} else {
+    include("../include/sidebar.php");
+}
+?>
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">

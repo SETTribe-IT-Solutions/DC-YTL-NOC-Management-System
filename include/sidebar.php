@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 ?>
 <style>
     .menu-title {
@@ -313,7 +313,26 @@ session_start();
                             <!--end:Menu item-->
 
                             <!--begin:Menu item-->
-                            <div class="menu-item" onclick="window.location.href='officers/nocApplicationDept.php'">
+                            <div class="menu-item" onclick="window.location.href='#'">
+                                <!--begin:Menu link-->
+
+                                <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-element-11 fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">NOC Tracking</span>
+                                </span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                            <!--begin:Menu item-->
+                            <div class="menu-item" onclick="window.location.href='#'">
                                 <!--begin:Menu link-->
 
                                 <span class="menu-link">
@@ -331,6 +350,48 @@ session_start();
                                 <!--end:Menu link-->
                             </div>
                             <!--end:Menu item-->
+                            <!--begin:Menu item-->
+                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                <!--begin:Menu link-->
+                                <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-rescue fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">Master</span>
+                                    <span class="menu-arrow"></span>
+                                </span>
+                                <!--end:Menu link-->
+                                <!--begin:Menu sub-->
+                                <div class="menu-sub menu-sub-accordion">
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="admin/department_master.php" data-bs-toggle="tooltip"
+                                            data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Department</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
+                                    <!--begin:Menu item-->
+                                    <div class="menu-item">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="admin/nocType.php" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                            data-bs-dismiss="click" data-bs-placement="right">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">NOC Type</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
 
                 <?php
             }
