@@ -68,14 +68,14 @@ include("../include/cssLinks.php"); ?>
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOB विनंती अहवाल</li>
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC विनंती अहवाल</li>
                                             <!--end::Item-->
                                         </ul>
                                         <!--end::Breadcrumb-->
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
-                                            NOB विनंती अहवाल</h1>
+                                            NOC विनंती अहवाल</h1>
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
@@ -99,7 +99,7 @@ include("../include/cssLinks.php"); ?>
                                             <form action=""
                                                 class="form mb-15 fv-plugins-bootstrap5 fv-plugins-framework"
                                                 method="post" id="kt_contact_form">
-                                                <h1 class="fw-bold text-gray-900 mb-9">NOB विनंती अहवाल</h1>
+                                                <h1 class="fw-bold text-gray-900 mb-9">NOC विनंती अहवाल</h1>
 
                                                 <!--begin::Input group-->
                                                 <div class="row mb-5">
