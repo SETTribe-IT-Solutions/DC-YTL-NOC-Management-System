@@ -42,7 +42,7 @@ if (isset($_REQUEST['logIn'])) {
                 $_SESSION['userId'] = $result['userId'];
                 $_SESSION['designation'] = $result['designation'];
                 $_SESSION['role'] = "Officer";
-                 $_SESSION['taluka'] = $result['taluka'];
+                $_SESSION['taluka'] = $result['taluka'];
                 if (isset($_POST['signed'])) {
                     setcookie('userId', $result['userId'], time() + (86400 * 30), '/');
                     setcookie('designation', "Officer", time() + (86400 * 30), '/');
@@ -53,7 +53,7 @@ if (isset($_REQUEST['logIn'])) {
                 } else if ($result['designation'] == "Tahsildar") {
                     echo "<script>window.location = 'officers/tahsildar-dashboard.php';</script>";
                 } else if ($result['designation'] == "Department") {
-                    echo "<script>window.location = 'officers/department-dashboard.php';</script>";
+                    echo "<script>window.location = 'department/department-dashboard.php';</script>";
                     $_SESSION['departmentId'] = $result['departmentId'];
 
                 }

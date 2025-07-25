@@ -10,7 +10,7 @@ if (isset($_REQUEST['logIn'])) {
     $password = $_POST['password'];
 
 
-    echo $sql = "SELECT * FROM adminLogins WHERE `username` = '$username' AND `password` = '$password' AND status = 'Active'";
+     $sql = "SELECT * FROM adminLogins WHERE `username` = '$username' AND `password` = '$password' AND status = 'Active'";
 
     $query = mysqli_query($con, $sql);
 
@@ -21,6 +21,7 @@ if (isset($_REQUEST['logIn'])) {
 
         if ($result['username'] == $username && $result['password'] == $password) {
             $_SESSION['userId'] = $result['userId'];
+            $_SESSION['designation'] = $result['designation'];
             $_SESSION['admin'] = "admin";
             $_SESSION['role'] = "Collector";
 

@@ -1,3 +1,9 @@
+<?php
+session_start();
+
+$designation = $_SESSION['designation'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <!--begin::Head-->
@@ -36,7 +42,14 @@
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                <?php include("../include/admin-sidebar.php"); ?>
+                 <?php
+
+if ($designation === 'admin') {
+    include("../include/admin-sidebar.php");
+} else {
+    include("../include/sidebar.php");
+}
+?>
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">

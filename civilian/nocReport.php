@@ -17,7 +17,7 @@ include('../include/sweetAlert.php');
 
 <head>
     <base href="../">
-    <title>Saul Theme by Keenthemes</title>
+    <title>NOC अर्ज पहा</title>
     <meta charset="utf-8" />
     <meta name="description" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
     <meta name="keywords"
@@ -31,13 +31,14 @@ include('../include/sweetAlert.php');
     <link href="assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 
     <style>
-        .table:not(.table-bordered) th:first-child,
-        .table:not(.table-bordered) td:first-child {
-            padding-left: 1.2rem !important;
+        #datatable th {
+            border: 1px solid #F4F4F4;
+
         }
 
-        .table:not(.table-bordered) td:last-child {
-            padding-right: 1.2rem !important;
+        /* Style for table body cells */
+        #datatable td {
+            border: 1px solid #F4F4F4;
         }
     </style>
 
@@ -82,7 +83,7 @@ include('../include/sweetAlert.php');
                                         <ul class="breadcrumb breadcrumb-separatorless fw-semibold mb-6">
                                             <!--begin::Item-->
                                             <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
-                                                <a href="../dist/index.html" class="text-gray-500">
+                                                <a href="civilian/index.php" class="text-gray-500">
                                                     <i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
                                                 </a>
                                             </li>
@@ -93,7 +94,7 @@ include('../include/sweetAlert.php');
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC अर्जाची ट्रॅकिंग
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC अर्ज पहा
                                             </li>
                                             <!--end::Item-->
                                         </ul>
@@ -101,7 +102,7 @@ include('../include/sweetAlert.php');
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1">
-                                            NOC Applications
+                                            NOC अर्ज पहा
                                         </h1>
                                         <!--end::Title-->
                                     </div>
@@ -118,61 +119,13 @@ include('../include/sweetAlert.php');
                             <div id="kt_app_content_container" class="app-container container-fluid">
                                 <!--begin::Contact-->
                                 <div class="card card-flush">
-                                    <div class="card-header align-items-center py-5 gap-2 gap-md-5">
-                                        <div class="card-title">
-                                            <!--begin::Search-->
-                                            <div class="d-flex align-items-center position-relative my-1">
-
-                                                <i class="ki-duotone ki-magnifier fs-1 position-absolute ms-4">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                                <input type="text" data-kt-filter="search"
-                                                    class="form-control form-control-solid w-250px ps-14"
-                                                    placeholder="Search Report" />
-                                            </div>
-                                            <!--end::Search-->
-                                            <!--begin::Export buttons-->
-                                            <div id="kt_datatable_example_1_export" class="d-none"></div>
-                                            <!--end::Export buttons-->
-                                        </div>
-                                        <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-                                            <!--begin::Export dropdown-->
-                                            <button type="button" class="btn btn-light-primary"
-                                                data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                                <i class="ki-duotone ki-exit-down fs-2"><span class="path1"></span><span
-                                                        class="path2"></span></i>
-                                                Export Report
-                                            </button>
-                                            <!--begin::Menu-->
-                                            <div id="kt_datatable_example_export_menu"
-                                                class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4"
-                                                data-kt-menu="true">
-
-                                                <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
-                                                    <a href="#" class="menu-link px-3" data-kt-export="excel">
-                                                        Export as Excel
-                                                    </a>
-                                                </div>
-                                                <!--end::Menu item-->
-
-                                            </div>
-                                            <!--end::Menu-->
-                                            <!--end::Export dropdown-->
-
-                                            <!--begin::Hide default export buttons-->
-                                            <div id="kt_datatable_example_buttons" class="d-none"></div>
-                                            <!--end::Hide default export buttons-->
-                                        </div>
-                                    </div>
                                     <div class="card-body">
-                                        <table class="table align-middle border rounded table-row-dashed fs-6 g-5"
-                                            id="kt_datatable_example">
+                                        <table class="table table-rounded table-striped border gy-7 gs-7"
+                                            id="datatable">
                                             <thead>
                                                 <!--begin::Table row-->
-                                                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase">
-
+                                                <tr class="text-start text-dark-900 fw-bold fs-6 text-uppercase">
+                                                    <th class="min-w-70px">Sr. No.</th>
                                                     <th>NOC क्रमांक</th>
                                                     <th>NOC प्रकार निवडा</th>
                                                     <th>जन्मतारीख</th>
@@ -192,8 +145,9 @@ include('../include/sweetAlert.php');
                                                 </tr>
                                                 <!--end::Table row-->
                                             </thead>
-                                            <tbody class="fw-semibold text-black-800">
+                                            <tbody class="fw-semibold text-gray-600">
                                                 <?php
+                                                $i = 1;
                                                 $userId = $_SESSION['userId'];
                                                 $sql = "SELECT * FROM nocApplications WHERE civilianId='$userId' ORDER BY createdDateTime DESC";
                                                 $q = mysqli_query($con, $sql);
@@ -205,6 +159,7 @@ include('../include/sweetAlert.php');
 
                                                     ?>
                                                     <tr class="odd">
+                                                        <td><?= $i++ ?></td>
                                                         <td><?= $r['applicationId']; ?></td>
                                                         <td><?= $r['nocType']; ?></td>
                                                         <td><?= $r['dob']; ?></td>
@@ -271,6 +226,26 @@ include('../include/sweetAlert.php');
 
     <script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script>
+
+        $("#datatable").DataTable({
+
+            "scrollCollapse": true,
+            "language": {
+                "lengthMenu": "Show _MENU_",
+            },
+            "dom":
+                "<'row mb-2'" +
+                "<'col-sm-6 d-flex align-items-center justify-conten-start dt-toolbar'l>" +
+                "<'col-sm-6 d-flex align-items-center justify-content-end dt-toolbar'f>" +
+                ">" +
+
+                "<'table-responsive'tr>" +
+
+                "<'row'" +
+                "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
+                "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
+                ">"
+        });
         "use strict";
 
         // Class definition

@@ -1,5 +1,9 @@
 <?php
 session_start();
+
+$designation = $_SESSION['designation'] ?? '';
+$taluka = $_SESSION['taluka'] ?? '';
+
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
@@ -63,7 +67,17 @@ include('../include/sweetAlert.php');
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                <?php include("../include/sidebar.php"); ?>
+              <?php
+// Check the user's designation
+if ($designation === 'admin') {
+    // If designation is 'admin', include the admin sidebar
+    include("../include/admin-sidebar.php");
+} else {
+    // For all other designations, include the regular sidebar
+    include("../include/sidebar.php");
+}
+?>
+
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -189,13 +203,22 @@ include('../include/sweetAlert.php');
     <tbody class="fw-semibold text-black-800">
         <?php
         // civilianId filter हटा दिया गया
-        $sql = "SELECT na.*, nt.type AS nocType 
+       
+if (strtolower($designation) === 'admin') {
+    $sql = "SELECT na.*, nt.type AS nocType 
+            FROM departmentNocApplications na
+            LEFT JOIN nocTypes nt ON nt.id = na.nocTypeId
+            ORDER BY na.createdDateTime DESC";
+} else {
+    // Officer or other: filter by taluka
+     $sql = "SELECT na.*, nt.type AS nocType 
                 FROM departmentNocApplications na
                 LEFT JOIN nocTypes nt ON nt.id = na.nocTypeId
                 WHERE na.taluka = '$taluka'
                 ORDER BY na.createdDateTime DESC ";
+}
 
-        $q = mysqli_query($con, $sql);
+$q = mysqli_query($con, $sql);
         while ($r = mysqli_fetch_assoc($q)) {
         ?>
             <tr class="odd">

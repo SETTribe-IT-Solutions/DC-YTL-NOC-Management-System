@@ -3,10 +3,7 @@ session_start();
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
-if (!isset($_SESSION['userId'])) {
-    header('location:../login.php');
-    exit;
-}
+$designation = $_SESSION['designation'];
 
 include('../include/conn.php');
 include('../include/sweetAlert.php');
@@ -17,7 +14,7 @@ include('../include/sweetAlert.php');
 
 <head>
     <base href="../">
-    <title>NOC अर्ज पहा</title>
+    <title>Saul Theme by Keenthemes</title>
     <meta charset="utf-8" />
     <meta name="description" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
     <meta name="keywords"
@@ -49,7 +46,7 @@ include('../include/sweetAlert.php');
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                <?php include("../include/sidebar.php"); ?>
+                <?php include("../include/admin-sidebar.php"); ?>
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -68,7 +65,7 @@ include('../include/sweetAlert.php');
                                         <ul class="breadcrumb breadcrumb-separatorless fw-semibold mb-6">
                                             <!--begin::Item-->
                                             <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
-                                                <a href="civilian/index.php" class="text-gray-500">
+                                                <a href="../dist/index.html" class="text-gray-500">
                                                     <i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
                                                 </a>
                                             </li>
@@ -80,7 +77,7 @@ include('../include/sweetAlert.php');
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
-                                                <a href="civilian/nocReport.php">NOC अर्ज पहा
+                                                <a href="civilian/nocReport.php">NOC Applications
                                                 </a>
                                             </li>
                                             <!--end::Item-->
@@ -359,12 +356,9 @@ include('../include/sweetAlert.php');
                                                                         नोट: सभावना हुआलेली आवश्यकताओं का ध्यान व सत्ये,
                                                                         अनुपालन उपलब्ध करे.
                                                                     </div>
-                                                                    <a href="noc_certificate.pdf" download>
-                                                                        <button class="btn-download">
-                                                                            <i class="fas fa-download me-2"></i>Download
-                                                                        </button>
-                                                                        <a>
-
+                                                                    <button class="btn-download">
+                                                                        <i class="fas fa-download me-2"></i>Download
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>
