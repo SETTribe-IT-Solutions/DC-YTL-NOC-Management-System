@@ -107,36 +107,60 @@ if ($designation === 'admin') {
             
           <?php if (isset($_REQUEST['edit'])) {
             $id = $_REQUEST['edit'];
-            $query = mysqli_query($conn,"select * from departments WHERE id = $id");
+            $query = mysqli_query($conn,"select * from users WHERE id = $id");
             $result = mysqli_fetch_assoc($query);
            ?>
            <?php } ?>
 
                    <div class="col-md-12 col-sm-12 p-4">
   <h3 class="mb-4 text-center">विभाग निर्मिती</h3>
-  <form action="admin/department_master_DB.php" method="POST">
+  <form action="admin/user_master-DB.php" method="POST">
     <div class="row">
       <!-- department Name -->
 
   
-      <div class="col-md-6 mb-3">
-        <label for="fullname" class="form-label">Department</label>
-        <input type="text" value="<?php echo $result['departmentName'];  ?>" name="departmentName" id="Department" class="form-control" required placeholder="Department">
+      <div class="col-md-6 fv-row fv-plugins-icon-container">
+    <label class="fs-5 fw-semibold mb-2">Department</label>
+
+    <select class="form-select form-select-solid"
+            data-control="select2"
+            data-placeholder="Select an option"
+            name="departmentId[]"  required>
+        <option></option>
+
+         <?php
+    // Fetch all active departments
+    $deptResult = mysqli_query($conn, "SELECT id, departmentName FROM departments WHERE status = 'Active'");
+    while ($rows = mysqli_fetch_assoc($deptResult)) {
+        // Check if this department ID is in the selected list
+                                                         if (isset($_REQUEST['edit'])) { 
+        $selected = in_array($rows['id'], $selectedDepartments) ? 'selected' : '';
+
+                                                         }
+
+        echo '<option value="' . $rows['id'] . '" ' . $selected . '>' . $rows['departmentName'] . '</option>';
+    }
+    ?>
+    </select>
+</div>
+
+ <div class="col-md-6 mb-3">
+        <label for="fullname" class="form-label">Employee Name</label>
+        <input type="text" value="<?php echo $result['name'];  ?>" name="name" id="name" class="form-control" required placeholder="Enter Name">
       </div>
 
  <div class="col-md-6 mb-3">
-        <label for="fullname" class="form-label">HOD Name</label>
-        <input type="text" value="<?php echo $result['HodName'];  ?>" name="HodName" id="HodName" class="form-control" required placeholder="Enter Name">
-      </div>
-
- <div class="col-md-6 mb-3">
-        <label for="fullname" class="form-label">HOD Mobile Number</label>
-        <input type="text" value="<?php echo $result['HodNumber'];  ?>" name="HodNumber" id="HodNumber" class="form-control" required placeholder="Enter MObile Number">
+        <label for="fullname" class="form-label">Mobile No</label>
+        <input type="text" value="<?php echo $result['mobileNo'];  ?>" name="mobileNo" id="mobileNo" class="form-control" required placeholder="Enter MObile Number">
       </div>
 
        <div class="col-md-6 mb-3">
         <label for="fullname" class="form-label">Password</label>
-        <input type="text" value="<?php echo $result['HodPassword'];  ?>" name="HodPassword" id="HodPassword" class="form-control" required placeholder="Enter Password">
+        <input type="text" value="<?php echo $result['password'];  ?>" name="password" id="password" class="form-control" required placeholder="Enter Password">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="fullname" class="form-label">designation</label>
+        <input type="text" value="<?php echo $result['designation'];  ?>" name="designation" id="designation" class="form-control" required placeholder="Enter Password">
       </div>
 
     </div>
@@ -153,47 +177,51 @@ if ($designation === 'admin') {
 <!-- Table -->
   <div class="table-responsive mt-5">
     <table class="table table-bordered text-center">
-      <thead class="table-dark">
-        <tr>
-          <th>Sr. No.</th>
-          <th>Department</th>
-          <th>HOD NAME </th>
-           <th>HOD MOBILE </th>
-            <th>HOD PASSWORD </th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-          $result = mysqli_query($conn,"select * from departments WHERE status = 'Active'") or die($conn->error);
-          $i = 1;
-          while($row = mysqli_fetch_assoc($result)){
+  <thead class="table-dark">
+    <tr>
+      <th>Sr. No.</th>
+      <th>Department</th>
+      <th>EMPLOYEE NAME</th>
+      <th>MOBILE</th>
+      <th>PASSWORD</th>
+      <th>Designation</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+    $result = mysqli_query($conn, "
+      SELECT users.*, departments.departmentName 
+      FROM users 
+      LEFT JOIN departments ON users.departmentId = departments.id 
+      WHERE users.status = 'Active'
+    ") or die($conn->error);
+    
+    $i = 1;
+    while($row = mysqli_fetch_assoc($result)) {
+    ?>
+    <tr>
+      <td><?php echo $i++ ?></td>
+      <td><?php echo $row['departmentName'] ?></td>
+      <td><?php echo $row['name'] ?></td>
+      <td><?php echo $row['mobileNo'] ?></td>
+      <td><?php echo $row['password'] ?></td>
+      <td><?php echo $row['designation'] ?></td>
+      <td>
+        <a href="admin/user_master.php?edit=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning me-1">
+          <i class="fas fa-edit"></i>
+        </a>
+        <a href="#" 
+           class="btn btn-sm btn-danger delete-btn" 
+           data-href="admin/user_master_DB.php?delete=<?php echo $row['id']; ?>">
+           <i class="fas fa-trash-alt"></i>
+        </a>
+      </td>
+    </tr>
+    <?php } ?>
+  </tbody>
+</table>
 
-          
-          ?>
-       <tr>
-        <td><?php echo $i++ ?></td>
-        <td><?php echo $row['departmentName'] ?></td>
-        <td><?php echo $row['HodName'] ?></td>
-        <td><?php echo $row['HodNumber'] ?></td>
-        <td><?php echo $row['HodPassword'] ?></td>
-        <td>
-          <a href="admin/department_master.php?edit=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning me-1">
-                    <i class="fas fa-edit"></i>
-                  </a>
-                <a href="#" 
-   class="btn btn-sm btn-danger delete-btn" 
-   data-href="admin/department_master_DB.php?delete=<?php echo $row['id']; ?>">
-   <i class="fas fa-trash-alt"></i>
-</a>
-
-
-        </td>
-       </tr>
-       <?php } ?>
-        
-      </tbody>
-    </table>
   </div>
             
             

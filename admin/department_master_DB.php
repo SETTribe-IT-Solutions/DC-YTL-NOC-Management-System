@@ -4,11 +4,14 @@ include('../include/conn.php');
 if (isset($_POST['submit'])) {
     date_default_timezone_set('Asia/Kolkata');
     $departmentName = $_POST['departmentName'];
+    $HodName = $_POST['HodName'];
+    $HodNumber = $_POST['HodNumber'];
+    $HodPassword = $_POST['HodPassword'];
     $userId = 'userId_001';
     $createdDateTime = date('Y-m-d H:i:s');
 
 
-    $query = mysqli_query($conn, "INSERT INTO departments (`departmentName`, `userId`, `createdDateTime`) VALUES ('$departmentName', '$userId', '$createdDateTime')");
+    $query = mysqli_query($conn, "INSERT INTO departments (`departmentName`, `HodName`, `HodNumber`,`HodPassword`, `userId`, `createdDateTime`) VALUES ('$departmentName','$HodName','$HodNumber', '$HodPassword', '$userId', '$createdDateTime')");
 
 
     ?>
@@ -40,10 +43,14 @@ if (isset($_POST['update'])) {
         $id = $_POST['id'];
 
     $departmentName = $_POST['departmentName'];
+        $HodName = $_POST['HodName'];
+    $HodNumber = $_POST['HodNumber'];
+    $HodPassword = $_POST['HodPassword'];
+
     $userId = 'userId_001';
     $updateDateTime = date('Y-m-d H:i:s');
     $query = mysqli_query($conn, "UPDATE departments 
-        SET departmentName = '$departmentName', userId = '$userId', updateDateTime = '$updateDateTime' WHERE id = '$id'");
+        SET departmentName = '$departmentName', HodName = '$HodName', HodNumber = '$HodNumber', HodPassword = '$HodPassword', userId = '$userId', updateDateTime = '$updateDateTime' WHERE id = '$id'");
     ?>
     <!DOCTYPE html>
     <html lang="en">
