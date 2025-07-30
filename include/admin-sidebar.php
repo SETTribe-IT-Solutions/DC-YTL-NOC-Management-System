@@ -179,6 +179,18 @@ session_start();
                     <!--end:Menu item-->
 
                     <!--end:Menu item-->
+
+                     <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link" href="admin/user_master.php" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                            data-bs-dismiss="click" data-bs-placement="right">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">Create user</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
                 </div>
                 <!--end:Menu sub-->
             </div>
