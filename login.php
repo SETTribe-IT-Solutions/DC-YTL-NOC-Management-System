@@ -15,7 +15,7 @@ if (empty($_REQUEST['role'])) {
 <!--begin::Head-->
 
 <head>
-    <title>NOC Portal - Maharashtra Shashan</title>
+    <title>NOC Portal</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 

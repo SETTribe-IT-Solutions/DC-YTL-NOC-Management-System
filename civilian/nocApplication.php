@@ -15,7 +15,7 @@ include('../include/conn.php');
     <base href="../">
     </base>
 
-    <title>NOC Application</title>
+    <title>NOC Portal</title>
     <meta charset="utf-8" />
     <meta name="description" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
     <meta name="keywords"

@@ -11,7 +11,7 @@ $designation = $_SESSION['designation'];
 
 <head>
     <base href="../">
-    <title>Saul Theme by Keenthemes</title>
+    <title>NOC Portal</title>
     <meta charset="utf-8" />
     <meta name="description" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
     <meta name="keywords"
@@ -122,26 +122,23 @@ if ($designation === 'admin') {
       <div class="col-md-6 fv-row fv-plugins-icon-container">
     <label class="fs-5 fw-semibold mb-2">Department</label>
 
-    <select class="form-select form-select-solid"
-            data-control="select2"
-            data-placeholder="Select an option"
-            name="departmentId[]"  required>
-        <option></option>
-
-         <?php
-    // Fetch all active departments
+   <select class="form-select form-select-solid"
+        data-control="select2"
+        data-placeholder="Select a department"
+        name="departmentId" required>
+    <option></option>
+    <?php
     $deptResult = mysqli_query($conn, "SELECT id, departmentName FROM departments WHERE status = 'Active'");
     while ($rows = mysqli_fetch_assoc($deptResult)) {
-        // Check if this department ID is in the selected list
-                                                         if (isset($_REQUEST['edit'])) { 
-        $selected = in_array($rows['id'], $selectedDepartments) ? 'selected' : '';
-
-                                                         }
-
+        $selected = '';
+        if (isset($result['departmentId']) && $result['departmentId'] == $rows['id']) {
+            $selected = 'selected';
+        }
         echo '<option value="' . $rows['id'] . '" ' . $selected . '>' . $rows['departmentName'] . '</option>';
     }
     ?>
-    </select>
+</select>
+
 </div>
 
  <div class="col-md-6 mb-3">
@@ -213,7 +210,7 @@ if ($designation === 'admin') {
         </a>
         <a href="#" 
            class="btn btn-sm btn-danger delete-btn" 
-           data-href="admin/user_master_DB.php?delete=<?php echo $row['id']; ?>">
+           data-href="admin/user_master-DB.php?delete=<?php echo $row['id']; ?>">
            <i class="fas fa-trash-alt"></i>
         </a>
       </td>
