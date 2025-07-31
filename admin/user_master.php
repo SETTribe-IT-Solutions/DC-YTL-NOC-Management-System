@@ -1,5 +1,7 @@
 <?php
 session_start();
+error_reporting(~E_ALL & ~E_WARNING); // Report all errors except warnings
+
 
 $designation = $_SESSION['designation'];
 ?>
@@ -148,26 +150,34 @@ if ($designation === 'admin') {
 
  <div class="col-md-6 mb-3">
         <label for="fullname" class="form-label">Mobile No</label>
-        <input type="text" value="<?php echo $result['mobileNo'];  ?>" name="mobileNo" id="mobileNo" class="form-control" required placeholder="Enter MObile Number">
+        <input type="text" value="<?php echo $result['mobileNo'];  ?>" name="mobileNo" id="mobileNo" class="form-control" required placeholder="Enter Mobile Number">
       </div>
 
        <div class="col-md-6 mb-3">
         <label for="fullname" class="form-label">Password</label>
-        <input type="text" value="<?php echo $result['password'];  ?>" name="password" id="password" class="form-control" required placeholder="Enter Password">
+        <input type="password" value="<?php echo $result['password'];  ?>" name="password" id="password" class="form-control" required placeholder="Enter Password">
       </div>
       <div class="col-md-6 mb-3">
         <label for="fullname" class="form-label">designation</label>
-        <input type="text" value="<?php echo $result['designation'];  ?>" name="designation" id="designation" class="form-control" required placeholder="Enter Password">
+        <input type="text" value="<?php echo $result['designation'];  ?>" name="designation" id="designation" class="form-control" required placeholder="Enter designation">
       </div>
 
     </div>
-  <?php if (isset($_REQUEST['edit'])) { ?>
+<?php if (isset($_REQUEST['edit'])) { ?>
         <input type="hidden" name="id" value="<?php echo $result['id']; ?>">
 
-  <button type="submit" name="update" class="btn btn-warning w-100 mt-3" style="width: 10% !important;">Update</button>
-<?php } else { ?>
-  <button type="submit" name="submit" class="btn btn-primary w-100 mt-3" style="width: 10% !important;">Submit</button>
-<?php } ?>
+        <!-- Update Button -->
+        <button type="submit" name="update" class="btn btn-warning w-100 mt-3" style="width: 10% !important;">Update</button>
+
+        <!-- Cancel Button -->
+<
+<button type="button" onclick="window.location.href='admin/user_master.php';" class="btn btn-danger w-100 mt-3" style="width: 10% !important;">Cancel</button>
+
+    <?php } else { ?>
+        <!-- Submit Button -->
+        <button type="submit" name="submit" class="btn btn-primary w-100 mt-3" style="width: 10% !important;">Submit</button>
+    <?php } ?>
+
   </form>
 
 </div> 
