@@ -4,6 +4,7 @@ ini_set('display_startup_errors', 0);
 error_reporting(0);
 session_start();
 include('../include/conn.php');
+$userId = $_SESSION['userId'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -140,10 +141,10 @@ include('../include/conn.php');
                               FROM nocApplications a
                               INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
                               LEFT JOIN civilianRegistrations c ON a.civilianId = c.civilianId
-                              WHERE r.departmentId = ?
+                              WHERE  a.inspectionOfficer=?
                               ORDER BY a.createdDateTime DESC
                           ");
-                          $stmt->bind_param("i", $departmentId);
+                          $stmt->bind_param("s", $userId);
                           $stmt->execute();
                           $result = $stmt->get_result();
                           $i = 1;
@@ -200,7 +201,7 @@ include('../include/conn.php');
                                 <div class="d-flex flex-wrap gap-1">
                                   <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                     data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
-                                    Change Status
+                                   Submit Report
                                   </button>
                                   <?php if (!isset($row['inspectionOfficer']) || trim($row['inspectionOfficer']) === ''): ?>
                                     <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
@@ -213,39 +214,60 @@ include('../include/conn.php');
                                   <?php endif; ?>
                                 </div>
                                 <!-- Change Status Modal -->
-                                <div class="modal fade" id="updateStatusModal<?php echo $row['applicationId']; ?>" tabindex="-1"
-                                  aria-labelledby="updateStatusModalLabel<?php echo $row['applicationId']; ?>" aria-hidden="true">
-                                  <div class="modal-dialog">
-                                    <form method="POST" action="department/nocReport_DB.php">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <h5 class="modal-title" id="updateStatusModalLabel<?php echo $row['applicationId']; ?>">Update Application Status</h5>
-                                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                          <input type="hidden" name="applicationId" value="<?php echo $row['applicationId']; ?>">
-                                          <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
-                                          <div class="mb-3">
-                                            <label for="statusSelect<?php echo $row['applicationId']; ?>" class="form-label">Status</label>
-                                            <select class="form-select" name="status" id="statusSelect<?php echo $row['applicationId']; ?>" required>
-                                              <option value="">Select</option>
-                                              <option value="Under Review">Under Review</option>
-                                              <option value="Approved">Approved</option>
-                                              <option value="Rejected">Rejected</option>
-                                            </select>
-                                          </div>
-                                          <div class="mb-3 d-none" id="remarkDiv<?php echo $row['applicationId']; ?>">
-                                            <label class="form-label">Rejection Remark</label>
-                                            <textarea class="form-control" name="remarks" placeholder="Reason for rejection..."></textarea>
-                                          </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                          <button type="submit" name="update" class="btn btn-success">Submit</button>
-                                        </div>
-                                      </div>
-                                    </form>
-                                  </div>
-                                </div>
+                               <div class="modal fade" id="updateStatusModal<?php echo $row['applicationId']; ?>" tabindex="-1"
+     aria-labelledby="updateStatusModalLabel<?php echo $row['applicationId']; ?>" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="POST" action="department/nocReport_DB.php" enctype="multipart/form-data">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateStatusModalLabel<?php echo $row['applicationId']; ?>">Submit File</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="applicationId" value="<?php echo $row['applicationId']; ?>">
+          <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
+
+
+          <div class="mb-3 d-none" id="remarkDiv<?php echo $row['applicationId']; ?>">
+            <label class="form-label">Rejection Remark</label>
+            <textarea class="form-control" name="remarks" placeholder="Reason for rejection..."></textarea>
+          </div>
+<form method="POST" action="department/visitReport_DB.php" enctype="multipart/form-data">
+  ...
+  
+  <div class="mb-3">
+    <label class="form-label">Upload Files (optional)</label>
+    <input type="file" name="fildFile[]" class="form-control" accept=".pdf,.jpg,.jpeg,.png" multiple>
+    <div class="form-text">Allowed: PDF, JPG, PNG. You can select multiple. Max each: 5MB.</div>
+  </div>
+  <div class="mb-3">
+  <label class="form-label">Remark (optional)</label>
+  <textarea name="fildRemark" class="form-control" rows="2" placeholder="Add your remark..."></textarea>
+  <div class="form-text">Any note or comment regarding this update.</div>
+</div>
+  ...
+</form>
+                                    
+        <div class="modal-footer">
+          <button type="submit" name="update" class="btn btn-success">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // show remark only when Rejected selected
+  document.getElementById("statusSelect<?php echo $row['applicationId']; ?>").addEventListener('change', function() {
+    const remarkDiv = document.getElementById("remarkDiv<?php echo $row['applicationId']; ?>");
+    if (this.value === 'Rejected') {
+      remarkDiv.classList.remove('d-none');
+    } else {
+      remarkDiv.classList.add('d-none');
+    }
+  });
+</script>
+
                                 <!-- Forward NOC Modal -->
                                 <div class="modal fade" id="forwardNOCModal<?php echo $row['applicationId']; ?>" tabindex="-1"
                                   aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>" aria-hidden="true">
