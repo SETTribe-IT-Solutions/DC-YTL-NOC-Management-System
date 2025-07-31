@@ -302,64 +302,119 @@ include('../include/conn.php');
                                 <span class="<?php echo $color; ?>"><?php echo $status; ?></span>
                               </td>
 
-                              <td>
-                                <button class="btn btn-sm btn-warning me-1" data-bs-toggle="modal"
-                                  data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>"
-                                  data-id="<?php echo $row['applicationId']; ?>"
-                                  data-applicationid="<?php echo $row['applicationId']; ?>">
-                                  Change Status
-                                </button>
+                             <td>
 
-                                <!-- Modal -->
+  <!-- Change Status Button -->
+  <button class="btn btn-sm btn-warning me-1" data-bs-toggle="modal"
+    data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
+    Change Status
+  </button>
 
-                                <div class="modal fade" id="updateStatusModal<?php echo $row['applicationId']; ?>"
-                                  tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
-                                  <div class="modal-dialog">
-                                    <form method="POST" action="department/nocReport_DB.php">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <h5 class="modal-title" id="updateStatusModalLabel">Update Application Status
-                                          </h5>
-                                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                          <input type="hidden" name="applicationId" id="modalAppId">
-                                          <input type="hidden" value="<?php echo $row['applicationId'] ?>"
-                                            name="applicationId" id="modalApplicationId">
+  <!-- Change Status Modal -->
+  <div class="modal fade" id="updateStatusModal<?php echo $row['applicationId']; ?>" tabindex="-1"
+    aria-labelledby="updateStatusModalLabel<?php echo $row['applicationId']; ?>" aria-hidden="true">
+    <div class="modal-dialog">
+      <form method="POST" action="department/nocReport_DB.php">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateStatusModalLabel<?php echo $row['applicationId']; ?>">Update Application Status</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="applicationId" value="<?php echo $row['applicationId']; ?>">
+            <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
 
-                                          <input type="hidden" value="<?php echo $departmentId ?>" name="departmentId"
-                                            id="modalDepartmentId">
-                                          <div class="mb-3">
-                                            <label for="status" class="form-label">Status</label>
-                                            <select class="form-select" name="status" id="statusSelect" required>
-                                              <option value="">Select</option>
-                                              <option value="Under Review">Under Review</option>
-                                              <option value="Approved">Approved</option>
-                                              <option value="Rejected">Rejected</option>
-                                            </select>
-                                          </div>
+            <div class="mb-3">
+              <label for="statusSelect<?php echo $row['applicationId']; ?>" class="form-label">Status</label>
+              <select class="form-select" name="status" id="statusSelect<?php echo $row['applicationId']; ?>" required>
+                <option value="">Select</option>
+                <option value="Under Review">Under Review</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
 
-                                          <div class="mb-3 d-none" id="remarkDiv">
-                                            <label for="remark" class="form-label">Rejection Remark</label>
-                                            <textarea class="form-control" name="remarks" id="remark"
-                                              placeholder="Reason for rejection..."></textarea>
-                                          </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                          <button type="submit" name="update" class="btn btn-success">Submit</button>
-                                        </div>
-                                      </div>
-                                    </form>
-                                  </div>
-                                </div>
+            <div class="mb-3 d-none" id="remarkDiv<?php echo $row['applicationId']; ?>">
+              <label class="form-label">Rejection Remark</label>
+              <textarea class="form-control" name="remarks" placeholder="Reason for rejection..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" name="update" class="btn btn-success">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 
-                              </td>
+  <br>
+
+  <!-- Forward NOC Button -->
+  <button class="btn btn-sm btn-danger me-1" data-bs-toggle="modal"
+    data-bs-target="#forwardNOCModal<?php echo $row['applicationId']; ?>">
+    Forward NOC
+  </button>
+
+  <!-- Forward NOC Modal -->
+  <div class="modal fade" id="forwardNOCModal<?php echo $row['applicationId']; ?>" tabindex="-1"
+    aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>" aria-hidden="true">
+    <div class="modal-dialog">
+      <form method="POST" action="department/forwordNOC_db.php">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="forwardNOCModalLabel<?php echo $row['applicationId']; ?>">Forward NOC</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+            <input type="hidden" name="applicationId" value="<?php echo $row['applicationId']; ?>">
+            <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
+          <div class="modal-body">
+            <input type="hidden" name="applicationId" value="<?php echo $row['applicationId']; ?>">
+            <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
+
+            <!-- Employee Dropdown -->
+            <div class="mb-3">
+              <label for="employeeId" class="form-label">Forward to Employee</label>
+              <select name="inspectionOfficer" class="form-select" required>
+                <option value="">Select Employee</option>
+              <?php
+$empQuery = mysqli_query($conn, "
+    SELECT 	userId, name 
+    FROM users 
+    WHERE status = 'Active' 
+    AND designation NOT IN ('Tahsildar', 'SDO', 'Department')
+");
+
+while ($emp = mysqli_fetch_assoc($empQuery)) {
+    echo '<option value="' . $emp['userId'] . '">' . htmlspecialchars($emp['name']) . '</option>';
+}
+?>
+
+              </select>
+            </div>
+
+            <!-- Remark Input -->
+            <div class="mb-3">
+              <label for="remarks" class="form-label">Remark</label>
+              <textarea name="HODremark" class="form-control" placeholder="Enter remark..." required></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" name="forwardNOC" class="btn btn-success">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</td>
 
 
                             </tr>
                           <?php } ?>
                         </tbody>
                       </table>
+                      
                     </div>
                   </div>
                 </div>
@@ -423,6 +478,32 @@ include('../include/conn.php');
       });
     });
   </script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const allForwardModals = document.querySelectorAll('[id^="forwardNOCModal"]');
+
+    allForwardModals.forEach(modal => {
+      modal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const appId = button.getAttribute('data-applicationid') || button.getAttribute('data-id');
+
+        // Find hidden input inside modal and update it
+        const appIdInput = modal.querySelector('input[name="applicationId"]');
+        if (appIdInput && appId) {
+          appIdInput.value = appId;
+        }
+
+        // (Optional) Clear any previous remark or selections if you want
+        const remarkTextarea = modal.querySelector('textarea[name="remarks"]');
+        if (remarkTextarea) remarkTextarea.value = '';
+
+        const employeeSelect = modal.querySelector('select[name="employeeId"]');
+        if (employeeSelect) employeeSelect.selectedIndex = 0;
+      });
+    });
+  });
+</script>
+
 
 
   <?php
@@ -553,7 +634,31 @@ include('../include/conn.php');
 
     $("#kt_datepicker_2").flatpickr();
   </script>
+
+  <?php if (isset($_GET['status'])): ?>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    <?php if ($_GET['status'] === 'success'): ?>
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'NOC forwarded successfully.',
+        confirmButtonText: 'OK'
+      });
+    <?php elseif ($_GET['status'] === 'error'): ?>
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: '<?php echo urldecode($_GET["msg"]); ?>',
+        confirmButtonText: 'OK'
+      });
+    <?php endif; ?>
+  </script>
+<?php endif; ?>
+
 </body>
+
+
 
 <!--end::Body-->
 
