@@ -12,8 +12,8 @@ if (isset($_POST['submit'])) {
     $userId = uniqid('user_');
     $DateTime = date('Y-m-d H:i:s');
 
-    $query = mysqli_query($conn, "INSERT INTO users (`departmentId`, `name`, `mobileNo`, `password`, `designation`, `userId`, `dateTime`, `status`) 
-        VALUES ('$departmentId','$name','$mobileNo', '$password','$designation', '$userId', '$DateTime', 'Active')");
+    $query = mysqli_query($conn, "INSERT INTO users (`departmentId`, `name`, `mobileNo`, `password`, `designation`,`systemRole`, `userId`, `dateTime`, `status`) 
+        VALUES ('$departmentId','$name','$mobileNo', '$password','$designation','Employee', '$userId', '$DateTime', 'Active')");
 
     echo "<!DOCTYPE html><html><head><script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script></head><body>
         <script>

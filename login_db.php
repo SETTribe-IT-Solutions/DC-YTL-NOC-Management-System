@@ -53,8 +53,13 @@ if (isset($_REQUEST['logIn'])) {
                 } else if ($result['designation'] == "Tahsildar") {
                     echo "<script>window.location = 'officers/tahsildar-dashboard.php';</script>";
                 } else if ($result['designation'] == "Department") {
+                     $_SESSION['departmentId'] = $result['departmentId'];
                     echo "<script>window.location = 'department/department-dashboard.php';</script>";
-                    $_SESSION['departmentId'] = $result['departmentId'];
+
+                }
+                else if ($result['systemRole'] == "Employee") {
+                     $_SESSION['departmentId'] = $result['departmentId'];
+                    echo "<script>window.location = 'department/NocReport_employee.php';</script>";
 
                 }
             } else {
