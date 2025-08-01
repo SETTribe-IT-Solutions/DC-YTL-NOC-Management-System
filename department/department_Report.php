@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
-error_reporting(0);
+// ini_set('display_errors', 0);
+// ini_set('display_startup_errors', 0);
+// error_reporting(0);
 session_start();
 include('../include/conn.php');
 ?>
@@ -110,6 +110,7 @@ include('../include/conn.php');
                                                         <th class="min-w-100px">संपर्क अधिकार्याचा मोबाईल क्रमंक</th>
                                                         <th class="min-w-100px">संपर्क अधिकार्याचा ईमेल ID</th>
                                                         <th class="min-w-100px">NOC प्रकार निवडा</th>
+                                                        <th class="min-w-100px">Inpection report</th>
                                                         <th class="min-w-100px">स्थिती</th>
                                                         <th class="min-w-100px">Action</th>
                                                     </tr>
@@ -127,6 +128,8 @@ include('../include/conn.php');
                                                             a.landDesc,
                                                             a.taluka,
                                                             a.village,
+                                                            a.reportFile,
+                                                            a.reportRemark,
                                                             a.gatNo,
                                                             a.mobileNo,
                                                             a.emailId,
@@ -164,6 +167,41 @@ include('../include/conn.php');
                                                             <td><?php echo htmlspecialchars($row['emailId']); ?></td>
                                                             <td><?php echo htmlspecialchars($row['nocTypeId']); ?></td>
                                                             <td>
+<td>
+<?php
+// Files part
+if (!empty($row['reportFile'])) {
+    $parts = preg_split('/\s*-Next file,?\s*/i', $row['reportFile'], -1, PREG_SPLIT_NO_EMPTY);
+    foreach ($parts as $i => $part) {
+        $fileName = trim($part);
+        $displayIndex = $i + 1;
+        $urlName = rawurlencode($fileName);
+        $filePath = "../reportDoc/" . $urlName;
+
+        $safeName = htmlspecialchars($fileName);
+        $exists = is_file($filePath);
+        echo "{$displayIndex}. <a target=\"_blank\" href=\"{$filePath}\">View</a> ({$safeName})";
+        if (!$exists) {
+            echo " <small style=\"color:#a00;\">(file not found on server)</small>";
+        }
+        echo "<br>";
+    }
+} else {
+    echo "-<br>";
+}
+
+// Separator and remark
+$remark = trim($row['reportRemark'] ?? '');
+if ($remark !== '') {
+    echo "<hr style=\"margin:4px 0;\">"; // thin separator
+    echo "<strong>Remark:</strong> " . nl2br(htmlspecialchars($remark));
+}
+?>
+</td>
+
+
+
+                                                            <td>
                                                                 <?php
                                                                 $status = $row['status'];
                                                                 $color = $status == 'Approved' ? 'text-success' : ($status == 'Rejected' ? 'text-danger' : 'text-warning');
@@ -185,7 +223,8 @@ include('../include/conn.php');
                                                                             Forward NOC
                                                                         </button>
                                                                     <?php else: ?>
-                                                                        <span>(NOC Forwarded)</span>
+                                                                        <span>(
+                                                                            NOC Forwarded)</span>
                                                                     <?php endif; ?>
                                                                 </div>
                                                                 <!-- Change Status Modal -->

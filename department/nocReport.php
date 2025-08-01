@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
-error_reporting(0);
+// ini_set('display_errors', 0);
+// ini_set('display_startup_errors', 0);
+// error_reporting(0);
 session_start();
 include('../include/conn.php');
 ?>
@@ -109,6 +109,7 @@ include('../include/conn.php');
                             <th class="min-w-100px">पेन कार्ड पहा</th>
                             <th class="min-w-100px">आधार कार्ड पहा</th>
                             <th class="min-w-100px">तारीख</th>
+                             <th class="min-w-100px">Inpection report</th>
                             <th class="min-w-100px">स्थिती</th>
                             <th class="min-w-100px">Action</th>
                           </tr>
@@ -128,6 +129,8 @@ include('../include/conn.php');
                                   a.gatNo,
                                   a.panCard,
                                   a.aadharCard,
+                                  a.reportFile,
+                                  a.reportRemark,
                                   a.status,
                                   a.createdDateTime,
                                   a.inspectionOfficer,
@@ -189,6 +192,37 @@ include('../include/conn.php');
                                 <?php } ?>
                               </td>
                               <td><?php echo date('d-m-Y', strtotime($row['createdDateTime'])); ?></td>
+                              <td>
+<?php
+// Files part
+if (!empty($row['reportFile'])) {
+    $parts = preg_split('/\s*-Next file,?\s*/i', $row['reportFile'], -1, PREG_SPLIT_NO_EMPTY);
+    foreach ($parts as $i => $part) {
+        $fileName = trim($part);
+        $displayIndex = $i + 1;
+        $urlName = rawurlencode($fileName);
+        $filePath = "../reportDoc/" . $urlName;
+
+        $safeName = htmlspecialchars($fileName);
+        $exists = is_file($filePath);
+        echo "{$displayIndex}. <a target=\"_blank\" href=\"{$filePath}\">View</a> ({$safeName})";
+        if (!$exists) {
+            echo " <small style=\"color:#a00;\">(file not found on server)</small>";
+        }
+        echo "<br>";
+    }
+} else {
+    echo "-<br>";
+}
+
+// Separator and remark
+$remark = trim($row['reportRemark'] ?? '');
+if ($remark !== '') {
+    echo "<hr style=\"margin:4px 0;\">"; // thin separator
+    echo "<strong>Remark:</strong> " . nl2br(htmlspecialchars($remark));
+}
+?>
+</td>
                               <td>
                                 <?php
                                 $status = $row['status'];

@@ -5,6 +5,7 @@ error_reporting(0);
 session_start();
 include('../include/conn.php');
 $userId = $_SESSION['userId'];
+ $departmentId = $_SESSION['departmentId'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -213,41 +214,31 @@ $userId = $_SESSION['userId'];
                                     <span class="badge bg-success align-self-center">NOC Forwarded</span>
                                   <?php endif; ?>
                                 </div>
-                                <!-- Change Status Modal -->
-                               <div class="modal fade" id="updateStatusModal<?php echo $row['applicationId']; ?>" tabindex="-1"
-     aria-labelledby="updateStatusModalLabel<?php echo $row['applicationId']; ?>" aria-hidden="true">
+   <!-- Change Status / Report Modal -->
+<div class="modal fade" id="updateStatusModal<?= $row['applicationId']; ?>" tabindex="-1"
+     aria-labelledby="updateStatusModalLabel<?= $row['applicationId']; ?>" aria-hidden="true">
   <div class="modal-dialog">
-    <form method="POST" action="department/nocReport_DB.php" enctype="multipart/form-data">
+    <form method="POST" action="department/NOC_Report_employeeDB.php" enctype="multipart/form-data">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="updateStatusModalLabel<?php echo $row['applicationId']; ?>">Submit File</h5>
+          <h5 class="modal-title" id="updateStatusModalLabel<?= $row['applicationId']; ?>">Submit Report</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <input type="hidden" name="applicationId" value="<?php echo $row['applicationId']; ?>">
-          <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
-
-
-          <div class="mb-3 d-none" id="remarkDiv<?php echo $row['applicationId']; ?>">
-            <label class="form-label">Rejection Remark</label>
-            <textarea class="form-control" name="remarks" placeholder="Reason for rejection..."></textarea>
+          
+<input type="hidden" name="applicationId" value="<?= htmlspecialchars($row['applicationId']); ?>">
+          <input type="hidden" name="departmentId" value="<?= htmlspecialchars($departmentId); ?>">
+          <div class="mb-3">
+            <label class="form-label">Report Remark (optional)</label>
+            <textarea name="reportRemark" class="form-control" rows="2" placeholder="Enter report remark..."></textarea>
           </div>
-<form method="POST" action="department/visitReport_DB.php" enctype="multipart/form-data">
-  ...
-  
-  <div class="mb-3">
-    <label class="form-label">Upload Files (optional)</label>
-    <input type="file" name="fildFile[]" class="form-control" accept=".pdf,.jpg,.jpeg,.png" multiple>
-    <div class="form-text">Allowed: PDF, JPG, PNG. You can select multiple. Max each: 5MB.</div>
-  </div>
-  <div class="mb-3">
-  <label class="form-label">Remark (optional)</label>
-  <textarea name="fildRemark" class="form-control" rows="2" placeholder="Add your remark..."></textarea>
-  <div class="form-text">Any note or comment regarding this update.</div>
-</div>
-  ...
-</form>
-                                    
+
+          <div class="mb-3">
+            <label class="form-label">Upload Report Files (optional)</label>
+            <input type="file" name="reportFile[]" class="form-control reportFileInput" accept=".pdf,.jpg,.jpeg,.png" multiple>
+            <div class="form-text">Allowed: PDF, JPG, PNG. Max each: 5MB.</div>
+          </div>
+        </div>
         <div class="modal-footer">
           <button type="submit" name="update" class="btn btn-success">Submit</button>
         </div>
@@ -257,13 +248,32 @@ $userId = $_SESSION['userId'];
 </div>
 
 <script>
-  // show remark only when Rejected selected
-  document.getElementById("statusSelect<?php echo $row['applicationId']; ?>").addEventListener('change', function() {
-    const remarkDiv = document.getElementById("remarkDiv<?php echo $row['applicationId']; ?>");
-    if (this.value === 'Rejected') {
-      remarkDiv.classList.remove('d-none');
-    } else {
-      remarkDiv.classList.add('d-none');
+  document.addEventListener('change', function (e) {
+    if (!e.target.matches('.reportFileInput')) return;
+    const input = e.target;
+    const allowedExt = ['pdf', 'jpg', 'jpeg', 'png'];
+    const maxSize = 5 * 1024 * 1024;
+    const files = Array.from(input.files);
+    const invalid = files.find(f => !allowedExt.includes(f.name.split('.').pop().toLowerCase()));
+    if (invalid) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Invalid file type',
+        text: `File "${invalid.name}" is not allowed.`,
+        confirmButtonText: 'OK'
+      });
+      input.value = '';
+      return;
+    }
+    const tooLarge = files.find(f => f.size > maxSize);
+    if (tooLarge) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Too large',
+        text: `File "${tooLarge.name}" exceeds 5MB.`,
+        confirmButtonText: 'OK'
+      });
+      input.value = '';
     }
   });
 </script>

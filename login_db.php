@@ -41,6 +41,7 @@ if (isset($_REQUEST['logIn'])) {
             } else if ($role == "Officer") {
                 $_SESSION['userId'] = $result['userId'];
                 $_SESSION['designation'] = $result['designation'];
+                $_SESSION['systemRole'] = $result['systemRole'];
                 $_SESSION['role'] = "Officer";
                 $_SESSION['taluka'] = $result['taluka'];
                 if (isset($_POST['signed'])) {
