@@ -194,26 +194,24 @@ include('../include/conn.php');
                               <td><?php echo date('d-m-Y', strtotime($row['createdDateTime'])); ?></td>
                               <td>
 <?php
-// Files part
-if (!empty($row['reportFile'])) {
-    $parts = preg_split('/\s*-Next file,?\s*/i', $row['reportFile'], -1, PREG_SPLIT_NO_EMPTY);
-    foreach ($parts as $i => $part) {
-        $fileName = trim($part);
-        $displayIndex = $i + 1;
-        $urlName = rawurlencode($fileName);
-        $filePath = "../reportDoc/" . $urlName;
-
-        $safeName = htmlspecialchars($fileName);
-        $exists = is_file($filePath);
-        echo "{$displayIndex}. <a target=\"_blank\" href=\"{$filePath}\">View</a> ({$safeName})";
-        if (!$exists) {
-            echo " <small style=\"color:#a00;\">(file not found on server)</small>";
-        }
-        echo "<br>";
-    }
-} else {
-    echo "-<br>";
-}
+/// Files part
+                                                                if (!empty($row['reportFile'])) {
+                                                                    $parts = preg_split('/\s*-Next file,?\s*/i', $row['reportFile'], -1, PREG_SPLIT_NO_EMPTY);
+                                                                    foreach ($parts as $part) {
+                                                                        $fileName = trim($part);
+                                                                        $urlName = rawurlencode($fileName);
+                                                                        $filePath = "reportDoc/" . $urlName;
+                                                                        $absolutePath = $_SERVER['DOCUMENT_ROOT'] . '/' . $filePath;
+                                                                        $exists = is_file($absolutePath);
+                                                                        echo "<a target=\"_blank\" href=\"{$filePath}\">View</a>";
+                                                                        // if (!$exists) {
+                                                                        //     echo " <small style=\"color:#a00;\">(file not found)</small>";
+                                                                        // }
+                                                                        echo "<br>";
+                                                                    }
+                                                                } else {
+                                                                    echo "-<br>";
+                                                                } 
 
 // Separator and remark
 $remark = trim($row['reportRemark'] ?? '');
