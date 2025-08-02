@@ -226,8 +226,7 @@ include('../include/conn.php');
                                                                             Forward NOC
                                                                         </button>
                                                                     <?php else: ?>
-                                                                        <span>(
-                                                                            NOC Forwarded)</span>
+                                                                 <span class="badge bg-success align-self-center">NOC Forwarded</span>
                                                                     <?php endif; ?>
                                                                 </div>
                                                                 <!-- Change Status Modal -->
