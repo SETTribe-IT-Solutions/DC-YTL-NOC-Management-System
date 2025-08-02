@@ -147,7 +147,7 @@ if (!isset($_SESSION['userId'])) {
                                       Forward NOC
                                     </button>
                                   <?php else: ?>
-                                    <span class="badge bg-success align-self-center">NOC Forwarded</span>
+                                    
                                   <?php endif; ?>
                                 </div>
                                                             

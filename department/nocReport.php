@@ -224,12 +224,17 @@ include('../include/conn.php');
 
 
 // Separator and remark
+
 $remark = trim($row['reportRemark'] ?? '');
 if ($remark !== '') {
-    echo "<hr style=\"margin:4px 0;\">"; // thin separator
-    echo "<strong>Remark:</strong> " . nl2br(htmlspecialchars($remark));
+    $display = ($remark === '0') ? '-' : nl2br(htmlspecialchars($remark));
+    echo '<hr style="margin:4px 0;">'; // thin separator
+    echo '<strong>Remark:</strong> ' . $display;
 }
 ?>
+</td>
+
+
 </td>
                               <td>
                                 <?php
