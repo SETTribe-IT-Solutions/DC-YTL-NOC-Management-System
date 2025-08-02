@@ -2,6 +2,12 @@
 include('../include/conn.php');
 session_start();
 
+if (!isset($_SESSION['userId'])) {
+   
+    header("Location: ../index.html");
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

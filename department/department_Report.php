@@ -3,6 +3,13 @@
 // ini_set('display_startup_errors', 0);
 // error_reporting(0);
 session_start();
+
+
+if (!isset($_SESSION['userId'])) {
+   
+    header("Location: ../index.html");
+    exit();
+}
 include('../include/conn.php');
 ?>
 <!DOCTYPE html>
@@ -169,23 +176,25 @@ include('../include/conn.php');
                                                             <td>
                                                                 <?php
                                                                 // Files part
-                                                                if (!empty($row['reportFile'])) {
-                                                                    $parts = preg_split('/\s*-Next file,?\s*/i', $row['reportFile'], -1, PREG_SPLIT_NO_EMPTY);
-                                                                    foreach ($parts as $part) {
-                                                                        $fileName = trim($part);
-                                                                        $urlName = rawurlencode($fileName);
-                                                                        $filePath = "reportDoc/" . $urlName;
-                                                                        $absolutePath = $_SERVER['DOCUMENT_ROOT'] . '/' . $filePath;
-                                                                        $exists = is_file($absolutePath);
-                                                                        echo "<a target=\"_blank\" href=\"{$filePath}\">View</a>";
-                                                                        // if (!$exists) {
-                                                                        //     echo " <small style=\"color:#a00;\">(file not found)</small>";
-                                                                        // }
-                                                                        echo "<br>";
-                                                                    }
-                                                                } else {
-                                                                    echo "-<br>";
-                                                                }
+                                                                                                   if (!empty($row['reportFile'])) {
+    $parts = preg_split('/\s*-Next file,?\s*/i', $row['reportFile'], -1, PREG_SPLIT_NO_EMPTY);
+    $i = 1;
+    foreach ($parts as $part) {
+        $fileName = trim($part);
+        $urlName = rawurlencode($fileName);
+        $filePath = "department/reportDoc/" . $urlName;
+        $absolutePath = $_SERVER['DOCUMENT_ROOT'] . '/' . $filePath;
+        $exists = is_file($absolutePath);
+        echo "<a target=\"_blank\" href=\"{$filePath}\">File {$i}</a>";
+        // if (!$exists) {
+        //     echo " <small style=\"color:#a00;\">(file not found)</small>";
+        // }
+        echo "<br>";
+        $i++;
+    }
+} else {
+    echo "-<br>";
+}
 
                                                                 // Separator and remark
                                                                 $remark = trim($row['reportRemark'] ?? '');

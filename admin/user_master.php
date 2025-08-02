@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['userId'])) {
+   
+    header("Location: ../index.html");
+    exit();
+}
 error_reporting(~E_ALL & ~E_WARNING); // Report all errors except warnings
 
 

@@ -1,6 +1,8 @@
 <?php
 include('../include/conn.php');
 
+
+
 if (isset($_POST['submit'])) {
     date_default_timezone_set('Asia/Kolkata');
     $departmentName = $_POST['departmentName'];

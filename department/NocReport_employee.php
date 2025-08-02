@@ -3,9 +3,16 @@ ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
 session_start();
+
+if (!isset($_SESSION['userId'])) {
+   
+    header("Location: ../index.html");
+    exit();
+}
 include('../include/conn.php');
 $userId = $_SESSION['userId'];
  $departmentId = $_SESSION['departmentId'];
+ 
 ?>
 <!DOCTYPE html>
 <html lang="en">
