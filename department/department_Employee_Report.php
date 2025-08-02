@@ -6,6 +6,12 @@ session_start();
 include('../include/conn.php');
 $userId = $_SESSION['userId'];
  $departmentId = $_SESSION['departmentId'];
+ 
+if (!isset($_SESSION['userId'])) {
+   
+    header("Location: ../index.html");
+    exit();
+}
 
 ?>
 <!DOCTYPE html>

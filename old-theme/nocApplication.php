@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
+  <?php
+if (!isset($_SESSION['userId'])) {
+   
+    header("Location: ../index.html");
+    exit();
+}
+?>
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">

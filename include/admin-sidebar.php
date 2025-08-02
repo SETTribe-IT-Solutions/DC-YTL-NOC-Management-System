@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['userId'])) {
+   
+    header("Location: ../index.html");
+    exit();
+}
 ?>
 <div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true" data-kt-drawer-name="app-sidebar"
     data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px"
