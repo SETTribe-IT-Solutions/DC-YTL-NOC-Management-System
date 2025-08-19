@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['userId'])) {
-   
+
     header("Location: ../index.html");
     exit();
 }
@@ -131,8 +131,8 @@ if (!isset($_SESSION['userId'])) {
                                 <!--begin:Menu item-->
                                 <div class="menu-item">
                                     <!--begin:Menu link-->
-                                    <a class="menu-link" href="officers/civilian-report.php" data-bs-toggle="tooltip" data-bs-trigger="hover"
-                                        data-bs-dismiss="click" data-bs-placement="right">
+                                    <a class="menu-link" href="officers/civilian-report.php" data-bs-toggle="tooltip"
+                                        data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
                                         </span>
@@ -141,7 +141,9 @@ if (!isset($_SESSION['userId'])) {
                                     <!--end:Menu link-->
                                 </div>
                                 <!--end:Menu item-->
-
+                            </div>
+                        </a>
+                    </div>
                     <!--end:Menu item-->
                 </div>
                 <!--end:Menu sub-->
@@ -192,10 +194,10 @@ if (!isset($_SESSION['userId'])) {
 
                     <!--end:Menu item-->
 
-                     <div class="menu-item">
+                    <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="admin/user_master.php" data-bs-toggle="tooltip" data-bs-trigger="hover"
-                            data-bs-dismiss="click" data-bs-placement="right">
+                        <a class="menu-link" href="admin/user_master.php" data-bs-toggle="tooltip"
+                            data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
