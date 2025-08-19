@@ -16,7 +16,7 @@ if (isset($_POST['submit'])) {
     $address = $_POST['address'];
     $email = $_POST['email'];
     $mobileNo = $_POST['mobileNo'];
-    $landDesc = $_POST['landDesc'];
+    $landDesc = $_POST['landDesc'] ?? NULl;
     $nocSubject = $_POST['nocSubject'];
     $taluka = $_POST['taluka'];
     $village = $_POST['village'];
@@ -27,7 +27,7 @@ if (isset($_POST['submit'])) {
     // $updateDateTime  = date("Y-m-d H:i:s");
     $civilianId = $_SESSION['userId'];
     // die();
-    $uploadDir = "documents/"; // folder to store files
+    $uploadDir = "../documents/"; // folder to store files
 
     // Allowed MIME types and extensions
     $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
@@ -68,7 +68,6 @@ if (isset($_POST['submit'])) {
     } else {
         $aadharCardPath = "";
     }
-
 
 
     // Step 1: Get the latest applicationId

@@ -140,7 +140,7 @@ include('../include/sweetAlert.php');
                                                     <th>पत्ता</th>
                                                     <th>ईमेल ID</th>
                                                     <th>मोबाईल क्र.</th>
-                                                    <th>जमिनीची तपशील</th>
+                                                    <!-- <th>जमिनीची तपशील</th> -->
                                                     <th>विषय</th>
                                                     <th>तालुका</th>
                                                     <th>गाव</th>
@@ -174,8 +174,8 @@ include('../include/sweetAlert.php');
                                                         <td><?= $r['address']; ?></td>
                                                         <td><?= $r['emailId']; ?></td>
                                                         <td><?= $r['mobileNo']; ?></td>
-                                                        <td><?= $r['landDesc']; ?></td>
-                                                        <td><?= $r['landDesc']; ?></td>
+                                                        <!-- <td><?= $r['landDesc']; ?></td> -->
+                                                        <td><?= $r['nocSubject']; ?></td>
                                                         <td><?= $r['taluka']; ?></td>
                                                         <td><?= $r['village']; ?></td>
                                                         <td><?= $r['gatNo']; ?></td>

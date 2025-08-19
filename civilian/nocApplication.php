@@ -58,14 +58,14 @@ include('../include/conn.php');
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                         <?php
+                <?php
 
-if ($designation === 'admin') {
-    include("../include/admin-sidebar.php");
-} else {
-    include("../include/sidebar.php");
-}
-?>
+                if ($designation === 'admin') {
+                    include("../include/admin-sidebar.php");
+                } else {
+                    include("../include/sidebar.php");
+                }
+                ?>
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -286,38 +286,6 @@ if ($designation === 'admin') {
 
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">मोबाईल क्र. <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" name="mobileNo"
-                                                                placeholder="मोबाईल क्र." <?php echo $readonly; ?>
-                                                                maxlength="10" value="<?php echo $mobileNo; ?>"
-                                                                minlength="10" pattern="\d{10}"
-                                                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                                                                required>
-                                                            <div
-                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Col-->
-                                                    </div>
-                                                    <!--end::Input group-->
-
-                                                    <!--begin::Input group-->
-                                                    <div class="row">
-                                                        <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">जामिनीची तपशील <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" name="landDesc"
-                                                                placeholder="जामिनीची तपशील" required>
-                                                            <div
-                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Col-->
-
-                                                        <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-semibold mb-2">विषय <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control" name="nocSubject"
@@ -329,6 +297,7 @@ if ($designation === 'admin') {
                                                         <!--end::Col-->
                                                     </div>
                                                     <!--end::Input group-->
+
 
                                                     <!--begin::Input group-->
                                                     <div class="row">
@@ -375,11 +344,42 @@ if ($designation === 'admin') {
                                                             </div>
                                                         </div>
                                                         <!--end::Col-->
+
+
                                                     </div>
                                                     <!--end::Input group-->
 
                                                     <!--begin::Input group-->
                                                     <div class="row">
+                                                        <!--begin::Col-->
+                                                        <!-- <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-semibold mb-2">जामिनीची तपशील <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" name="landDesc"
+                                                                placeholder="जामिनीची तपशील" required>
+                                                            <div
+                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                            </div>
+                                                        </div> -->
+                                                        <!--end::Col-->
+
+                                                        <!--begin::Col-->
+                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-semibold mb-2">मोबाईल क्र. <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" name="mobileNo"
+                                                                placeholder="मोबाईल क्र." <?php echo $readonly; ?>
+                                                                maxlength="10" value="<?php echo $mobileNo; ?>"
+                                                                minlength="10" pattern="\d{10}"
+                                                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                                                required>
+                                                            <div
+                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                            </div>
+                                                        </div>
+                                                        <!--end::Col-->
+
+
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-semibold mb-2">गट क्रमांक <span
@@ -391,6 +391,14 @@ if ($designation === 'admin') {
                                                             </div>
                                                         </div>
                                                         <!--end::Col-->
+
+
+                                                    </div>
+                                                    <!--end::Input group-->
+
+                                                    <!--begin::Input group-->
+                                                    <div class="row">
+
 
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
@@ -404,8 +412,7 @@ if ($designation === 'admin') {
                                                             </div>
                                                         </div>
                                                         <!--end::Col-->
-                                                    </div>
-                                                    <div class="row">
+
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-semibold mb-2">आधारकार्ड अपलोड करा
