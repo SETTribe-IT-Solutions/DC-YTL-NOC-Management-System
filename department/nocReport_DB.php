@@ -26,9 +26,7 @@ if (isset($_POST['update'])) {
         // ✅ Update nocApplicationReviews (check column 'remarks' or 'remark')
         $updateReview = mysqli_query($conn, "
             UPDATE nocApplicationReviews 
-            SET status = '$status', 
-                remarks = '$remarks', 
-                reviewedBy = '$userId',
+            SET 
                 reviewedDateTime = '$dateTime'
             WHERE applicationId = '$applicationId' AND departmentId = '$departmentId'
         ");
@@ -101,7 +99,6 @@ if (isset($_POST['update'])) {
     </html>";
     exit;
 }
-
 
 
 ?>

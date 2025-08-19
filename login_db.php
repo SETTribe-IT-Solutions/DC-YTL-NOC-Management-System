@@ -41,6 +41,7 @@ if (isset($_REQUEST['logIn'])) {
             } else if ($role == "Officer") {
                 $_SESSION['userId'] = $result['userId'];
                 $_SESSION['designation'] = $result['designation'];
+                $_SESSION['systemRole'] = $result['systemRole'];
                 $_SESSION['role'] = "Officer";
                 $_SESSION['taluka'] = $result['taluka'];
                 if (isset($_POST['signed'])) {
@@ -53,8 +54,13 @@ if (isset($_REQUEST['logIn'])) {
                 } else if ($result['designation'] == "Tahsildar") {
                     echo "<script>window.location = 'officers/tahsildar-dashboard.php';</script>";
                 } else if ($result['designation'] == "Department") {
+                     $_SESSION['departmentId'] = $result['departmentId'];
                     echo "<script>window.location = 'department/department-dashboard.php';</script>";
-                    $_SESSION['departmentId'] = $result['departmentId'];
+
+                }
+                else if ($result['systemRole'] == "Employee") {
+                     $_SESSION['departmentId'] = $result['departmentId'];
+                    echo "<script>window.location = 'department/NocReport_employee.php';</script>";
 
                 }
             } else {

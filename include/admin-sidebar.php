@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['userId'])) {
+   
+    header("Location: ../index.html");
+    exit();
+}
 ?>
 <div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true" data-kt-drawer-name="app-sidebar"
     data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px"
@@ -52,7 +58,6 @@ session_start();
             </div>
             <!--end:Menu item-->
 
-            <!--begin:Menu item-->
             <!-- <div class="menu-item" onclick="window.location.href='#'">
             
                 <span class="menu-link">
@@ -106,11 +111,36 @@ session_start();
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
-                            <span class="menu-title">Civilian</span>
-                        </a>
-                        <!--end:Menu link-->
-                    </div>
-                    <!--end:Menu item-->
+
+                            <!--end:Menu link-->
+                            <!--begin:Menu sub-->
+                            <div class="menu-sub menu-sub-accordion">
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="admin/department-report.php" data-bs-toggle="tooltip"
+                                        data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">Department</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="officers/civilian-report.php" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                        data-bs-dismiss="click" data-bs-placement="right">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">Civilian</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
 
                     <!--end:Menu item-->
                 </div>
@@ -161,6 +191,18 @@ session_start();
                     <!--end:Menu item-->
 
                     <!--end:Menu item-->
+
+                     <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link" href="admin/user_master.php" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                            data-bs-dismiss="click" data-bs-placement="right">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">Create user</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
                 </div>
                 <!--end:Menu sub-->
             </div>

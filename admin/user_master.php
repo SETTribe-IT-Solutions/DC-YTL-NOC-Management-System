@@ -1,0 +1,309 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['userId'])) {
+   
+    header("Location: ../index.html");
+    exit();
+}
+error_reporting(~E_ALL & ~E_WARNING); // Report all errors except warnings
+
+
+$designation = $_SESSION['designation'];
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<!--begin::Head-->
+
+
+<head>
+    <base href="../">
+    <title>NOC Portal</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
+    <meta name="keywords"
+        content="Saul, bootstrap, bootstrap 5, dmin themes, free admin themes, bootstrap admin, bootstrap dashboard" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <?php include('../include/conn.php');
+     include("../include/cssLinks.php"); ?>
+</head>
+<!--end::Head-->
+<!--begin::Body-->
+
+<body id="kt_app_body" data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true"
+    data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
+    data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true"
+    data-kt-app-aside-enabled="true" data-kt-app-aside-fixed="true" data-kt-app-aside-push-toolbar="true"
+    data-kt-app-aside-push-footer="true" class="app-default">
+    <!--end::Theme mode setup on page load-->
+    <!--begin::App-->
+    <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
+        <!--begin::Page-->
+        <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+            <!--begin::Header-->
+            <?php
+            include("../include/header.php");
+            ?>
+            <!--end::Header-->
+            <!--begin::Wrapper-->
+            <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
+                <!--begin::Sidebar-->
+                 <?php
+
+if ($designation === 'admin') {
+    include("../include/admin-sidebar.php");
+} else {
+    include("../include/sidebar.php");
+}
+?>
+                <!--end::Sidebar-->
+                <!--begin::Main-->
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                    <!--begin::Content wrapper-->
+                    <div class="d-flex flex-column flex-column-fluid">
+                        <!--begin::Toolbar-->
+                        <div id="kt_app_toolbar" class="app-toolbar pt-5">
+                            <!--begin::Toolbar container-->
+                            <div id="kt_app_toolbar_container"
+                                class="app-container container-fluid d-flex align-items-stretch">
+                                <!--begin::Toolbar wrapper-->
+                                <div class="app-toolbar-wrapper d-flex flex-stack flex-wrap gap-4 w-100">
+                                    <!--begin::Page title-->
+                                    <div class="page-title d-flex flex-column gap-1 me-3 mb-2">
+                                        <!--begin::Breadcrumb-->
+                                        <ul class="breadcrumb breadcrumb-separatorless fw-semibold mb-6">
+                                            <!--begin::Item-->
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
+                                                <a href="../dist/index.html" class="text-gray-500">
+                                                    <i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
+                                                </a>
+                                            </li>
+                                            <!--end::Item-->
+                                            <!--begin::Item-->
+                                            <li class="breadcrumb-item">
+                                                <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                                            </li>
+                                            <!--end::Item-->
+                                            <!--begin::Item-->
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">विभाग निर्मिती</li>
+                                            <!--end::Item-->
+                                        </ul>
+                                        <!--end::Breadcrumb-->
+                                        <!--begin::Title-->
+                                        <h1
+                                            class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
+                                            विभाग निर्मिती</h1>
+                                        <!--end::Title-->
+                                    </div>
+                                    <!--end::Page title-->
+                                </div>
+                                <!--end::Toolbar wrapper-->
+                            </div>
+                            <!--end::Toolbar container-->
+                        </div>
+                        <!--end::Toolbar-->
+                        <!--begin::Content-->
+                        <div id="kt_app_content" class="app-content flex-column-fluid">
+                            <!--begin::Content container-->
+                            <div id="kt_app_content_container" class="app-container container-fluid">
+                                <!--begin::Contact-->
+                                <div class="card">
+                                    <!--begin::Body-->
+ <div class="row">
+            
+          <?php if (isset($_REQUEST['edit'])) {
+            $id = $_REQUEST['edit'];
+            $query = mysqli_query($conn,"select * from users WHERE id = $id");
+            $result = mysqli_fetch_assoc($query);
+           ?>
+           <?php } ?>
+
+                   <div class="col-md-12 col-sm-12 p-4">
+  <h3 class="mb-4 text-center">विभाग निर्मिती</h3>
+  <form action="admin/user_master-DB.php" method="POST">
+    <div class="row">
+      <!-- department Name -->
+
+  
+      <div class="col-md-6 fv-row fv-plugins-icon-container">
+    <label class="fs-5 fw-semibold mb-2">Department</label>
+
+   <select class="form-select form-select-solid"
+        data-control="select2"
+        data-placeholder="Select a department"
+        name="departmentId" required>
+    <option></option>
+    <?php
+    $deptResult = mysqli_query($conn, "SELECT id, departmentName FROM departments WHERE status = 'Active'");
+    while ($rows = mysqli_fetch_assoc($deptResult)) {
+        $selected = '';
+        if (isset($result['departmentId']) && $result['departmentId'] == $rows['id']) {
+            $selected = 'selected';
+        }
+        echo '<option value="' . $rows['id'] . '" ' . $selected . '>' . $rows['departmentName'] . '</option>';
+    }
+    ?>
+</select>
+
+</div>
+
+ <div class="col-md-6 mb-3">
+        <label for="fullname" class="form-label">Employee Name</label>
+        <input type="text" value="<?php echo $result['name'];  ?>" name="name" id="name" class="form-control" required placeholder="Enter Name">
+      </div>
+
+ <div class="col-md-6 mb-3">
+        <label for="fullname" class="form-label">Mobile No</label>
+        <input type="text" value="<?php echo $result['mobileNo'];  ?>" name="mobileNo" id="mobileNo" class="form-control" required placeholder="Enter Mobile Number">
+      </div>
+
+       <div class="col-md-6 mb-3">
+        <label for="fullname" class="form-label">Password</label>
+        <input type="password" value="<?php echo $result['password'];  ?>" name="password" id="password" class="form-control" required placeholder="Enter Password">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="fullname" class="form-label">designation</label>
+        <input type="text" value="<?php echo $result['designation'];  ?>" name="designation" id="designation" class="form-control" required placeholder="Enter designation">
+      </div>
+
+    </div>
+<?php if (isset($_REQUEST['edit'])) { ?>
+        <input type="hidden" name="id" value="<?php echo $result['id']; ?>">
+
+        <!-- Update Button -->
+        <button type="submit" name="update" class="btn btn-warning w-100 mt-3" style="width: 10% !important;">Update</button>
+
+        <!-- Cancel Button -->
+<
+<button type="button" onclick="window.location.href='admin/user_master.php';" class="btn btn-danger w-100 mt-3" style="width: 10% !important;">Cancel</button>
+
+    <?php } else { ?>
+        <!-- Submit Button -->
+        <button type="submit" name="submit" class="btn btn-primary w-100 mt-3" style="width: 10% !important;">Submit</button>
+    <?php } ?>
+
+  </form>
+
+</div> 
+<!-- Table -->
+  <div class="table-responsive mt-5">
+    <table class="table table-bordered text-center">
+  <thead class="table-dark">
+    <tr>
+      <th>Sr. No.</th>
+      <th>Department</th>
+      <th>EMPLOYEE NAME</th>
+      <th>MOBILE</th>
+      <th>PASSWORD</th>
+      <th>Designation</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+    $result = mysqli_query($conn, "
+      SELECT users.*, departments.departmentName 
+      FROM users 
+      LEFT JOIN departments ON users.departmentId = departments.id 
+      WHERE users.status = 'Active'
+    ") or die($conn->error);
+    
+    $i = 1;
+    while($row = mysqli_fetch_assoc($result)) {
+    ?>
+    <tr>
+      <td><?php echo $i++ ?></td>
+      <td><?php echo $row['departmentName'] ?></td>
+      <td><?php echo $row['name'] ?></td>
+      <td><?php echo $row['mobileNo'] ?></td>
+      <td><?php echo $row['password'] ?></td>
+      <td><?php echo $row['designation'] ?></td>
+      <td>
+        <a href="admin/user_master.php?edit=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning me-1">
+          <i class="fas fa-edit"></i>
+        </a>
+        <a href="#" 
+           class="btn btn-sm btn-danger delete-btn" 
+           data-href="admin/user_master-DB.php?delete=<?php echo $row['id']; ?>">
+           <i class="fas fa-trash-alt"></i>
+        </a>
+      </td>
+    </tr>
+    <?php } ?>
+  </tbody>
+</table>
+
+  </div>
+            
+            
+          </div>
+                                    <!--end::Body-->
+                                </div>
+                                <!--end::Contact-->
+                            </div>
+                            <!--end::Content container-->
+                        </div>
+                        <!--end::Content-->
+                    </div>
+                    <!--end::Content wrapper-->
+                    <!--begin::Footer-->
+                    <?php
+                    include('../include/footer.php')
+                        ?>
+                    <!--end::Footer-->
+                </div>
+                <!--end:::Main-->
+            </div>
+            <!--end::Wrapper-->
+        </div>
+        <!--end::Page-->
+    </div>
+    <!--end::App-->
+    <!--begin::Scrolltop-->
+    <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
+        <i class="ki-duotone ki-arrow-up">
+            <span class="path1"></span>
+            <span class="path2"></span>
+        </i>
+    </div>
+    <!--end::Scrolltop-->
+
+    <?php
+    include('../include/jsLinks.php')
+        ?>
+</body>
+<!--end::Body-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+
+    deleteButtons.forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault(); // prevent default <a> behavior
+        const href = this.getAttribute('data-href');
+
+        Swal.fire({
+          title: "Are you sure?",
+          text: "you want to mark this department as Inactive?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = href;
+          }
+        });
+      });
+    });
+  });
+</script>
+
+
+</html>
+
+

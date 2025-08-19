@@ -362,6 +362,74 @@
 
                 <?php
             }
+
+            else if ($_SESSION['systemRole'] == "Employee") {
+                ?>
+                            <!--begin:Menu item-->
+                            <!-- <div class="menu-item" onclick="window.location.href='officers/tahsildar-dashboard.php'">
+                              
+                                <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-element-11 fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">Dashboards</span>
+                                </span>
+                                </a>
+                               
+                            </div> -->
+                            <!--end:Menu item-->
+
+                            <!--begin:Menu item-->
+                            <div class="menu-item" onclick="window.location.href='department/aplication_Report.php'">
+                                <!-- begin:Menu link-->
+
+                                <!-- <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-element-11 fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">View NOC Application</span>
+                                </span>
+                                </a> -->
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+
+                            <!--begin:Menu item-->
+                             <div class="menu-item" onclick="window.location.href='department/nocReport_employee.php'">
+                        <!--begin:Menu link-->
+                        <span class="menu-link">
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-user fs-3"></i>
+                            </span>
+                            <span class="menu-title">NOC अर्ज पहा (Civilian)</span>
+                        </span>
+                        <!--end:Menu link-->
+
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='department/department_Employee_Report.php'">
+                        <!--begin:Menu link-->
+                        <span class="menu-link">
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-building fs-3"></i>
+                            </span>
+                            <span class="menu-title">NOC अर्ज पहा (Department)</span>
+                        </span>
+                        <!--end:Menu link-->
+
+                    </div>
+
+                <?php
+            }
             ?>
 
             <!--begin:Menu item-->

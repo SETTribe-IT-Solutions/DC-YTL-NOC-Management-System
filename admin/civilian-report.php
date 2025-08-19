@@ -4,7 +4,7 @@ ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
 if (!isset($_SESSION['userId'])) {
-    header('location:../login.php');
+    header('location:../index.html');
     exit;
 }
 
@@ -17,7 +17,7 @@ include('../include/sweetAlert.php');
 
 <head>
     <base href="../">
-    <title>Saul Theme by Keenthemes</title>
+    <title>NOC Portal</title>
     <meta charset="utf-8" />
     <meta name="description" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
     <meta name="keywords"

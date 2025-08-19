@@ -15,6 +15,8 @@ error_reporting(0);
     <meta name="description" content="No Objection Certificate Portal - Maharashtra Government" />
     <meta name="keywords" content="NOC, No Objection Certificate, Maharashtra Government, Maharashtra Shashan" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
     <?php
     include("../include/cssLinks.php");
     ?>
@@ -246,6 +248,8 @@ error_reporting(0);
                                     <!--begin::Input-->
                                     <input class="form-control form-control-lg form-control-solid" required type="text"
                                         name="username" placeholder="Enter your username" autocomplete="off" />
+
+                                        
                                     <!--end::Input-->
                                 </div>
                                 <!--end::Input group-->
@@ -257,6 +261,7 @@ error_reporting(0);
                                         <!--begin::Label-->
                                         <label class="form-label fw-bold fs-6 mb-0"
                                             style="color: #1e3c72;">Password</label>
+
                                         <!--end::Label-->
                                         <!--begin::Link-->
                                         <a href="forgot_password.php" class="fs-6 fw-bold" style="color: #ff6600;">
@@ -266,8 +271,19 @@ error_reporting(0);
                                     </div>
                                     <!--end::Wrapper-->
                                     <!--begin::Input-->
-                                    <input class="form-control form-control-lg form-control-solid" type="password"
-                                        name="password" placeholder="Enter your password" required autocomplete="off" />
+                                    
+                                     <div style="position: relative;">
+        <input type="password" class="form-control form-control-lg form-control-solid"
+            name="password" id="password" placeholder="Enter your password"
+            required autocomplete="off" style="padding-right: 45px;" />
+
+        <!-- Eye icon inside input -->
+        <i class="bi bi-eye" id="togglePassword"
+            style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%);
+                   cursor: pointer; color: gray;"></i>
+    </div>
+
+                                        
                                     <!--end::Input-->
                                 </div>
                                 <!--end::Input group-->
@@ -323,6 +339,19 @@ error_reporting(0);
         }
         ?>
     </div>
+
+    <script>
+    const togglePassword = document.getElementById("togglePassword");
+    const password = document.getElementById("password");
+
+    togglePassword.addEventListener("click", function () {
+        const type = password.getAttribute("type") === "password" ? "text" : "password";
+        password.setAttribute("type", type);
+        this.classList.toggle("bi-eye");
+        this.classList.toggle("bi-eye-slash");
+    });
+</script>
+
     <!--end::Root-->
     <!--begin::Javascript-->
     <?php

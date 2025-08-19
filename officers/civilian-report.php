@@ -1,5 +1,14 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['userId'])) {
+   
+    header("Location: ../index.html");
+    exit();
+}
+
+$designation = $_SESSION['designation'];
+
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
@@ -17,7 +26,7 @@ include('../include/sweetAlert.php');
 
 <head>
     <base href="../">
-    <title>Saul Theme by Keenthemes</title>
+    <title>NOC Portal</title>
     <meta charset="utf-8" />
     <meta name="description" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
     <meta name="keywords"
@@ -63,7 +72,17 @@ include('../include/sweetAlert.php');
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                <?php include("../include/sidebar.php"); ?>
+                <?php
+// Check the user's designation
+if ($designation === 'admin') {
+    // If designation is 'admin', include the admin sidebar
+    include("../include/admin-sidebar.php");
+} else {
+    // For all other designations, include the regular sidebar
+    include("../include/sidebar.php");
+}
+?>
+
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
