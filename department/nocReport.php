@@ -5,9 +5,9 @@
 session_start();
 
 if (!isset($_SESSION['userId'])) {
-   
-    header("Location: ../index.html");
-    exit();
+
+  header("Location: ../index.html");
+  exit();
 }
 include('../include/conn.php');
 
@@ -29,6 +29,7 @@ include('../include/conn.php');
     #datatable th {
       border: 1px solid #F4F4F4;
     }
+
     #datatable td {
       border: 1px solid #F4F4F4;
     }
@@ -36,6 +37,7 @@ include('../include/conn.php');
   <?php include("../include/cssLinks.php"); ?>
 </head>
 >
+
 <body id="kt_app_body" data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true"
   data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
   data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true"
@@ -116,7 +118,7 @@ include('../include/conn.php');
                             <th class="min-w-100px">पेन कार्ड पहा</th>
                             <th class="min-w-100px">आधार कार्ड पहा</th>
                             <th class="min-w-100px">तारीख</th>
-                             <th class="min-w-100px">Inpection report</th>
+                            <th class="min-w-100px">Inpection report</th>
                             <th class="min-w-100px">स्थिती</th>
                             <th class="min-w-100px">Action</th>
                           </tr>
@@ -186,56 +188,58 @@ include('../include/conn.php');
                               <td><?php echo date('d-m-Y', strtotime($row['dob'])); ?></td>
                               <td>
                                 <?php if ($row['panCard']) { ?>
-                                  <a target="_blank" href="Uploads/<?php echo htmlspecialchars($row['panCard']); ?>">View</a>
+                                  <a target="_blank"
+                                    href="Uploads/<?php echo htmlspecialchars($row['panCard']); ?>">View</a>
                                 <?php } else { ?>
                                   -
                                 <?php } ?>
                               </td>
                               <td>
                                 <?php if ($row['aadharCard']) { ?>
-                                  <a target="_blank" href="Uploads/<?php echo htmlspecialchars($row['aadharCard']); ?>">View</a>
+                                  <a target="_blank"
+                                    href="Uploads/<?php echo htmlspecialchars($row['aadharCard']); ?>">View</a>
                                 <?php } else { ?>
                                   -
                                 <?php } ?>
                               </td>
                               <td><?php echo date('d-m-Y', strtotime($row['createdDateTime'])); ?></td>
                               <td>
-<?php
-/// Files part
-                                                             if (!empty($row['reportFile'])) {
-    $parts = preg_split('/\s*-Next file,?\s*/i', $row['reportFile'], -1, PREG_SPLIT_NO_EMPTY);
-    $i = 1;
-    foreach ($parts as $part) {
-        $fileName = trim($part);
-        $urlName = rawurlencode($fileName);
-        $filePath = "department/reportDoc/" . $urlName;
-        $absolutePath = $_SERVER['DOCUMENT_ROOT'] . '/' . $filePath;
-        $exists = is_file($absolutePath);
-        echo "<a target=\"_blank\" href=\"{$filePath}\">File {$i}</a>";
-        // if (!$exists) {
-        //     echo " <small style=\"color:#a00;\">(file not found)</small>";
-        // }
-        echo "<br>";
-        $i++;
-    }
-} else {
-    echo "-<br>";
-}
+                                <?php
+                                /// Files part
+                                if (!empty($row['reportFile'])) {
+                                  $parts = preg_split('/\s*-Next file,?\s*/i', $row['reportFile'], -1, PREG_SPLIT_NO_EMPTY);
+                                  $i = 1;
+                                  foreach ($parts as $part) {
+                                    $fileName = trim($part);
+                                    $urlName = rawurlencode($fileName);
+                                    $filePath = "department/reportDoc/" . $urlName;
+                                    $absolutePath = $_SERVER['DOCUMENT_ROOT'] . '/' . $filePath;
+                                    $exists = is_file($absolutePath);
+                                    echo "<a target=\"_blank\" href=\"{$filePath}\">File {$i}</a>";
+                                    // if (!$exists) {
+                                    //     echo " <small style=\"color:#a00;\">(file not found)</small>";
+                                    // }
+                                    echo "<br>";
+                                    $i++;
+                                  }
+                                } else {
+                                  echo "-<br>";
+                                }
 
 
-// Separator and remark
+                                // Separator and remark
+                              
+                                $remark = trim($row['reportRemark'] ?? '');
+                                if ($remark !== '') {
+                                  $display = ($remark === '0') ? '-' : nl2br(htmlspecialchars($remark));
+                                  echo '<hr style="margin:4px 0;">'; // thin separator
+                                  echo '<strong>Remark:</strong> ' . $display;
+                                }
+                                ?>
+                              </td>
 
-$remark = trim($row['reportRemark'] ?? '');
-if ($remark !== '') {
-    $display = ($remark === '0') ? '-' : nl2br(htmlspecialchars($remark));
-    echo '<hr style="margin:4px 0;">'; // thin separator
-    echo '<strong>Remark:</strong> ' . $display;
-}
-?>
-</td>
 
-
-</td>
+                              </td>
                               <td>
                                 <?php
                                 $status = $row['status'];
@@ -260,21 +264,28 @@ if ($remark !== '') {
                                   <?php endif; ?>
                                 </div>
                                 <!-- Change Status Modal -->
-                                <div class="modal fade" id="updateStatusModal<?php echo $row['applicationId']; ?>" tabindex="-1"
-                                  aria-labelledby="updateStatusModalLabel<?php echo $row['applicationId']; ?>" aria-hidden="true">
+                                <div class="modal fade" id="updateStatusModal<?php echo $row['applicationId']; ?>"
+                                  tabindex="-1"
+                                  aria-labelledby="updateStatusModalLabel<?php echo $row['applicationId']; ?>"
+                                  aria-hidden="true">
                                   <div class="modal-dialog">
                                     <form method="POST" action="department/nocReport_DB.php">
                                       <div class="modal-content">
                                         <div class="modal-header">
-                                          <h5 class="modal-title" id="updateStatusModalLabel<?php echo $row['applicationId']; ?>">Update Application Status</h5>
+                                          <h5 class="modal-title"
+                                            id="updateStatusModalLabel<?php echo $row['applicationId']; ?>">Update
+                                            Application Status</h5>
                                           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
-                                          <input type="hidden" name="applicationId" value="<?php echo $row['applicationId']; ?>">
+                                          <input type="hidden" name="applicationId"
+                                            value="<?php echo $row['applicationId']; ?>">
                                           <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
                                           <div class="mb-3">
-                                            <label for="statusSelect<?php echo $row['applicationId']; ?>" class="form-label">Status</label>
-                                            <select class="form-select" name="status" id="statusSelect<?php echo $row['applicationId']; ?>" required>
+                                            <label for="statusSelect<?php echo $row['applicationId']; ?>"
+                                              class="form-label">Status</label>
+                                            <select class="form-select" name="status"
+                                              id="statusSelect<?php echo $row['applicationId']; ?>" required>
                                               <option value="">Select</option>
                                               <option value="Under Review">Under Review</option>
                                               <option value="Approved">Approved</option>
@@ -283,7 +294,8 @@ if ($remark !== '') {
                                           </div>
                                           <div class="mb-3 d-none" id="remarkDiv<?php echo $row['applicationId']; ?>">
                                             <label class="form-label">Rejection Remark</label>
-                                            <textarea class="form-control" name="remarks" placeholder="Reason for rejection..."></textarea>
+                                            <textarea class="form-control" name="remarks"
+                                              placeholder="Reason for rejection..."></textarea>
                                           </div>
                                         </div>
                                         <div class="modal-footer">
@@ -294,17 +306,20 @@ if ($remark !== '') {
                                   </div>
                                 </div>
                                 <!-- Forward NOC Modal -->
-                                <div class="modal fade" id="forwardNOCModal<?php echo $row['applicationId']; ?>" tabindex="-1"
-                                  aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>" aria-hidden="true">
+                                <div class="modal fade" id="forwardNOCModal<?php echo $row['applicationId']; ?>"
+                                  tabindex="-1" aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>"
+                                  aria-hidden="true">
                                   <div class="modal-dialog">
                                     <form method="POST" action="department/forwordNOC_db.php">
                                       <div class="modal-content">
                                         <div class="modal-header">
-                                          <h5 class="modal-title" id="forwardNOCModalLabel<?php echo $row['applicationId']; ?>">Forward NOC</h5>
+                                          <h5 class="modal-title"
+                                            id="forwardNOCModalLabel<?php echo $row['applicationId']; ?>">Forward NOC</h5>
                                           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
-                                          <input type="hidden" name="applicationId" value="<?php echo $row['applicationId']; ?>">
+                                          <input type="hidden" name="applicationId"
+                                            value="<?php echo $row['applicationId']; ?>">
                                           <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
                                           <div class="mb-3">
                                             <label for="employeeId" class="form-label">Forward to Employee</label>
@@ -327,7 +342,8 @@ if ($remark !== '') {
                                           </div>
                                           <div class="mb-3">
                                             <label for="remarks" class="form-label">Remark</label>
-                                            <textarea name="HODremark" class="form-control" placeholder="Enter remark..." required></textarea>
+                                            <textarea name="HODremark" class="form-control" placeholder="Enter remark..."
+                                              required></textarea>
                                           </div>
                                         </div>
                                         <div class="modal-footer">
@@ -496,4 +512,5 @@ if ($remark !== '') {
     <?php endif; ?>
 </body>
 <!--end::Body-->
+
 </html>

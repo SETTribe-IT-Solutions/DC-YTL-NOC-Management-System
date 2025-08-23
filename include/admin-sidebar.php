@@ -39,10 +39,10 @@ if (!isset($_SESSION['userId'])) {
             <!--end:Menu item-->
 
             <!--begin:Menu item-->
-            <div class="menu-item" onclick="window.location.href='admin/nocReport.php'">
-                <!--begin:Menu link-->
+            <!-- <div class="menu-item" onclick="window.location.href='admin/nocReport.php'"> -->
+            <!--begin:Menu link-->
 
-                <span class="menu-link">
+            <!-- <span class="menu-link">
                     <span class="menu-icon">
                         <i class="ki-duotone ki-element-11 fs-1">
                             <span class="path1"></span>
@@ -53,9 +53,9 @@ if (!isset($_SESSION['userId'])) {
                     </span>
                     <span class="menu-title">View NOC Application</span>
                 </span>
-                </a>
-                <!--end:Menu link-->
-            </div>
+                </a> -->
+            <!--end:Menu link-->
+            <!-- </div> -->
             <!--end:Menu item-->
 
             <!-- <div class="menu-item" onclick="window.location.href='#'">
@@ -84,7 +84,7 @@ if (!isset($_SESSION['userId'])) {
                             <span class="path2"></span>
                         </i>
                     </span>
-                    <span class="menu-title">NOC Application</span>
+                    <span class="menu-title">NOC Applications</span>
                     <span class="menu-arrow"></span>
                 </span>
                 <!--end:Menu link-->
@@ -93,7 +93,7 @@ if (!isset($_SESSION['userId'])) {
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="officers/nocApplicationDept.php" data-bs-toggle="tooltip"
+                        <a class="menu-link" href="admin/department-report.php" data-bs-toggle="tooltip"
                             data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
@@ -106,42 +106,14 @@ if (!isset($_SESSION['userId'])) {
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="civilian/nocApplication.php" data-bs-toggle="tooltip"
+                        <a class="menu-link" href="admin/civilian-report.php" data-bs-toggle="tooltip"
                             data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
+
                             </span>
 
-                            <!--end:Menu link-->
-                            <!--begin:Menu sub-->
-                            <div class="menu-sub menu-sub-accordion">
-                                <!--begin:Menu item-->
-                                <div class="menu-item">
-                                    <!--begin:Menu link-->
-                                    <a class="menu-link" href="admin/department-report.php" data-bs-toggle="tooltip"
-                                        data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Department</span>
-                                    </a>
-                                    <!--end:Menu link-->
-                                </div>
-                                <!--end:Menu item-->
-                                <!--begin:Menu item-->
-                                <div class="menu-item">
-                                    <!--begin:Menu link-->
-                                    <a class="menu-link" href="officers/civilian-report.php" data-bs-toggle="tooltip"
-                                        data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Civilian</span>
-                                    </a>
-                                    <!--end:Menu link-->
-                                </div>
-                                <!--end:Menu item-->
-                            </div>
+                            <span class="menu-title">Civilian</span>
                         </a>
                     </div>
                     <!--end:Menu item-->

@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['userId'])) {
-   
+
     header("Location: ../index.html");
     exit();
 }
@@ -27,7 +27,7 @@ $designation = $_SESSION['designation'];
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <?php include('../include/conn.php');
-     include("../include/cssLinks.php"); ?>
+    include("../include/cssLinks.php"); ?>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -50,14 +50,14 @@ $designation = $_SESSION['designation'];
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                 <?php
+                <?php
 
-if ($designation === 'admin') {
-    include("../include/admin-sidebar.php");
-} else {
-    include("../include/sidebar.php");
-}
-?>
+                if ($designation === 'admin') {
+                    include("../include/admin-sidebar.php");
+                } else {
+                    include("../include/sidebar.php");
+                }
+                ?>
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -111,134 +111,147 @@ if ($designation === 'admin') {
                                 <!--begin::Contact-->
                                 <div class="card">
                                     <!--begin::Body-->
- <div class="row">
-            
-          <?php if (isset($_REQUEST['edit'])) {
-            $id = $_REQUEST['edit'];
-            $query = mysqli_query($conn,"select * from users WHERE id = $id");
-            $result = mysqli_fetch_assoc($query);
-           ?>
-           <?php } ?>
+                                    <div class="row">
 
-                   <div class="col-md-12 col-sm-12 p-4">
-  <h3 class="mb-4 text-center">विभाग निर्मिती</h3>
-  <form action="admin/user_master-DB.php" method="POST">
-    <div class="row">
-      <!-- department Name -->
+                                        <?php if (isset($_REQUEST['edit'])) {
+                                            $id = $_REQUEST['edit'];
+                                            $query = mysqli_query($conn, "select * from users WHERE id = $id");
+                                            $result = mysqli_fetch_assoc($query);
+                                            ?>
+                                        <?php } ?>
 
-  
-      <div class="col-md-6 fv-row fv-plugins-icon-container">
-    <label class="fs-5 fw-semibold mb-2">Department</label>
+                                        <div class="col-md-12 col-sm-12 p-4">
+                                            <h3 class="mb-4 text-center">विभाग निर्मिती</h3>
+                                            <form action="admin/user_master-DB.php" method="POST">
+                                                <div class="row">
+                                                    <!-- department Name -->
 
-   <select class="form-select form-select-solid"
-        data-control="select2"
-        data-placeholder="Select a department"
-        name="departmentId" required>
-    <option></option>
-    <?php
-    $deptResult = mysqli_query($conn, "SELECT id, departmentName FROM departments WHERE status = 'Active'");
-    while ($rows = mysqli_fetch_assoc($deptResult)) {
-        $selected = '';
-        if (isset($result['departmentId']) && $result['departmentId'] == $rows['id']) {
-            $selected = 'selected';
-        }
-        echo '<option value="' . $rows['id'] . '" ' . $selected . '>' . $rows['departmentName'] . '</option>';
-    }
-    ?>
-</select>
 
-</div>
+                                                    <div class="col-md-6 fv-row fv-plugins-icon-container">
+                                                        <label class="fs-5 fw-semibold mb-2">Department</label>
 
- <div class="col-md-6 mb-3">
-        <label for="fullname" class="form-label">Employee Name</label>
-        <input type="text" value="<?php echo $result['name'];  ?>" name="name" id="name" class="form-control" required placeholder="Enter Name">
-      </div>
+                                                        <select class="form-select form-select-solid"
+                                                            data-control="select2"
+                                                            data-placeholder="Select a department" name="departmentId"
+                                                            required>
+                                                            <option></option>
+                                                            <?php
+                                                            $deptResult = mysqli_query($conn, "SELECT id, departmentName FROM departments WHERE status = 'Active'");
+                                                            while ($rows = mysqli_fetch_assoc($deptResult)) {
+                                                                $selected = '';
+                                                                if (isset($result['departmentId']) && $result['departmentId'] == $rows['id']) {
+                                                                    $selected = 'selected';
+                                                                }
+                                                                echo '<option value="' . $rows['id'] . '" ' . $selected . '>' . $rows['departmentName'] . '</option>';
+                                                            }
+                                                            ?>
+                                                        </select>
 
- <div class="col-md-6 mb-3">
-        <label for="fullname" class="form-label">Mobile No</label>
-        <input type="text" value="<?php echo $result['mobileNo'];  ?>" name="mobileNo" id="mobileNo" class="form-control" required placeholder="Enter Mobile Number">
-      </div>
+                                                    </div>
 
-       <div class="col-md-6 mb-3">
-        <label for="fullname" class="form-label">Password</label>
-        <input type="password" value="<?php echo $result['password'];  ?>" name="password" id="password" class="form-control" required placeholder="Enter Password">
-      </div>
-      <div class="col-md-6 mb-3">
-        <label for="fullname" class="form-label">designation</label>
-        <input type="text" value="<?php echo $result['designation'];  ?>" name="designation" id="designation" class="form-control" required placeholder="Enter designation">
-      </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="fullname" class="form-label">Employee Name</label>
+                                                        <input type="text" value="<?php echo $result['name']; ?>"
+                                                            name="name" id="name" class="form-control" required
+                                                            placeholder="Enter Name">
+                                                    </div>
 
-    </div>
-<?php if (isset($_REQUEST['edit'])) { ?>
-        <input type="hidden" name="id" value="<?php echo $result['id']; ?>">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="fullname" class="form-label">Mobile No</label>
+                                                        <input type="text" value="<?php echo $result['mobileNo']; ?>"
+                                                            name="mobileNo" id="mobileNo" class="form-control" required
+                                                            placeholder="Enter Mobile Number">
+                                                    </div>
 
-        <!-- Update Button -->
-        <button type="submit" name="update" class="btn btn-warning w-100 mt-3" style="width: 10% !important;">Update</button>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="fullname" class="form-label">Password</label>
+                                                        <input type="password"
+                                                            value="<?php echo $result['password']; ?>" name="password"
+                                                            id="password" class="form-control" required
+                                                            placeholder="Enter Password">
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="fullname" class="form-label">designation</label>
+                                                        <input type="text" value="<?php echo $result['designation']; ?>"
+                                                            name="designation" id="designation" class="form-control"
+                                                            required placeholder="Enter designation">
+                                                    </div>
 
-        <!-- Cancel Button -->
-<
-<button type="button" onclick="window.location.href='admin/user_master.php';" class="btn btn-danger w-100 mt-3" style="width: 10% !important;">Cancel</button>
+                                                </div>
+                                                <?php if (isset($_REQUEST['edit'])) { ?>
+                                                    <input type="hidden" name="id" value="<?php echo $result['id']; ?>">
 
-    <?php } else { ?>
-        <!-- Submit Button -->
-        <button type="submit" name="submit" class="btn btn-primary w-100 mt-3" style="width: 10% !important;">Submit</button>
-    <?php } ?>
+                                                    <!-- Update Button -->
+                                                    <button type="submit" name="update" class="btn btn-warning w-100 mt-3"
+                                                        style="width: 10% !important;">Update</button>
 
-  </form>
+                                                    <!-- Cancel Button -->
+                                                    <button type="button"
+                                                        onclick="window.location.href='admin/user_master.php';"
+                                                        class="btn btn-danger w-100 mt-3" style="width: 10% !important;">
+                                                        Cancel</button>
 
-</div> 
-<!-- Table -->
-  <div class="table-responsive mt-5">
-    <table class="table table-bordered text-center">
-  <thead class="table-dark">
-    <tr>
-      <th>Sr. No.</th>
-      <th>Department</th>
-      <th>EMPLOYEE NAME</th>
-      <th>MOBILE</th>
-      <th>PASSWORD</th>
-      <th>Designation</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php
-    $result = mysqli_query($conn, "
+                                                <?php } else { ?>
+                                                    <!-- Submit Button -->
+                                                    <button type="submit" name="submit" class="btn btn-primary w-100 mt-3"
+                                                        style="width: 10% !important;">Submit</button>
+                                                <?php } ?>
+
+                                            </form>
+
+                                        </div>
+                                        <!-- Table -->
+                                        <div class="table-responsive mt-5">
+                                            <table class="table table-bordered text-center">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th>Sr. No.</th>
+                                                        <th>Department</th>
+                                                        <th>EMPLOYEE NAME</th>
+                                                        <th>MOBILE</th>
+                                                        <th>PASSWORD</th>
+                                                        <th>Designation</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $result = mysqli_query($conn, "
       SELECT users.*, departments.departmentName 
       FROM users 
       LEFT JOIN departments ON users.departmentId = departments.id 
       WHERE users.status = 'Active'
     ") or die($conn->error);
-    
-    $i = 1;
-    while($row = mysqli_fetch_assoc($result)) {
-    ?>
-    <tr>
-      <td><?php echo $i++ ?></td>
-      <td><?php echo $row['departmentName'] ?></td>
-      <td><?php echo $row['name'] ?></td>
-      <td><?php echo $row['mobileNo'] ?></td>
-      <td><?php echo $row['password'] ?></td>
-      <td><?php echo $row['designation'] ?></td>
-      <td>
-        <a href="admin/user_master.php?edit=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning me-1">
-          <i class="fas fa-edit"></i>
-        </a>
-        <a href="#" 
-           class="btn btn-sm btn-danger delete-btn" 
-           data-href="admin/user_master-DB.php?delete=<?php echo $row['id']; ?>">
-           <i class="fas fa-trash-alt"></i>
-        </a>
-      </td>
-    </tr>
-    <?php } ?>
-  </tbody>
-</table>
 
-  </div>
-            
-            
-          </div>
+                                                    $i = 1;
+                                                    while ($row = mysqli_fetch_assoc($result)) {
+                                                        ?>
+                                                        <tr>
+                                                            <td><?php echo $i++ ?></td>
+                                                            <td><?php echo $row['departmentName'] ?></td>
+                                                            <td><?php echo $row['name'] ?></td>
+                                                            <td><?php echo $row['mobileNo'] ?></td>
+                                                            <td><?php echo $row['password'] ?></td>
+                                                            <td><?php echo $row['designation'] ?></td>
+                                                            <td>
+                                                                <a href="admin/user_master.php?edit=<?php echo $row['id']; ?>"
+                                                                    class="btn btn-sm btn-warning me-1">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <a href="#" class="btn btn-sm btn-danger delete-btn"
+                                                                    data-href="admin/user_master-DB.php?delete=<?php echo $row['id']; ?>">
+                                                                    <i class="fas fa-trash-alt"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+
+
+                                    </div>
                                     <!--end::Body-->
                                 </div>
                                 <!--end::Contact-->
@@ -277,33 +290,31 @@ if ($designation === 'admin') {
 <!--end::Body-->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const deleteButtons = document.querySelectorAll('.delete-btn');
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.delete-btn');
 
-    deleteButtons.forEach(btn => {
-      btn.addEventListener('click', function (e) {
-        e.preventDefault(); // prevent default <a> behavior
-        const href = this.getAttribute('data-href');
+        deleteButtons.forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault(); // prevent default <a> behavior
+                const href = this.getAttribute('data-href');
 
-        Swal.fire({
-          title: "Are you sure?",
-          text: "you want to mark this department as Inactive?",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, delete it!"
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.href = href;
-          }
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "you want to mark this department as Inactive?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = href;
+                    }
+                });
+            });
         });
-      });
     });
-  });
 </script>
 
 
 </html>
-
-

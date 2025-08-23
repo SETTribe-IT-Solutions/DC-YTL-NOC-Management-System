@@ -241,15 +241,25 @@ if (empty($_REQUEST['role'])) {
                                     <!--end::Title-->
                                     <!--begin::Subtitle-->
                                     <div class="text-gray-600 fw-semibold fs-5 mb-4">
-                                        Access your No Objection Certificate applications
+                                        Access your No Objection Certificate applications as
+                                        <span
+                                            class="text-info"><?= ($_GET['role'] == "Officer") ? 'Officer' : 'Civilian' ?></span>
                                     </div>
                                     <!--end::Subtitle-->
-                                    <!--begin::Link-->
-                                    <div class="text-gray-500 fw-semibold fs-6">New User?
-                                        <a href="registration.php" class="fw-bold" style="color: #ff6600;">Register
-                                            Here</a>
-                                    </div>
-                                    <!--end::Link-->
+                                    <?php
+                                    if ($_GET['role'] == "Civilian"):
+
+
+                                        ?>
+                                        <!--begin::Link-->
+                                        <div class="text-gray-500 fw-semibold fs-6">New User?
+                                            <a href="registration.php" class="fw-bold" style="color: #ff6600;">Register
+                                                Here</a>
+                                        </div>
+                                        <!--end::Link-->
+                                        <?php
+                                    endif;
+                                    ?>
                                 </div>
                                 <!--begin::Heading-->
 
@@ -314,6 +324,33 @@ if (empty($_REQUEST['role'])) {
                                                 class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                     </button>
                                     <!--end::Submit button-->
+
+                                    <!--begin::Separator-->
+                                    <div class="text-center text-muted text-uppercase fw-bold mb-5"></div>
+                                    <!--end::Separator-->
+
+                                    <?php
+                                    if ($_GET['role'] == "Officer") {
+                                        ?>
+                                        <!--begin::Google link-->
+                                        <a href="login.php?role=Civilian"
+                                            class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5">
+                                            Switch to Civilian Login
+                                        </a>
+                                        <!--end::Google link-->
+                                        <?php
+                                    } else {
+                                        ?>
+                                        <!--begin::Google link-->
+                                        <a href="login.php?role=Officer"
+                                            class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5">
+                                            Switch to Officer Login
+                                        </a>
+                                        <!--end::Google link-->
+                                        <?php
+                                    }
+                                    ?>
+
                                 </div>
                                 <!--end::Actions-->
                             </form>
