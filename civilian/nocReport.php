@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['userId'])) {
-   
+
     header("Location: ../index.html");
     exit();
 }
@@ -158,10 +158,17 @@ include('../include/sweetAlert.php');
                                                 $sql = "SELECT * FROM nocApplications WHERE civilianId='$userId' ORDER BY createdDateTime DESC";
                                                 $q = mysqli_query($con, $sql);
                                                 while ($r = mysqli_fetch_assoc($q)) {
+
                                                     $sql0 = "SELECT type FROM nocTypes WHERE id='{$r['nocTypeId']}'";
                                                     $q0 = mysqli_query($con, $sql0);
                                                     $r0 = mysqli_fetch_assoc($q0);
                                                     $r['nocType'] = $r0['type'];
+
+                                                    $sql1 = "SELECT dob FROM civilianRegistrations WHERE civilianId = '{$r['civilianId']}'";
+
+                                                    $q1 = mysqli_query($con, $sql1);
+                                                    $r1 = mysqli_fetch_assoc($q1);
+                                                    $r['dob'] = date('d-m-Y', strtotime($r1['dob']));
 
                                                     ?>
                                                     <tr class="odd">
@@ -179,9 +186,9 @@ include('../include/sweetAlert.php');
                                                         <td><?= $r['taluka']; ?></td>
                                                         <td><?= $r['village']; ?></td>
                                                         <td><?= $r['gatNo']; ?></td>
-                                                        <td><?= $r['aadharCard'] ? '<a href="' . $r['aadharCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?>
+                                                        <td><?= $r['aadharCard'] ? '<a href="' . str_replace("../", "", $r['aadharCard']) . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?>
                                                         </td>
-                                                        <td><?= $r['panCard'] ? '<a href="' . $r['panCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?>
+                                                        <td><?= $r['panCard'] ? '<a href="' . str_replace("../", "", $r['panCard']) . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?>
                                                         </td>
                                                         <td>
                                                             <a

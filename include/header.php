@@ -218,9 +218,9 @@
                         </div>
 
                         <div class="text-section">
-                            <div class="main-title">ना हरकत प्रमाणपत्र व्यवस्थापन प्रणाली</div>
+                            <div class="main-title">NOC Management System</div>
                             <!-- <div class="decorative-line"></div> -->
-                            <div class="sub-title">जिल्हाधिकारी कार्यालय, यवतमाळ</div>
+                            <div class="sub-title">District Collector Office, Yavatmal</div>
                         </div>
 
                         <div class="logo-right">
