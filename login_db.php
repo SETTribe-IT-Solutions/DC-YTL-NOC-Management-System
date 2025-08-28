@@ -63,6 +63,10 @@ if (isset($_REQUEST['logIn'])) {
                     echo "<script>window.location = 'department/NocReport_employee.php';</script>";
 
                 }
+                else if ($result['systemRole'] == "Final Authority") {
+                    echo "<script>window.location = 'department/NocReport_FAuth.php';</script>";
+
+                }
             } else {
                 $_SESSION['status'] = false;
                 $_SESSION['msg'] = "Invalid Mobile No. & Password";

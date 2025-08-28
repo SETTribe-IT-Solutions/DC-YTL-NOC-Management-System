@@ -170,12 +170,29 @@ $designation = $_SESSION['designation'];
                                                             id="password" class="form-control" required
                                                             placeholder="Enter Password">
                                                     </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <label for="fullname" class="form-label">designation</label>
-                                                        <input type="text" value="<?php echo $result['designation']; ?>"
-                                                            name="designation" id="designation" class="form-control"
-                                                            required placeholder="Enter designation">
-                                                    </div>
+                                                   <div class="col-md-6 mb-3">
+    <label class="form-label">System Role</label><br>
+    <input type="radio" name="systemRole" value="Employee" 
+        <?php  (!isset($result['systemRole']) || $result['systemRole'] == 'Employee') ? 'checked' : ''; ?> 
+        onclick="toggleDesignation(true)"> Employee
+    <input type="radio" name="systemRole" value="Final Authority" 
+        <?php echo (isset($result['systemRole']) && $result['systemRole'] == 'Final Authority') ? 'checked' : ''; ?> 
+        onclick="toggleDesignation(false)"> Final Authority
+</div>
+
+<div class="col-md-6 mb-3" id="designationField" 
+    style="<?php echo (isset($result['systemRole']) && $result['systemRole'] == 'Final Authority') ? 'display:none;' : ''; ?>">
+    <label for="designation" class="form-label">Designation</label>
+    <input type="text" value="<?php echo $result['designation'] ?? ''; ?>"
+        name="designation" id="designation" class="form-control"
+        placeholder="Enter designation">
+</div>
+
+<script>
+function toggleDesignation(show) {
+    document.getElementById('designationField').style.display = show ? 'block' : 'none';
+}
+</script>
 
                                                 </div>
                                                 <?php if (isset($_REQUEST['edit'])) { ?>

@@ -116,6 +116,9 @@ if ($designation === 'admin') {
             $query = mysqli_query($conn,"select * from nocTypes WHERE id = $id");
             $result = mysqli_fetch_assoc($query);
               $selectedDepartments = explode(',', $result['departmentId']);
+             $selectedFinal = explode(',', $result['finalAuthority']);
+
+
            ?>
            <?php } ?>
                                         <!--begin::Col-->
@@ -170,6 +173,39 @@ if ($designation === 'admin') {
     ?>
     </select>
 </div>
+
+
+<div class="col-md-6 fv-row fv-plugins-icon-container">
+    <label class="fs-5 fw-semibold mb-2">Final Authority</label>
+
+    <select class="form-select form-select-solid"
+            data-control="select2"
+            data-placeholder="Select an option"
+            name="finalAuthority"  required>
+        <option></option>
+
+         <?php
+    // Fetch all active departments
+    $deptResult = mysqli_query($conn, "SELECT userId,name FROM users WHERE systemRole = 'Final Authority'");
+    while ($rows = mysqli_fetch_assoc($deptResult)) {
+
+                    if (isset($_REQUEST['edit'])) { 
+$selected = ($result['finalAuthority'] == $rows['userId']) ? 'selected' : '';
+
+                                                         }
+        // Check if this department ID is in the selected list
+
+        echo '<option value="' . $rows['userId'] . '" ' . $selected . '>' . $rows['name'] . '</option>';
+    }
+    ?>
+    </select>
+</div>
+
+
+
+
+
+
                                                     <!--end::Col-->
                                                     
                                                 </div>
@@ -224,21 +260,25 @@ if ($designation === 'admin') {
 					<th class="min-w-100px">SR . NO</th>
 					<th class="min-w-100px">NOC Type</th>
 					<th class="min-w-100px">Deprtment</th>
+                    <th class="min-w-100px">Final Authority</th>
 					<th class="min-w-100px">Action</th>
 					
 				</tr>
 				<!--end::Table row-->
 			</thead>
 			<tbody class="fw-semibold text-gray-600">
+                
                   <?php
        $result = mysqli_query($conn, "
-    SELECT n.id, n.type, n.departmentId, 
+    SELECT n.id, n.type, n.departmentId, n.finalAuthority, 
            GROUP_CONCAT(d.departmentName SEPARATOR ', ') AS departmentNames
     FROM nocTypes n
     LEFT JOIN departments d ON FIND_IN_SET(d.id, n.departmentId)
     WHERE n.status = 'Active'
     GROUP BY n.id
 ");
+
+
 
           $i = 1;
           while($row = mysqli_fetch_assoc($result)){
@@ -250,6 +290,14 @@ if ($designation === 'admin') {
 					<td><?php echo $i++ ?></td>
 					<td><?php echo $row['type'] ?></td>
 					<td><?php echo $row['departmentNames'] ?></td>
+                    <td>
+                    <?php
+                    $query1 = mysqli_query($conn,"select name from users where id='{$row['finalAuthority']}'") or die($conn->error);
+                    $fetch = mysqli_fetch_assoc($query1);
+                    echo $fetch['name'];
+
+                    ?>
+                    </td>
 					<td data-order="2022-03-10T14:40:00+05:00">
                         <a href="admin/nocType.php?edit=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning me-1">
                     <i class="fas fa-edit"></i>
