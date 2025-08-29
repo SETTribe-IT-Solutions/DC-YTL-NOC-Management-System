@@ -140,6 +140,8 @@ $departmentId = $_SESSION['departmentId'];
                                   a.panCard,
                                   a.aadharCard,
                                   a.status,
+                                  a.init_status,
+                                  a.init_remark,
                                   a.createdDateTime,
                                   a.inspectionOfficer,
                                   c.name,
@@ -149,11 +151,12 @@ $departmentId = $_SESSION['departmentId'];
                                   c.dob,
                                   c.mobileNo
                               FROM nocApplications a
-                              INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
+                              
                               LEFT JOIN civilianRegistrations c ON a.civilianId = c.civilianId
                             
                               ORDER BY a.createdDateTime DESC
                           ";
+                          // INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
                             // WHERE  a.inspectionOfficer= '$userId'
                           $result = mysqli_query($conn, $stmt);
                           $i = 1;
@@ -209,18 +212,26 @@ $departmentId = $_SESSION['departmentId'];
                                 <span class="<?php echo $color; ?>"><?php echo htmlspecialchars($status); ?></span>
                               </td>
                               <td style="white-space: nowrap;">
+                                  <?php if  (!isset($row['init_status']) || trim($row['init_status']) == ''): ?>
                                 <div class="d-flex flex-wrap gap-1">
                                   <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                     data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
-                                    Submit Report
+                                   Forward Noc
                                   </button>
-                                  <?php if (!isset($row['inspectionOfficer']) || trim($row['inspectionOfficer']) === ''): ?>
+                                
                                     <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                       data-bs-target="#forwardNOCModal<?php echo $row['applicationId']; ?>"
                                       data-applicationid="<?php echo $row['applicationId']; ?>">
-                                      Forward NOC
+                                     Reject
                                     </button>
-                                  <?php else: ?>
+                                  <?php else: 
+                                     $statusinit_status = $row['init_status'];
+                                $color = $statusinit_status == 'Forwarded' ? 'text-success' : ($statusinit_status == 'Rejected' ? 'text-danger' : 'text-warning');
+                                ?>
+                                <span class="<?php echo $color; ?>"><?php echo htmlspecialchars($statusinit_status); ?></span>
+                                <br><span>(<?php echo $row['init_remark']; ?>)</span>
+                                    
+                                        
                                   <?php endif; ?>
                                 </div>
                                 <!-- Change Status / Report Modal -->
@@ -228,12 +239,12 @@ $departmentId = $_SESSION['departmentId'];
                                   aria-labelledby="updateStatusModalLabel<?= $row['applicationId']; ?>"
                                   aria-hidden="true">
                                   <div class="modal-dialog">
-                                    <form method="POST" action="department/NOC_Report_employeeDB.php"
+                                    <form method="POST" action="department/NocReport_FAuthDB.php"
                                       enctype="multipart/form-data">
                                       <div class="modal-content">
                                         <div class="modal-header">
                                           <h5 class="modal-title"
-                                            id="updateStatusModalLabel<?= $row['applicationId']; ?>">Submit Report</h5>
+                                            id="updateStatusModalLabel<?= $row['applicationId']; ?>">Forward Noc To Department</h5>
                                           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
@@ -248,15 +259,11 @@ $departmentId = $_SESSION['departmentId'];
                                               placeholder="Enter report remark..."></textarea>
                                           </div>
 
-                                          <div class="mb-3">
-                                            <label class="form-label">Upload Report Files (optional)</label>
-                                            <input type="file" name="reportFile[]" class="form-control reportFileInput"
-                                              accept=".pdf,.jpg,.jpeg,.png" multiple>
-                                            <div class="form-text">Allowed: PDF, JPG, PNG. Max each: 5MB.</div>
-                                          </div>
+                                          
                                         </div>
                                         <div class="modal-footer">
-                                          <button type="submit" name="update" class="btn btn-success">Submit</button>
+                                          <input type="hidden" name="init_status" value="Forwarded">
+                                          <button type="submit" name="ChangeFinalStatus" class="btn btn-success">Forward </button>
                                         </div>
                                       </div>
                                     </form>
@@ -299,44 +306,27 @@ $departmentId = $_SESSION['departmentId'];
                                   tabindex="-1" aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>"
                                   aria-hidden="true">
                                   <div class="modal-dialog">
-                                    <form method="POST" action="department/forwordNOC_db.php">
+                                    <form method="POST" action="department/NocReport_FAuthDB.php">
                                       <div class="modal-content">
                                         <div class="modal-header">
                                           <h5 class="modal-title"
-                                            id="forwardNOCModalLabel<?php echo $row['applicationId']; ?>">Forward NOC</h5>
+                                            id="forwardNOCModalLabel<?php echo $row['applicationId']; ?>">Reject</h5>
                                           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
                                           <input type="hidden" name="applicationId"
                                             value="<?php echo $row['applicationId']; ?>">
                                           <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
-                                          <div class="mb-3">
-                                            <label for="employeeId" class="form-label">Forward to Employee</label>
-                                            <select name="inspectionOfficer" class="form-select" required>
-                                              <option value="">Select Employee</option>
-                                              <?php
-                                              $empStmt = $conn->prepare("
-                                                  SELECT userId, name 
-                                                  FROM users 
-                                                  WHERE status = 'Active' 
-                                                  AND designation NOT IN ('Tahsildar', 'SDO', 'Department')
-                                              ");
-                                              $empStmt->execute();
-                                              $empResult = $empStmt->get_result();
-                                              while ($emp = $empResult->fetch_assoc()) {
-                                                echo '<option value="' . $emp['userId'] . '">' . htmlspecialchars($emp['name']) . '</option>';
-                                              }
-                                              ?>
-                                            </select>
-                                          </div>
+                                         
                                           <div class="mb-3">
                                             <label for="remarks" class="form-label">Remark</label>
-                                            <textarea name="HODremark" class="form-control" placeholder="Enter remark..."
+                                            <textarea name="reportRemark" class="form-control" placeholder="Enter remark..."
                                               required></textarea>
                                           </div>
                                         </div>
                                         <div class="modal-footer">
-                                          <button type="submit" name="forwardNOC" class="btn btn-success">Submit</button>
+                                          <input type="hidden" name="init_status" value="Rejected">
+                                          <button type="submit" name="ChangeFinalStatus" class="btn btn-danger">Reject</button>
                                         </div>
                                       </div>
                                     </form>
