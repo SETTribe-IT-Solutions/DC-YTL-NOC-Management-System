@@ -17,6 +17,8 @@ if (!isset($_SESSION['userId'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <base href="../">
     <title>NOC Portal</title>
     <meta charset="utf-8" />
@@ -79,7 +81,7 @@ if (!isset($_SESSION['userId'])) {
                                                         <th class="min-w-100px">संपर्क अधिकार्याचा ईमेल ID</th>
                                                         <th class="min-w-100px">NOC प्रकार निवडा</th>
                                                         <th class="min-w-100px">स्थिती</th>
-                                                        <th class="min-w-100px">Action</th>
+                                                        <th class="min-w-100px">ACTION</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="fw-semibold text-gray-600">
@@ -96,7 +98,7 @@ if (!isset($_SESSION['userId'])) {
                                                         SELECT 
                                                             a.nocTypeId, a.departmentId, d.departmentName, a.applicationId, a.nocSubject,
                                                             a.landDesc, a.taluka, a.village, a.gatNo, a.mobileNo, a.emailId, a.status,
-                                                            a.createdDateTime, a.inspectionOfficer
+                                                            a.createdDateTime, a.inspectionOfficer,a.init_status,a.init_remark
                                                         FROM departmentNocApplications a
                                                        
                                                         INNER JOIN departments d ON a.departmentId = d.id
@@ -135,58 +137,129 @@ if (!isset($_SESSION['userId'])) {
                                 ?>
                                 <span class="<?php echo $color; ?>"><?php echo htmlspecialchars($status); ?></span>
                               </td>
-                              <td style="white-space: nowrap;">
+                             <td style="white-space: nowrap;">
+                                  <?php if  (!isset($row['init_status']) || trim($row['init_status']) == ''): ?>
                                 <div class="d-flex flex-wrap gap-1">
                                   <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                     data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
-                                   Submit Report
+                                   Forward Noc
                                   </button>
-                                   <?php if (!isset($row['inspectionOfficer']) || trim($row['inspectionOfficer']) === ''): ?>
+                                
                                     <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                       data-bs-target="#forwardNOCModal<?php echo $row['applicationId']; ?>"
                                       data-applicationid="<?php echo $row['applicationId']; ?>">
-                                      Forward NOC
+                                     Reject
                                     </button>
-                                  <?php else: ?>
+                                  <?php else: 
+                                     $statusinit_status = $row['init_status'];
+                                $color = $statusinit_status == 'Forwarded' ? 'text-success' : ($statusinit_status == 'Rejected' ? 'text-danger' : 'text-warning');
+                                ?>
+                                <span class="<?php echo $color; ?>"><?php echo htmlspecialchars($statusinit_status); ?></span>
+                                <br><span>(<?php echo $row['init_remark']; ?>)</span>
                                     
+                                        
                                   <?php endif; ?>
                                 </div>
-                                                            
-                                                                <!-- Change Status Modal -->
-                                                                  <!-- Change Status / Report Modal -->
-<div class="modal fade" id="updateStatusModal<?= $row['applicationId']; ?>" tabindex="-1"
-     aria-labelledby="updateStatusModalLabel<?= $row['applicationId']; ?>" aria-hidden="true">
-  <div class="modal-dialog">
-    <form method="POST" action="department/department_Report_employeeDB.php" enctype="multipart/form-data">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="updateStatusModalLabel<?= $row['applicationId']; ?>">Submit Report</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          
-<input type="hidden" name="applicationId" value="<?= htmlspecialchars($row['applicationId']); ?>">
-          <input type="hidden" name="departmentId" value="<?= htmlspecialchars($departmentId); ?>">
-          <div class="mb-3">
-            <label class="form-label">Report Remark (optional)</label>
-            <textarea name="reportRemark" class="form-control" rows="2" placeholder="Enter report remark..."></textarea>
-          </div>
+                                <!-- Change Status / Report Modal -->
+                                <div class="modal fade" id="updateStatusModal<?= $row['applicationId']; ?>" tabindex="-1"
+                                  aria-labelledby="updateStatusModalLabel<?= $row['applicationId']; ?>"
+                                  aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <form method="POST" action="department/department_ReportFAuthDB.php"
+                                      enctype="multipart/form-data">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title"
+                                            id="updateStatusModalLabel<?= $row['applicationId']; ?>">Forward Noc To Department</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
 
-          <div class="mb-3">
-            <label class="form-label">Upload Report Files (optional)</label>
-            <input type="file" name="reportFile[]" class="form-control reportFileInput" accept=".pdf,.jpg,.jpeg,.png" multiple>
-            <div class="form-text">Allowed: PDF, JPG, PNG. Max each: 5MB.</div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" name="update" class="btn btn-success">Submit</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-                                                            </td>
-                                                        </tr>
+                                          <input type="hidden" name="applicationId"
+                                            value="<?= htmlspecialchars($row['applicationId']); ?>">
+                                          <input type="hidden" name="departmentId"
+                                            value="<?= htmlspecialchars($departmentId); ?>">
+                                          <div class="mb-3">
+                                            <label class="form-label">Report Remark (optional)</label>
+                                            <textarea name="reportRemark" class="form-control" rows="2"
+                                              placeholder="Enter report remark..."></textarea>
+                                          </div>
+
+                                          
+                                        </div>
+                                        <div class="modal-footer">
+                                          <input type="hidden" name="init_status" value="Forwarded">
+                                          <button type="submit" name="ChangeFinalStatus" class="btn btn-success">Forward </button>
+                                        </div>
+                                      </div>
+                                    </form>
+                                  </div>
+                                </div>
+
+                                <script>
+                                  document.addEventListener('change', function (e) {
+                                    if (!e.target.matches('.reportFileInput')) return;
+                                    const input = e.target;
+                                    const allowedExt = ['pdf', 'jpg', 'jpeg', 'png'];
+                                    const maxSize = 5 * 1024 * 1024;
+                                    const files = Array.from(input.files);
+                                    const invalid = files.find(f => !allowedExt.includes(f.name.split('.').pop().toLowerCase()));
+                                    if (invalid) {
+                                      Swal.fire({
+                                        icon: 'error',
+                                        title: 'Invalid file type',
+                                        text: `File "${invalid.name}" is not allowed.`,
+                                        confirmButtonText: 'OK'
+                                      });
+                                      input.value = '';
+                                      return;
+                                    }
+                                    const tooLarge = files.find(f => f.size > maxSize);
+                                    if (tooLarge) {
+                                      Swal.fire({
+                                        icon: 'error',
+                                        title: 'Too large',
+                                        text: `File "${tooLarge.name}" exceeds 5MB.`,
+                                        confirmButtonText: 'OK'
+                                      });
+                                      input.value = '';
+                                    }
+                                  });
+                                </script>
+
+                                <!-- Forward NOC Modal -->
+                                <div class="modal fade" id="forwardNOCModal<?php echo $row['applicationId']; ?>"
+                                  tabindex="-1" aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>"
+                                  aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <form method="POST" action="department/department_ReportFAuthDB.php">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title"
+                                            id="forwardNOCModalLabel<?php echo $row['applicationId']; ?>">Reject</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <input type="hidden" name="applicationId"
+                                            value="<?php echo $row['applicationId']; ?>">
+                                          <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
+                                         
+                                          <div class="mb-3">
+                                            <label for="remarks" class="form-label">Remark</label>
+                                            <textarea name="reportRemark" class="form-control" placeholder="Enter remark..."
+                                              required></textarea>
+                                          </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <input type="hidden" name="init_status" value="Rejected">
+                                          <button type="submit" name="ChangeFinalStatus" class="btn btn-danger">Reject</button>
+                                        </div>
+                                      </div>
+                                    </form>
+                                  </div>
+                                </div>
+                              </td>
+                                                                                 </tr>
                                                     <?php } ?>
                                                 </tbody>
                                             </table>
@@ -272,5 +345,32 @@ if (!isset($_SESSION['userId'])) {
     }
   });
 </script>
+<script>
+document.querySelectorAll(".statusForm").forEach(form => {
+  form.addEventListener("submit", function(e){
+    e.preventDefault();  // stop normal submit
+
+    let formData = new FormData(this);
+
+    fetch("department/department_ReportFAuthDB.php", {
+      method: "POST",
+      body: formData
+    })
+    .then(res => res.text())
+    .then(data => {
+      // ✅ Modal Close
+      let modalEl = this.closest(".modal");
+      let modal = bootstrap.Modal.getInstance(modalEl);
+      modal.hide();
+
+      // ✅ Page Refresh
+      setTimeout(() => location.reload(), 500);
+    })
+    .catch(err => console.error(err));
+  });
+});
+</script>
+
+
 </body>
 </html>
