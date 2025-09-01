@@ -430,8 +430,148 @@
 
                 <?php
             }
-            ?>
+            
+            
 
+             
+            
+
+            else if ($_SESSION['systemRole'] == "Final Authority") {
+                ?>
+                            <!--begin:Menu item-->
+                            <!-- <div class="menu-item" onclick="window.location.href='officers/tahsildar-dashboard.php'">
+                              
+                                <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-element-11 fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">Dashboards</span>
+                                </span>
+                                </a>
+                               
+                            </div> -->
+                            <!--end:Menu item-->
+
+                            <!--begin:Menu item-->
+                            <div class="menu-item" onclick="window.location.href='department/NocReport_FAuth.php'">
+                                <!-- begin:Menu link-->
+
+                                <!-- <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-element-11 fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">View NOC Application</span>
+                                </span>
+                                </a> -->
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+
+                            <!--begin:Menu item-->
+                             <div class="menu-item" onclick="window.location.href='department/NocReport_FAuthFinal.php'">
+                        <!--begin:Menu link-->
+                        <span class="menu-link">
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-user fs-3"></i>
+                            </span>
+                            <span class="menu-title">NOC  Finalअर्ज पहा (civilian)</span>
+                        </span>
+                        <!--end:Menu link-->
+
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='department/department_Employee_ReportFAuthFinal.php'">
+                        <!--begin:Menu link-->
+                        <span class="menu-link">
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-building fs-3"></i>
+                            </span>
+                            <span class="menu-title">NOC  Finalअर्ज पहा (Department)</span>
+                        </span>
+                        <!--end:Menu link-->
+
+                    </div>
+
+                <?php
+            }
+            ?>
+            
+                            <!--begin:Menu item-->
+                            <!-- <div class="menu-item" onclick="window.location.href='officers/tahsildar-dashboard.php'">
+                              
+                                <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-element-11 fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">Dashboards</span>
+                                </span>
+                                </a>
+                               
+                            </div> -->
+                            <!--end:Menu item-->
+
+                            <!--begin:Menu item-->
+                            <div class="menu-item" onclick="window.location.href='department/NocReport_FAuth.php'">
+                                <!-- begin:Menu link-->
+
+                                <!-- <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-element-11 fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">View NOC Application</span>
+                                </span>
+                                </a> -->
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+
+                            <!--begin:Menu item-->
+                             <div class="menu-item" onclick="window.location.href='department/NocReport_FAuth.php'">
+                        <!--begin:Menu link-->
+                        <span class="menu-link">
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-user fs-3"></i>
+                            </span>
+                            <span class="menu-title">NOC अर्ज पहा (civilian)</span>
+                        </span>
+                        <!--end:Menu link-->
+
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='department/department_Employee_ReportFAuth.php'">
+                        <!--begin:Menu link-->
+                        <span class="menu-link">
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-building fs-3"></i>
+                            </span>
+                            <span class="menu-title">NOC अर्ज पहा (Department)</span>
+                        </span>
+                        <!--end:Menu link-->
+
+                    </div>
+
+                <?php
+            
+            ?>
+            
             <!--begin:Menu item-->
             <div class="menu-item" onclick="window.location.href='logout.php'">
                 <!--begin:Menu link-->
