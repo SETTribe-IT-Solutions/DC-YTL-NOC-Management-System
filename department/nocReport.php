@@ -152,12 +152,12 @@ include('../include/conn.php');
                               FROM nocApplications a
                               INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
                               LEFT JOIN civilianRegistrations c ON a.civilianId = c.civilianId
-                              WHERE r.departmentId = ?
-                              ORDER BY a.createdDateTime DESC
-                          ");
-                          $stmt->bind_param("i", $departmentId);
-                          $stmt->execute();
-                          $result = $stmt->get_result();
+                              WHERE r.departmentId = ? AND a.init_status = 'Forwarded'
+    ORDER BY a.createdDateTime DESC
+");
+$stmt->bind_param("i", $departmentId);
+$stmt->execute();
+$result = $stmt->get_result();
                           $i = 1;
                           while ($row = $result->fetch_assoc()) {
                             $civilianId = $row['civilianId'];
