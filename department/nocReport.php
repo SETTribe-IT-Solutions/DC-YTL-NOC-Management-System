@@ -104,7 +104,7 @@ include('../include/conn.php');
                           <tr class="text-start text-dark-900 fw-bold fs-6 text-uppercase">
                             <th class="min-w-70px">Sr. No.</th>
                             <th class="min-w-100px">NOC क्रमंक</th>
-                            <th class="min-w-100px">Civilian</th>
+                            <!-- <th class="min-w-100px">Civilian</th> -->
                             <th class="min-w-100px">NOC विषय</th>
                             <th class="min-w-100px">NOC प्रकार</th>
                             <th class="min-w-100px">जामिनीची तपशील</th>
@@ -118,8 +118,9 @@ include('../include/conn.php');
                             <th class="min-w-100px">पेन कार्ड पहा</th>
                             <th class="min-w-100px">आधार कार्ड पहा</th>
                             <th class="min-w-100px">तारीख</th>
-                            <th class="min-w-100px">Inpection report</th>
+                            <!-- <th class="min-w-100px">Inpection report</th> -->
                             <th class="min-w-100px">स्थिती</th>
+                            <th class="min-w-100px">विभागांनी दिलेली मंजुरी</th>
                             <th class="min-w-100px">Action</th>
                           </tr>
                         </thead>
@@ -175,7 +176,7 @@ $result = $stmt->get_result();
                             <tr class="odd">
                               <td><?= $i++ ?></td>
                               <td><?php echo htmlspecialchars($row['applicationId']); ?></td>
-                              <td><?php echo isset($r['name']) ? htmlspecialchars($r['name']) : '-'; ?></td>
+                              <!-- <td><?php echo isset($r['name']) ? htmlspecialchars($r['name']) : '-'; ?></td> -->
                               <td><?php echo htmlspecialchars($row['nocSubject']); ?></td>
                               <td><?php echo isset($r1['type']) ? htmlspecialchars($r1['type']) : '-'; ?></td>
                               <td><?php echo htmlspecialchars($row['landDesc']); ?></td>
@@ -203,7 +204,7 @@ $result = $stmt->get_result();
                                 <?php } ?>
                               </td>
                               <td><?php echo date('d-m-Y', strtotime($row['createdDateTime'])); ?></td>
-                              <td>
+                              <!-- <td>
                                 <?php
                                 /// Files part
                                 if (!empty($row['reportFile'])) {
@@ -236,7 +237,7 @@ $result = $stmt->get_result();
                                   echo '<strong>Remark:</strong> ' . $display;
                                 }
                                 ?>
-                              </td>
+                              </td> -->
 
 
                               </td>
@@ -247,6 +248,7 @@ $result = $stmt->get_result();
                                 ?>
                                 <span class="<?php echo $color; ?>"><?php echo htmlspecialchars($status); ?></span>
                               </td>
+                              <td>-</td>
                               <td style="white-space: nowrap;">
                                 <div class="d-flex flex-wrap gap-1">
                                   <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
