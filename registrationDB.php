@@ -5,6 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
     $name = mysqli_real_escape_string($con, $_POST['name']);
     $address = mysqli_real_escape_string($con, $_POST['address']);
+    $pinCode = mysqli_real_escape_string($con, $_POST['pinCode']);
     $taluka = mysqli_real_escape_string($con, $_POST['taluka']);
     $village = mysqli_real_escape_string($con, $_POST['village']);
     $aadharNo = mysqli_real_escape_string($con, $_POST['aadharNo']);
@@ -42,9 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
                 // Insert into DB
                 $query = "INSERT INTO civilianRegistrations 
-                    (`civilianId`, `name`, `address`, `taluka`, `village`, `aadharNo`, `emailId`, `identificationCertificate`, `mobileNo`,`password`, `createDateTime`) 
+                    (`civilianId`, `name`, `address`, `pinCode`, `taluka`, `village`, `aadharNo`, `emailId`, `identificationCertificate`, `mobileNo`,`password`, `createDateTime`) 
                     VALUES 
-                    ('$civilianId', '$name', '$address', '$taluka', '$village', '$aadharNo', '$emailId', '$file_path', '$mobileNo','$password', '$createDateTime')";
+                    ('$civilianId', '$name', '$address', '$pinCode', '$taluka', '$village', '$aadharNo', '$emailId', '$file_path', '$mobileNo','$password', '$createDateTime')";
 
                 if (mysqli_query($con, $query)) {
                     echo "<script>alert('नोंदणी यशस्वी झाली'); window.location.href='registration.php';</script>";
