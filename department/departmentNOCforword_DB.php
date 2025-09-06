@@ -1,4 +1,4 @@
-<?php 
+<?php
 include('../include/conn.php');
 if (isset($_POST['forwardNOC'])) {
     $applicationId = $_POST['applicationId'];
@@ -20,4 +20,7 @@ if (isset($_POST['forwardNOC'])) {
         exit();
     }
 }
+?>
+<?php
+$con->close();
 ?>

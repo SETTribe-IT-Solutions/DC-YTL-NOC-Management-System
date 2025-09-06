@@ -70,3 +70,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     echo "<script>alert('Invalid Request');</script>";
 }
 ?>
+<?php
+$con->close();
+?>

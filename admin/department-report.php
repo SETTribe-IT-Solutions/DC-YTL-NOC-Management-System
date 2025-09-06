@@ -67,16 +67,16 @@ include('../include/sweetAlert.php');
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-              <?php
-// Check the user's designation
-if ($designation === 'admin') {
-    // If designation is 'admin', include the admin sidebar
-    include("../include/admin-sidebar.php");
-} else {
-    // For all other designations, include the regular sidebar
-    include("../include/sidebar.php");
-}
-?>
+                <?php
+                // Check the user's designation
+                if ($designation === 'admin') {
+                    // If designation is 'admin', include the admin sidebar
+                    include("../include/admin-sidebar.php");
+                } else {
+                    // For all other designations, include the regular sidebar
+                    include("../include/sidebar.php");
+                }
+                ?>
 
                 <!--end::Sidebar-->
                 <!--begin::Main-->
@@ -107,7 +107,8 @@ if ($designation === 'admin') {
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC Application Report
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC Application
+                                                Report
                                             </li>
                                             <!--end::Item-->
                                         </ul>
@@ -115,7 +116,7 @@ if ($designation === 'admin') {
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1">
-                                           Department Report
+                                            Department Report
                                         </h1>
                                         <!--end::Title-->
                                     </div>
@@ -181,71 +182,74 @@ if ($designation === 'admin') {
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                      <table class="table align-middle border rounded table-row-dashed fs-6 g-5" id="kt_datatable_example">
-    <thead>
-        <tr class="text-start text-black-500 fw-bold fs-7 text-uppercase">
-            <th>NOC क्रमांक</th>
-            <th>NOC प्रकार</th>
-            <!-- <th>पूर्ण नाव</th>
+                                        <table class="table align-middle border rounded table-row-dashed fs-6 g-5"
+                                            id="kt_datatable_example">
+                                            <thead>
+                                                <tr class="text-start text-black-500 fw-bold fs-7 text-uppercase">
+                                                    <th>NOC क्रमांक</th>
+                                                    <th>NOC प्रकार</th>
+                                                    <!-- <th>पूर्ण नाव</th>
             <th>पत्ता</th> -->
-            <th>ईमेल ID</th>
-            <th>मोबाईल क्र.</th>
-            <!-- <th>आधार क्रमांक</th> -->
-            <th>जमिनीची तपशील</th>
-            <th>तालुका</th>
-            <th>गाव</th>
-            <th>गट क्रमांक</th>
-            <!-- <th>आधार कार्ड अपलोड करा</th>
+                                                    <th>ईमेल ID</th>
+                                                    <th>मोबाईल क्र.</th>
+                                                    <!-- <th>आधार क्रमांक</th> -->
+                                                    <th>जमिनीची तपशील</th>
+                                                    <th>तालुका</th>
+                                                    <th>गाव</th>
+                                                    <th>गट क्रमांक</th>
+                                                    <!-- <th>आधार कार्ड अपलोड करा</th>
             <th>पॅन कार्ड अपलोड करा</th> -->
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody class="fw-semibold text-black-800">
-        <?php
-        // civilianId filter हटा दिया गया
-       
-if (strtolower($designation) === 'admin') {
-    $sql = "SELECT na.*, nt.type AS nocType 
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="fw-semibold text-black-800">
+                                                <?php
+                                                // civilianId filter हटा दिया गया
+                                                
+                                                if (strtolower($designation) === 'admin') {
+                                                    $sql = "SELECT na.*, nt.type AS nocType 
             FROM departmentNocApplications na
             LEFT JOIN nocTypes nt ON nt.id = na.nocTypeId
             ORDER BY na.createdDateTime DESC";
-} else {
-    // Officer or other: filter by taluka
-     $sql = "SELECT na.*, nt.type AS nocType 
+                                                } else {
+                                                    // Officer or other: filter by taluka
+                                                    $sql = "SELECT na.*, nt.type AS nocType 
                 FROM departmentNocApplications na
                 LEFT JOIN nocTypes nt ON nt.id = na.nocTypeId
                 WHERE na.taluka = '$taluka'
                 ORDER BY na.createdDateTime DESC ";
-}
+                                                }
 
-$q = mysqli_query($con, $sql);
-        while ($r = mysqli_fetch_assoc($q)) {
-        ?>
-            <tr class="odd">
-                <td><?= $r['applicationId']; ?></td>
-                <td><?= $r['nocType']; ?></td>
-                <!-- <td><?= $r['name']; ?></td>
+                                                $q = mysqli_query($con, $sql);
+                                                while ($r = mysqli_fetch_assoc($q)) {
+                                                    ?>
+                                                    <tr class="odd">
+                                                        <td><?= $r['applicationId']; ?></td>
+                                                        <td><?= $r['nocType']; ?></td>
+                                                        <!-- <td><?= $r['name']; ?></td>
                 <td><?= $r['address']; ?></td> -->
-                <td><?= $r['emailId']; ?></td>
-                <td><?= $r['mobileNo']; ?></td>
-                <!-- <td><?= $r['aadharNo']; ?></td> -->
-                <td><?= $r['landDesc']; ?></td>
-                <td><?= $r['taluka']; ?></td>
-                <td><?= $r['village']; ?></td>
-                <td><?= $r['gatNo']; ?></td>
-                <!-- <td><?= $r['aadharCard'] ? '<a href="' . $r['aadharCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?></td>
+                                                        <td><?= $r['emailId']; ?></td>
+                                                        <td><?= $r['mobileNo']; ?></td>
+                                                        <!-- <td><?= $r['aadharNo']; ?></td> -->
+                                                        <td><?= $r['landDesc']; ?></td>
+                                                        <td><?= $r['taluka']; ?></td>
+                                                        <td><?= $r['village']; ?></td>
+                                                        <td><?= $r['gatNo']; ?></td>
+                                                        <!-- <td><?= $r['aadharCard'] ? '<a href="' . $r['aadharCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?></td>
                 <td><?= $r['panCard'] ? '<a href="' . $r['panCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?></td> -->
-                <td>
-                    <a href="civilian/trackNoc.php?applicationId=<?= $r['applicationId'] ?>">
-                        <button type="button" class="btn btn-primary btn-sm">Track</button>
-                    </a>
-                </td>
-            </tr>
-        <?php
-        }
-        ?>
-    </tbody>
-</table>
+                                                        <td>
+                                                            <a
+                                                                href="civilian/trackNoc.php?applicationId=<?= $r['applicationId'] ?>">
+                                                                <button type="button"
+                                                                    class="btn btn-primary btn-sm">Track</button>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </tbody>
+                                        </table>
 
                                     </div>
                                 </div>
@@ -374,3 +378,6 @@ $q = mysqli_query($con, $sql);
 <!--end::Body-->
 
 </html>
+<?php
+$con->close();
+?>

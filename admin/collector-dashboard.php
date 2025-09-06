@@ -760,3 +760,6 @@ ORDER BY taluka";
 <!--end::Body-->
 
 </html>
+<?php
+$con->close();
+?>

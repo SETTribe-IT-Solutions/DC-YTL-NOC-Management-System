@@ -502,3 +502,6 @@ $departmentId = $_SESSION['departmentId'];
 <!--end::Body-->
 
 </html>
+<?php
+$con->close();
+?>

@@ -356,3 +356,6 @@ include('../include/sweetAlert.php');
 <!--end::Body-->
 
 </html>
+<?php
+$con->close();
+?>

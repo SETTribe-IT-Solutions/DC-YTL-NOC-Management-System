@@ -1,4 +1,4 @@
-<?php 
+<?php
 include('../include/conn.php');
 
 if (isset($_POST['forwardNOC'])) {
@@ -39,4 +39,7 @@ if (isset($_POST['forwardNOC'])) {
         exit();
     }
 }
+?>
+<?php
+$con->close();
 ?>

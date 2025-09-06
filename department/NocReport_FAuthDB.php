@@ -3,17 +3,18 @@ session_start();
 include('../include/conn.php');
 
 if (isset($_POST['ChangeFinalStatus'])) {
-    $init_status = $_POST['init_status'];
-    $applicationId = mysqli_real_escape_string($conn, $_POST['applicationId'] ?? '');
-    $reportRemark = mysqli_real_escape_string($conn, $_POST['reportRemark'] ?? '');
+  $init_status = $_POST['init_status'];
+  $applicationId = mysqli_real_escape_string($conn, $_POST['applicationId'] ?? '');
+  $reportRemark = mysqli_real_escape_string($conn, $_POST['reportRemark'] ?? '');
 
-    
-    // Helper to show SweetAlert and redirect/back
-    function swal($icon, $title, $text, $redirect = null) {
-        $redirect_js = $redirect
-            ? "window.location.href = '".addslashes($redirect)."';"
-            : "window.history.back();";
-        echo <<<HTML
+
+  // Helper to show SweetAlert and redirect/back
+  function swal($icon, $title, $text, $redirect = null)
+  {
+    $redirect_js = $redirect
+      ? "window.location.href = '" . addslashes($redirect) . "';"
+      : "window.history.back();";
+    echo <<<HTML
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,27 +36,28 @@ if (isset($_POST['ChangeFinalStatus'])) {
 </body>
 </html>
 HTML;
-        exit;
-    }
+    exit;
+  }
 
-    if ($applicationId && $init_status) {
-        $sql = "
+  if ($applicationId && $init_status) {
+    $sql = "
             UPDATE nocApplications 
             SET init_status = '$init_status', init_remark = '{$reportRemark}' 
             WHERE applicationId = '{$applicationId}'
         ";
-        $update = mysqli_query($conn, $sql);
+    $update = mysqli_query($conn, $sql);
 
-        if ($update) {
-            swal('success', 'Success!', 'Noc updated successfully.');
-        } else {
-            swal('error', 'Database Error', 'Database update failed.');
-        }
+    if ($update) {
+      swal('success', 'Success!', 'Noc updated successfully.', 'NocReport_FAuth.php');
     } else {
-        swal('warning', 'Missing Data', 'No Noc Updated or application ID missing.');
+      swal('error', 'Database Error', 'Database update failed.', 'NocReport_FAuth.php');
     }
+  } else {
+    swal('warning', 'Missing Data', 'No Noc Updated or application ID missing.', 'NocReport_FAuth.php');
+  }
 }
 
 
 
+$con->close();
 ?>
