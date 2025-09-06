@@ -484,3 +484,6 @@ KTUtil.onDOMContentLoaded(function () {
 
 
 </html>
+<?php
+$con->close();
+?>

@@ -30,9 +30,10 @@ if (isset($_POST['update'])) {
     $reportFile = implode(' -Next file ', $uploadedFiles);
 
     // Helper to show SweetAlert and redirect/back
-    function swal($icon, $title, $text, $redirect = null) {
+    function swal($icon, $title, $text, $redirect = null)
+    {
         $redirect_js = $redirect
-            ? "window.location.href = '".addslashes($redirect)."';"
+            ? "window.location.href = '" . addslashes($redirect) . "';"
             : "window.history.back();";
         echo <<<HTML
 <!DOCTYPE html>
@@ -76,4 +77,7 @@ HTML;
         swal('warning', 'Missing Data', 'No files uploaded or application ID missing.');
     }
 }
+?>
+<?php
+$con->close();
 ?>

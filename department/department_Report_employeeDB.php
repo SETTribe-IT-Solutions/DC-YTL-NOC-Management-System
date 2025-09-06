@@ -31,10 +31,11 @@ if (isset($_POST['update'])) {
     $reportFile = implode(' -Next file, ', $uploadedFiles);
 
     // Helper to output SweetAlert and redirect/back
-    function swal_and_exit($icon, $title, $text, $redirect = null) {
+    function swal_and_exit($icon, $title, $text, $redirect = null)
+    {
         $redirect_js = '';
         if ($redirect) {
-            $redirect_js = "window.location.href = '".addslashes($redirect)."';";
+            $redirect_js = "window.location.href = '" . addslashes($redirect) . "';";
         } else {
             $redirect_js = "window.history.back();";
         }
@@ -83,4 +84,7 @@ HTML;
         swal_and_exit('warning', 'No Files', 'No files were uploaded or application ID missing.');
     }
 }
+?>
+<?php
+$con->close();
 ?>

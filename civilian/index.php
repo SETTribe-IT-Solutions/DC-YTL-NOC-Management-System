@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['userId'])) {
-   
+
     header("Location: ../index.html");
     exit();
 }
@@ -484,3 +484,6 @@ include('../include/sweetAlert.php');
 <!--end::Body-->
 
 </html>
+<?php
+$con->close();
+?>

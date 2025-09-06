@@ -154,11 +154,11 @@ include('../include/conn.php');
                               INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
                               LEFT JOIN civilianRegistrations c ON a.civilianId = c.civilianId
                               WHERE r.departmentId = ? AND a.init_status = 'Forwarded'
-    ORDER BY a.createdDateTime DESC
-");
-$stmt->bind_param("i", $departmentId);
-$stmt->execute();
-$result = $stmt->get_result();
+    ORDER BY a.createdDateTime DESC");
+                          echo $departmentId;
+                          $stmt->bind_param("i", $departmentId);
+                          $stmt->execute();
+                          $result = $stmt->get_result();
                           $i = 1;
                           while ($row = $result->fetch_assoc()) {
                             $civilianId = $row['civilianId'];
@@ -516,3 +516,7 @@ $result = $stmt->get_result();
 <!--end::Body-->
 
 </html>
+
+<?php
+$con->close();
+?>

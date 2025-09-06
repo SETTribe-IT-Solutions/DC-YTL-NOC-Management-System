@@ -3,17 +3,18 @@ session_start();
 include('../include/conn.php');
 
 if (isset($_POST['ChangeFinalStatus'])) {
-    $init_status = $_POST['init_status'];
-    $applicationId = mysqli_real_escape_string($conn, $_POST['applicationId'] ?? '');
-    $reportRemark = mysqli_real_escape_string($conn, $_POST['reportRemark'] ?? '');
+  $init_status = $_POST['init_status'];
+  $applicationId = mysqli_real_escape_string($conn, $_POST['applicationId'] ?? '');
+  $reportRemark = mysqli_real_escape_string($conn, $_POST['reportRemark'] ?? '');
 
-    
-    // Helper to show SweetAlert and redirect/back
-    function swal($icon, $title, $text, $redirect = null) {
-        $redirect_js = $redirect
-            ? "window.location.href = '".addslashes($redirect)."';"
-            : "window.history.back();";
-        echo <<<HTML
+
+  // Helper to show SweetAlert and redirect/back
+  function swal($icon, $title, $text, $redirect = null)
+  {
+    $redirect_js = $redirect
+      ? "window.location.href = '" . addslashes($redirect) . "';"
+      : "window.history.back();";
+    echo <<<HTML
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,18 +36,18 @@ if (isset($_POST['ChangeFinalStatus'])) {
 </body>
 </html>
 HTML;
-        exit;
-    }
+    exit;
+  }
 
-    if ($applicationId && $init_status) {
-        $sql = "
+  if ($applicationId && $init_status) {
+    $sql = "
             UPDATE departmentNocApplications
             SET init_status = '$init_status', init_remark = '{$reportRemark}' 
             WHERE applicationId = '{$applicationId}'
         ";
-        $update = mysqli_query($conn, $sql);
-if ($update) {
-    echo "
+    $update = mysqli_query($conn, $sql);
+    if ($update) {
+      echo "
     <!DOCTYPE html>
     <html>
     <head>
@@ -70,8 +71,8 @@ if ($update) {
     </body>
     </html>
     ";
-} else {
-    echo "
+    } else {
+      echo "
     <!DOCTYPE html>
     <html>
     <head>
@@ -92,11 +93,14 @@ if ($update) {
     </body>
     </html>
     ";
+    }
+
+
+  }
+
 }
 
-
-}
-
-}
-
+?>
+<?php
+$con->close();
 ?>

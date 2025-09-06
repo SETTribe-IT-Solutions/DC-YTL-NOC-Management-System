@@ -16,18 +16,23 @@ if (isset($_POST['submit'])) {
     ?>
     <!DOCTYPE html>
     <html lang="en">
-    <head><script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script></head>
+
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+
     <body>
-    <script>
-        Swal.fire({
-            icon: '<?php echo $query ? "success" : "error"; ?>',
-            title: '<?php echo $query ? "Success!" : "Oops..."; ?>',
-            text: '<?php echo $query ? "NOC Type created successfully" : "Something went wrong! Please try again."; ?>',
-        }).then(() => {
-            window.location.href = 'nocType.php';
-        });
-    </script>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $query ? "success" : "error"; ?>',
+                title: '<?php echo $query ? "Success!" : "Oops..."; ?>',
+                text: '<?php echo $query ? "NOC Type created successfully" : "Something went wrong! Please try again."; ?>',
+            }).then(() => {
+                window.location.href = 'nocType.php';
+            });
+        </script>
     </body>
+
     </html>
     <?php
     exit;
@@ -51,18 +56,23 @@ if (isset($_POST['update'])) {
     ?>
     <!DOCTYPE html>
     <html lang="en">
-    <head><script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script></head>
+
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+
     <body>
-    <script>
-        Swal.fire({
-            icon: '<?php echo $query ? "success" : "error"; ?>',
-            title: '<?php echo $query ? "Updated!" : "Oops..."; ?>',
-            text: '<?php echo $query ? "NOC Type updated successfully" : "Update failed! Please try again."; ?>',
-        }).then(() => {
-            window.location.href = 'nocType.php';
-        });
-    </script>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $query ? "success" : "error"; ?>',
+                title: '<?php echo $query ? "Updated!" : "Oops..."; ?>',
+                text: '<?php echo $query ? "NOC Type updated successfully" : "Update failed! Please try again."; ?>',
+            }).then(() => {
+                window.location.href = 'nocType.php';
+            });
+        </script>
     </body>
+
     </html>
     <?php
     exit;
@@ -75,20 +85,29 @@ if (isset($_GET['delete'])) {
     ?>
     <!DOCTYPE html>
     <html lang="en">
-    <head><script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script></head>
+
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+
     <body>
-    <script>
-        Swal.fire({
-            icon: '<?php echo $query ? "success" : "error"; ?>',
-            title: '<?php echo $query ? "Deleted!" : "Oops..."; ?>',
-            text: '<?php echo $query ? "NOC Type deleted successfully" : "Delete failed! Please try again."; ?>',
-        }).then(() => {
-            window.location.href = 'nocType.php';
-        });
-    </script>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $query ? "success" : "error"; ?>',
+                title: '<?php echo $query ? "Deleted!" : "Oops..."; ?>',
+                text: '<?php echo $query ? "NOC Type deleted successfully" : "Delete failed! Please try again."; ?>',
+            }).then(() => {
+                window.location.href = 'nocType.php';
+            });
+        </script>
     </body>
+
     </html>
     <?php
     exit;
 }
+?>
+
+<?php
+$con->close();
 ?>

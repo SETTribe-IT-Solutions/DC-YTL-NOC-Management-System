@@ -273,3 +273,6 @@ if (!isset($_SESSION['userId'])) {
 </script>
 </body>
 </html>
+<?php
+$con->close();
+?>

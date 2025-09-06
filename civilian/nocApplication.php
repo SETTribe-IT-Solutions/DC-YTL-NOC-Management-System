@@ -142,6 +142,7 @@ include('../include/conn.php');
                                                 $resultCivilian = mysqli_fetch_assoc($queryCivilian);
                                                 $civilianRow = mysqli_num_rows($queryCivilian);
                                                 $name = $resultCivilian['name'];
+                                                $dob = $resultCivilian['dob'];
                                                 $aadharNo = $resultCivilian['aadharNo'];
                                                 $address = $resultCivilian['address'];
                                                 $mobileNo = $resultCivilian['mobileNo'];
@@ -164,7 +165,7 @@ include('../include/conn.php');
                                                     <!--begin::Input group-->
                                                     <div class="row">
                                                         <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
+                                                        <div class="col-md-3 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-bold mb-2">NOC क्रमांक <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
@@ -177,33 +178,43 @@ include('../include/conn.php');
                                                         <!--end::Col-->
 
                                                         <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
+                                                        <div class="col-md-5 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-bold mb-2">NOC प्रकार निवडा <span
                                                                     class="text-danger">*</span></label>
                                                             <select data-control="select2" name="nocType"
+                                                                onchange="getfinalAuthority()"
                                                                 data-placeholder="प्रकार निवडा" id="nocType"
                                                                 class="form-control">
                                                                 <option value="" disabled selected>NOC प्रकार निवडा
                                                                 </option>
                                                                 <?php
-                                                                echo "<option>जमीन प्रदान करण्यासाठी</option>";
-                                                                echo "<option>जमीन वर्ग २ ची वर्ग १ करणे</option>";
-                                                                echo "<option> वर्ग दोनची जमीन विक्री परवानगी </option>";
-                                                                echo "<option>नझूल जमीन फ्री होल्ड करणे </option>";
-                                                                // $sql = "SELECT type,id FROM nocTypes";
-                                                                // $stmt = $conn->prepare($sql);
-                                                                
-                                                                // if ($stmt->execute()) {
-                                                                //     $result = $stmt->get_result();
-                                                                //     while ($row = $result->fetch_assoc()) {
-                                                                //         echo "<option value='" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['type']) . "</option>";
-                                                                //     }
-                                                                // } else {
-                                                                //     echo "Query execution failed: ";
-                                                                // }
-                                                                // $stmt->close();
+                                                                $sql = "SELECT type, id FROM nocTypes ORDER BY id DESC";
+                                                                $stmt = $conn->prepare($sql);
+
+                                                                if ($stmt->execute()) {
+                                                                    $result = $stmt->get_result();
+                                                                    while ($row = $result->fetch_assoc()) {
+                                                                        echo "<option value='" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['type']) . "</option>";
+                                                                    }
+                                                                } else {
+                                                                    echo "Query execution failed: ";
+                                                                }
+                                                                $stmt->close();
                                                                 ?>
                                                             </select>
+                                                            <div
+                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                            </div>
+                                                        </div>
+                                                        <!--end::Col-->
+
+                                                        <!--begin::Col-->
+                                                        <div class="col-md-4 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">Final Authority <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" id="finalAuthority"
+                                                                name="finalAuthority" readonly
+                                                                placeholder="Final Authority">
                                                             <div
                                                                 class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                                             </div>
@@ -214,17 +225,6 @@ include('../include/conn.php');
 
                                                     <!--begin::Input group-->
                                                     <div class="row">
-                                                        <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-bold mb-2">जन्मतारीख <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="date" class="form-control" id="dob" name="dob"
-                                                                placeholder="जन्मतारीख">
-                                                            <div
-                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                            </div>
-                                                        </div>
-
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-bold mb-2">पूर्ण नाव <span
@@ -237,13 +237,44 @@ include('../include/conn.php');
                                                             </div>
                                                         </div>
                                                         <!--end::Col-->
+
+                                                        <!--begin::Col-->
+                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">इमेल ID <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="email" <?php echo $readonly; ?>
+                                                                class="form-control" value="<?php echo $emailId; ?>"
+                                                                name="email" placeholder="इमेल ID" required>
+                                                            <div
+                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                            </div>
+                                                        </div>
+                                                        <!--end::Col-->
+
                                                     </div>
                                                     <!--end::Input group-->
 
                                                     <!--begin::Input group-->
                                                     <div class="row">
+
                                                         <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
+                                                        <div class="col-md-4 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">मोबाईल क्र. <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" name="mobileNo"
+                                                                placeholder="मोबाईल क्र." <?php echo $readonly; ?>
+                                                                maxlength="10" value="<?php echo $mobileNo; ?>"
+                                                                minlength="10" pattern="\d{10}"
+                                                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                                                required>
+                                                            <div
+                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                            </div>
+                                                        </div>
+                                                        <!--end::Col-->
+
+                                                        <!--begin::Col-->
+                                                        <div class="col-md-4 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-bold mb-2">आधार क्रमांक <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control" name="aadharNo"
@@ -259,7 +290,26 @@ include('../include/conn.php');
                                                         <!--end::Col-->
 
                                                         <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
+                                                        <div class="col-md-4 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">जन्मतारीख <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="date" class="form-control"
+                                                                value="<?php echo $dob ?>" id="dob" name="dob"
+                                                                placeholder="जन्मतारीख">
+                                                            <div
+                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                            </div>
+                                                        </div>
+                                                        <!--end::Col-->
+
+
+                                                    </div>
+                                                    <!--end::Input group-->
+
+                                                    <!--begin::Input group-->
+                                                    <div class="row">
+                                                        <!--begin::Col-->
+                                                        <div class="col-md-12 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-bold mb-2">पत्ता <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" <?php echo $readonly; ?>
@@ -270,30 +320,19 @@ include('../include/conn.php');
                                                             </div>
                                                         </div>
                                                         <!--end::Col-->
+
                                                     </div>
                                                     <!--end::Input group-->
 
                                                     <!--begin::Input group-->
                                                     <div class="row">
-                                                        <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-bold mb-2">इमेल ID <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="email" <?php echo $readonly; ?>
-                                                                class="form-control" value="<?php echo $emailId; ?>"
-                                                                name="email" placeholder="इमेल ID" required>
-                                                            <div
-                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Col-->
 
                                                         <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
+                                                        <div class="col-md-12 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-bold mb-2">विषय <span
                                                                     class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" name="nocSubject"
-                                                                placeholder="विषय" required>
+                                                            <textarea class="form-control" name="nocSubject"
+                                                                placeholder="विषय" rows="3"></textarea>
                                                             <div
                                                                 class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                                             </div>
@@ -353,37 +392,10 @@ include('../include/conn.php');
                                                     </div>
                                                     <!--end::Input group-->
 
+
+
                                                     <!--begin::Input group-->
                                                     <div class="row">
-                                                        <!--begin::Col-->
-                                                        <!-- <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-bold mb-2">जामिनीची तपशील <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" name="landDesc"
-                                                                placeholder="जामिनीची तपशील" required>
-                                                            <div
-                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                            </div>
-                                                        </div> -->
-                                                        <!--end::Col-->
-
-                                                        <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-bold mb-2">मोबाईल क्र. <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" name="mobileNo"
-                                                                placeholder="मोबाईल क्र." <?php echo $readonly; ?>
-                                                                maxlength="10" value="<?php echo $mobileNo; ?>"
-                                                                minlength="10" pattern="\d{10}"
-                                                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                                                                required>
-                                                            <div
-                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Col-->
-
-
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-bold mb-2">गट क्रमांक <span
@@ -395,13 +407,6 @@ include('../include/conn.php');
                                                             </div>
                                                         </div>
                                                         <!--end::Col-->
-
-
-                                                    </div>
-                                                    <!--end::Input group-->
-
-                                                    <!--begin::Input group-->
-                                                    <div class="row">
 
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
@@ -417,6 +422,16 @@ include('../include/conn.php');
 
 
 
+
+
+
+                                                    </div>
+                                                    <!--end::Input group-->
+
+
+                                                    <!--begin::Input group-->
+                                                    <div class="row">
+
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-bold mb-2">पेन कार्ड अपलोड करा
@@ -430,14 +445,6 @@ include('../include/conn.php');
                                                         </div>
                                                         <!--end::Col-->
 
-
-                                                    </div>
-                                                    <!--end::Input group-->
-
-
-                                                    <!--begin::Input group-->
-                                                    <div class="row">
-
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-bold mb-2">आधारकार्ड अपलोड करा
@@ -450,6 +457,29 @@ include('../include/conn.php');
                                                             </div>
                                                         </div>
                                                         <!--end::Col-->
+
+                                                    </div>
+                                                    <!--end::Input group-->
+
+                                                    <!--begin::Input group-->
+                                                    <div class="row">
+                                                        <!--begin::Col-->
+                                                        <!-- <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">जामिनीची तपशील <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" name="landDesc"
+                                                                placeholder="जामिनीची तपशील" required>
+                                                            <div
+                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                            </div>
+                                                        </div> -->
+                                                        <!--end::Col-->
+
+
+
+
+
+
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
                                                             <label class="fs-5 fw-bold mb-2">NOC अर्ज
@@ -462,8 +492,11 @@ include('../include/conn.php');
                                                             </div>
                                                         </div>
                                                         <!--end::Col-->
+
+
                                                     </div>
                                                     <!--end::Input group-->
+
                                                     <!--begin::Submit-->
                                                     <button type="submit" name="submit" class="btn btn-primary"
                                                         id="kt_contact_submit_button">
@@ -530,6 +563,24 @@ include('../include/conn.php');
 
 
     <script>
+        function getfinalAuthority() {
+            var nocType = $('#nocType').val();
+
+            if (nocType !== "") {
+                $.ajax({
+                    url: 'ajax/finalAuthority.php',
+                    type: 'POST',
+                    data: { nocType: nocType },
+                    success: function (response) {
+                        console.log(response);
+                        $('#finalAuthority').val(response);
+                    }
+                });
+            } else {
+                $('#finalAuthority').val('Na');
+            }
+        }
+
         function getVillages() {
             var taluka = $('#taluka').val();
             var taluka = document.getElementById("taluka").value;
@@ -589,3 +640,6 @@ include('../include/conn.php');
 <!--end::Body-->
 
 </html>
+<?php
+$con->close();
+?>

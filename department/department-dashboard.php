@@ -5,11 +5,9 @@ error_reporting(0);
 session_start();
 
 if (!isset($_SESSION['userId'])) {
-   
+
     header("Location: ../index.html");
-    exit();
-}
-if (!isset($_SESSION['userId'])) {
+
     unset($_SESSION['designation']);
     unset($_SESSION['role']);
     header('location:../index.html');
@@ -782,3 +780,6 @@ include('../include/conn.php');
 <!--end::Body-->
 
 </html>
+<?php
+$con->close();
+?>

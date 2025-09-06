@@ -6,7 +6,7 @@ session_start();
 
 
 if (!isset($_SESSION['userId'])) {
-   
+
     header("Location: ../index.html");
     exit();
 }
@@ -15,6 +15,7 @@ include('../include/conn.php');
 <!DOCTYPE html>
 <html lang="en">
 <!--begin::Head-->
+
 <head>
     <base href="../">
     <title>NOC Portal</title>
@@ -29,6 +30,7 @@ include('../include/conn.php');
         #datatable th {
             border: 1px solid #F4F4F4;
         }
+
         #datatable td {
             border: 1px solid #F4F4F4;
         }
@@ -37,6 +39,7 @@ include('../include/conn.php');
 </head>
 <!--end::Head-->
 <!--begin::Body-->
+
 <body id="kt_app_body" data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true"
     data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
     data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true"
@@ -124,8 +127,8 @@ include('../include/conn.php');
                                                 </thead>
                                                 <tbody class="fw-semibold text-gray-600">
                                                     <?php
-$departmentId = $_SESSION['departmentId'];
-$stmt = $conn->prepare("
+                                                    $departmentId = $_SESSION['departmentId'];
+                                                    $stmt = $conn->prepare("
     SELECT 
         a.nocTypeId,
         a.departmentId,
@@ -149,9 +152,9 @@ $stmt = $conn->prepare("
     WHERE r.departmentId = ? AND a.init_status != 'Forwarded'
     ORDER BY a.createdDateTime DESC
 ");
-$stmt->bind_param("i", $departmentId);
-$stmt->execute();
-$result = $stmt->get_result();
+                                                    $stmt->bind_param("i", $departmentId);
+                                                    $stmt->execute();
+                                                    $result = $stmt->get_result();
                                                     $i = 1;
                                                     while ($row = $result->fetch_assoc()) {
                                                         $nocType = $row['nocTypeId'];
@@ -163,7 +166,8 @@ $result = $stmt->get_result();
                                                         <tr class="odd">
                                                             <td><?= $i++ ?></td>
                                                             <td><?php echo htmlspecialchars($row['applicationId']); ?></td>
-                                                            <td><?php echo isset($r1['type']) ? htmlspecialchars($r1['type']) : '-'; ?></td>
+                                                            <td><?php echo isset($r1['type']) ? htmlspecialchars($r1['type']) : '-'; ?>
+                                                            </td>
                                                             <td><?php echo htmlspecialchars($row['departmentName']); ?></td>
                                                             <td><?php echo htmlspecialchars($row['nocSubject']); ?></td>
                                                             <td><?php echo htmlspecialchars($row['landDesc']); ?></td>
@@ -176,25 +180,25 @@ $result = $stmt->get_result();
                                                             <td>
                                                                 <?php
                                                                 // Files part
-                                                                                                   if (!empty($row['reportFile'])) {
-    $parts = preg_split('/\s*-Next file,?\s*/i', $row['reportFile'], -1, PREG_SPLIT_NO_EMPTY);
-    $i = 1;
-    foreach ($parts as $part) {
-        $fileName = trim($part);
-        $urlName = rawurlencode($fileName);
-        $filePath = "department/reportDoc/" . $urlName;
-        $absolutePath = $_SERVER['DOCUMENT_ROOT'] . '/' . $filePath;
-        $exists = is_file($absolutePath);
-        echo "<a target=\"_blank\" href=\"{$filePath}\">File {$i}</a>";
-        // if (!$exists) {
-        //     echo " <small style=\"color:#a00;\">(file not found)</small>";
-        // }
-        echo "<br>";
-        $i++;
-    }
-} else {
-    echo "-<br>";
-}
+                                                                if (!empty($row['reportFile'])) {
+                                                                    $parts = preg_split('/\s*-Next file,?\s*/i', $row['reportFile'], -1, PREG_SPLIT_NO_EMPTY);
+                                                                    $i = 1;
+                                                                    foreach ($parts as $part) {
+                                                                        $fileName = trim($part);
+                                                                        $urlName = rawurlencode($fileName);
+                                                                        $filePath = "department/reportDoc/" . $urlName;
+                                                                        $absolutePath = $_SERVER['DOCUMENT_ROOT'] . '/' . $filePath;
+                                                                        $exists = is_file($absolutePath);
+                                                                        echo "<a target=\"_blank\" href=\"{$filePath}\">File {$i}</a>";
+                                                                        // if (!$exists) {
+                                                                        //     echo " <small style=\"color:#a00;\">(file not found)</small>";
+                                                                        // }
+                                                                        echo "<br>";
+                                                                        $i++;
+                                                                    }
+                                                                } else {
+                                                                    echo "-<br>";
+                                                                }
 
                                                                 // Separator and remark
                                                                 $remark = trim($row['reportRemark'] ?? '');
@@ -209,7 +213,8 @@ $result = $stmt->get_result();
                                                                 $status = $row['status'];
                                                                 $color = $status == 'Approved' ? 'text-success' : ($status == 'Rejected' ? 'text-danger' : 'text-warning');
                                                                 ?>
-                                                                <span class="<?php echo $color; ?>"><?php echo htmlspecialchars($status); ?></span>
+                                                                <span
+                                                                    class="<?php echo $color; ?>"><?php echo htmlspecialchars($status); ?></span>
                                                             </td>
                                                             <td style="white-space: nowrap;">
                                                                 <div class="d-flex flex-wrap gap-1">
@@ -226,60 +231,96 @@ $result = $stmt->get_result();
                                                                             Forward NOC
                                                                         </button>
                                                                     <?php else: ?>
-                                                                 <span class="badge bg-success align-self-center">NOC Forwarded</span>
+                                                                        <span class="badge bg-success align-self-center">NOC
+                                                                            Forwarded</span>
                                                                     <?php endif; ?>
                                                                 </div>
                                                                 <!-- Change Status Modal -->
-                                                                <div class="modal fade" id="updateStatusModal<?php echo $row['applicationId']; ?>" tabindex="-1"
-                                                                    aria-labelledby="updateStatusModalLabel<?php echo $row['applicationId']; ?>" aria-hidden="true">
+                                                                <div class="modal fade"
+                                                                    id="updateStatusModal<?php echo $row['applicationId']; ?>"
+                                                                    tabindex="-1"
+                                                                    aria-labelledby="updateStatusModalLabel<?php echo $row['applicationId']; ?>"
+                                                                    aria-hidden="true">
                                                                     <div class="modal-dialog">
-                                                                        <form method="POST" action="department/department_Report_DB.php">
+                                                                        <form method="POST"
+                                                                            action="department/department_Report_DB.php">
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header">
-                                                                                    <h5 class="modal-title" id="updateStatusModalLabel<?php echo $row['applicationId']; ?>">Update Application Status</h5>
-                                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                                                    <h5 class="modal-title"
+                                                                                        id="updateStatusModalLabel<?php echo $row['applicationId']; ?>">
+                                                                                        Update Application Status</h5>
+                                                                                    <button type="button" class="btn-close"
+                                                                                        data-bs-dismiss="modal"></button>
                                                                                 </div>
                                                                                 <div class="modal-body">
-                                                                                    <input type="hidden" name="applicationId" value="<?php echo $row['applicationId']; ?>">
-                                                                                    <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
+                                                                                    <input type="hidden"
+                                                                                        name="applicationId"
+                                                                                        value="<?php echo $row['applicationId']; ?>">
+                                                                                    <input type="hidden" name="departmentId"
+                                                                                        value="<?php echo $departmentId; ?>">
                                                                                     <div class="mb-3">
-                                                                                        <label class="form-label">Status</label>
-                                                                                        <select class="form-select" name="status" id="statusSelect<?php echo $row['applicationId']; ?>" required>
+                                                                                        <label
+                                                                                            class="form-label">Status</label>
+                                                                                        <select class="form-select"
+                                                                                            name="status"
+                                                                                            id="statusSelect<?php echo $row['applicationId']; ?>"
+                                                                                            required>
                                                                                             <option value="">Select</option>
-                                                                                            <option value="Under Review">Under Review</option>
-                                                                                            <option value="Approved">Approved</option>
-                                                                                            <option value="Rejected">Rejected</option>
+                                                                                            <option value="Under Review">
+                                                                                                Under Review</option>
+                                                                                            <option value="Approved">
+                                                                                                Approved</option>
+                                                                                            <option value="Rejected">
+                                                                                                Rejected</option>
                                                                                         </select>
                                                                                     </div>
-                                                                                    <div class="mb-3 d-none" id="remarkDiv<?php echo $row['applicationId']; ?>">
-                                                                                        <label class="form-label">Rejection Remark</label>
-                                                                                        <textarea class="form-control" name="remarks" placeholder="Reason for rejection..."></textarea>
+                                                                                    <div class="mb-3 d-none"
+                                                                                        id="remarkDiv<?php echo $row['applicationId']; ?>">
+                                                                                        <label class="form-label">Rejection
+                                                                                            Remark</label>
+                                                                                        <textarea class="form-control"
+                                                                                            name="remarks"
+                                                                                            placeholder="Reason for rejection..."></textarea>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="modal-footer">
-                                                                                    <button type="submit" name="update" class="btn btn-success">Submit</button>
+                                                                                    <button type="submit" name="update"
+                                                                                        class="btn btn-success">Submit</button>
                                                                                 </div>
                                                                             </div>
                                                                         </form>
                                                                     </div>
                                                                 </div>
                                                                 <!-- Forward NOC Modal -->
-                                                                <div class="modal fade" id="forwardNOCModal<?php echo $row['applicationId']; ?>" tabindex="-1"
-                                                                    aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>" aria-hidden="true">
+                                                                <div class="modal fade"
+                                                                    id="forwardNOCModal<?php echo $row['applicationId']; ?>"
+                                                                    tabindex="-1"
+                                                                    aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>"
+                                                                    aria-hidden="true">
                                                                     <div class="modal-dialog">
-                                                                        <form method="POST" action="department/departmentNOCforword_DB.php">
+                                                                        <form method="POST"
+                                                                            action="department/departmentNOCforword_DB.php">
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header">
-                                                                                    <h5 class="modal-title" id="forwardNOCModalLabel<?php echo $row['applicationId']; ?>">Forward NOC</h5>
-                                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                                                    <h5 class="modal-title"
+                                                                                        id="forwardNOCModalLabel<?php echo $row['applicationId']; ?>">
+                                                                                        Forward NOC</h5>
+                                                                                    <button type="button" class="btn-close"
+                                                                                        data-bs-dismiss="modal"></button>
                                                                                 </div>
                                                                                 <div class="modal-body">
-                                                                                    <input type="hidden" name="applicationId" value="<?php echo $row['applicationId']; ?>">
-                                                                                    <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
+                                                                                    <input type="hidden"
+                                                                                        name="applicationId"
+                                                                                        value="<?php echo $row['applicationId']; ?>">
+                                                                                    <input type="hidden" name="departmentId"
+                                                                                        value="<?php echo $departmentId; ?>">
                                                                                     <div class="mb-3">
-                                                                                        <label class="form-label">Forward to Employee</label>
-                                                                                        <select name="inspectionOfficer" class="form-select" required>
-                                                                                            <option value="">Select Employee</option>
+                                                                                        <label class="form-label">Forward to
+                                                                                            Employee</label>
+                                                                                        <select name="inspectionOfficer"
+                                                                                            class="form-select" required>
+                                                                                            <option value="">Select Employee
+                                                                                            </option>
                                                                                             <?php
                                                                                             $empStmt = $conn->prepare("
                                                                                                 SELECT userId, name 
@@ -296,12 +337,17 @@ $result = $stmt->get_result();
                                                                                         </select>
                                                                                     </div>
                                                                                     <div class="mb-3">
-                                                                                        <label class="form-label">Remark</label>
-                                                                                        <textarea name="HODremark" class="form-control" placeholder="Enter remark..." required></textarea>
+                                                                                        <label
+                                                                                            class="form-label">Remark</label>
+                                                                                        <textarea name="HODremark"
+                                                                                            class="form-control"
+                                                                                            placeholder="Enter remark..."
+                                                                                            required></textarea>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="modal-footer">
-                                                                                    <button type="submit" name="forwardNOC" class="btn btn-success">Submit</button>
+                                                                                    <button type="submit" name="forwardNOC"
+                                                                                        class="btn btn-success">Submit</button>
                                                                                 </div>
                                                                             </div>
                                                                         </form>
@@ -467,4 +513,8 @@ $result = $stmt->get_result();
     <?php endif; ?>
 </body>
 <!--end::Body-->
+
 </html>
+<?php
+$con->close();
+?>

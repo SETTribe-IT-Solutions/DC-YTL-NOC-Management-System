@@ -272,3 +272,6 @@ if ($designation === 'admin') {
 </html>
 
 
+<?php
+$con->close();
+?>

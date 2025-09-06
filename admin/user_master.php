@@ -335,3 +335,6 @@ function toggleDesignation(show) {
 
 
 </html>
+<?php
+$con->close();
+?>
