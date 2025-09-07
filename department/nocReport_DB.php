@@ -11,15 +11,44 @@ if (isset($_POST['update'])) {
     $userId = $_SESSION['userId'];
     $dateTime = date('Y-m-d H:i:s');
 
+    $uploadDir = "../documents/"; // folder to store files
+
+    // Allowed MIME types and extensions
+    $allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+    $allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png'];
+
+    // Final DSC Document
+    if (!empty($_FILES['departmentReport']['name'])) {
+        $departmentReportName = $_FILES['departmentReport']['name'];
+        $departmentReportTmp = $_FILES['departmentReport']['tmp_name'];
+        $departmentReportType = mime_content_type($departmentReportTmp);
+        $departmentReportExt = strtolower(pathinfo($departmentReportName, PATHINFO_EXTENSION));
+
+        if (in_array($departmentReportType, $allowedTypes) && in_array($departmentReportExt, $allowedExtensions)) {
+            $departmentReportPath = $uploadDir . time() . "_departmentReport_" . basename($departmentReportName);
+            move_uploaded_file($departmentReportTmp, $departmentReportPath);
+        } else {
+            $departmentReportPath = "";
+            echo "
+            <script>
+            window.location = '../department/nocReport.php?status=error&msg=Invalid report file type. Only PDF, JPEG, JPG, PNG allowed.'
+            </script>
+            ";
+            exit;
+        }
+    } else {
+        $departmentReportPath = "";
+    }
+    $departmentReportPath;
+
 
     if ($applicationId && $status) {
         // ✅ Update nocApplications (check actual column names)
-        $updateNocApp = mysqli_query($conn, "
-            UPDATE nocApplications 
-            SET status = '$status', 
-                userId  = '$userId'
-            WHERE applicationId = '$applicationId'
-        ");
+        // $updateNocApp = mysqli_query($conn, "
+        //     UPDATE nocApplications 
+        //     SET status = '$status'
+        //     WHERE applicationId = '$applicationId'
+        // ");
 
 
 
@@ -27,13 +56,15 @@ if (isset($_POST['update'])) {
         $updateReview = mysqli_query($conn, "
             UPDATE nocApplicationReviews 
             SET 
+                status = '$status', 
+                dscDocumentPath = '$departmentReportPath',
                 reviewedDateTime = '$dateTime'
             WHERE applicationId = '$applicationId' AND departmentId = '$departmentId'
         ");
 
     }
 
-    if ($updateNocApp && $updateReview) {
+    if ($updateReview) {
         echo "
     <!DOCTYPE html>
     <html>

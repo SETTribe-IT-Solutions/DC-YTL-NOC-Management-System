@@ -120,7 +120,7 @@ include('../include/conn.php');
                             <th class="min-w-100px">तारीख</th>
                             <!-- <th class="min-w-100px">Inpection report</th> -->
                             <th class="min-w-100px">स्थिती</th>
-                            <th class="min-w-100px">विभागांनी दिलेली मंजुरी</th>
+                            <th class="min-w-100px">कर्मचाऱ्याने पाठवलेला अहवाल</th>
                             <th class="min-w-100px">Action</th>
                           </tr>
                         </thead>
@@ -141,9 +141,15 @@ include('../include/conn.php');
                                   a.aadharCard,
                                   a.reportFile,
                                   a.reportRemark,
-                                  a.status,
+                                  a.status as 'status',
                                   a.createdDateTime,
                                   a.inspectionOfficer,
+                                  a.reportFile,
+                                  r.status as 'rStatus',
+                                  r.dscDocumentPath,
+                                  r.forwardEmployee,
+                                  r.forwardEmployeeDoc,
+                                  r.employeeReport,
                                   c.name,
                                   c.address,
                                   c.aadharNo,
@@ -243,35 +249,56 @@ include('../include/conn.php');
                               </td>
                               <td>
                                 <?php
-                                $status = $row['status'];
+                                $status = $row['rStatus'];
                                 $color = $status == 'Approved' ? 'text-success' : ($status == 'Rejected' ? 'text-danger' : 'text-warning');
                                 ?>
                                 <span class="<?php echo $color; ?>"><?php echo htmlspecialchars($status); ?></span>
+                                <?php
+                                if ($row['dscDocumentPath']) {
+                                  echo "<br>(<a target='_blank' href='" . str_replace('../', '', $row['dscDocumentPath']) . "'>View</a>)";
+                                }
+                                ?>
                               </td>
-                              <td>-</td>
+                              <td>
+                                <?php
+                                if ($row['employeeReport']) {
+                                  echo "<a target='_blank' href='department/reportDoc/" . $row['employeeReport'] . "'>View</a>";
+                                } else {
+                                  echo "-";
+                                }
+                                ?>
+                              </td>
                               <td style="white-space: nowrap;">
-                                <div class="d-flex flex-wrap gap-1">
-                                  <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                    data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
-                                    Change Status
-                                  </button>
-                                  <?php if (!isset($row['inspectionOfficer']) || trim($row['inspectionOfficer']) === ''): ?>
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                      data-bs-target="#forwardNOCModal<?php echo $row['applicationId']; ?>"
-                                      data-applicationid="<?php echo $row['applicationId']; ?>">
-                                      Forward NOC
+                                <?php
+                                if (!$row['status'] != "Approved") {
+                                  ?>
+                                  <div class="d-flex flex-wrap gap-1">
+                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                      data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
+                                      Change Status
                                     </button>
-                                  <?php else: ?>
-                                    <span class="badge bg-success align-self-center">NOC Forwarded</span>
-                                  <?php endif; ?>
-                                </div>
+                                    <?php if (!isset($row['forwardEmployee']) || trim($row['forwardEmployee']) === ''): ?>
+                                      <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#forwardNOCModal<?php echo $row['applicationId']; ?>"
+                                        data-applicationid="<?php echo $row['applicationId']; ?>">
+                                        Forward NOC
+                                      </button>
+                                    <?php else: ?>
+                                      <span class="badge bg-success align-self-center">NOC Forwarded</span>
+                                    <?php endif; ?>
+                                  </div>
+                                  <?php
+                                }
+                                ?>
+
                                 <!-- Change Status Modal -->
                                 <div class="modal fade" id="updateStatusModal<?php echo $row['applicationId']; ?>"
                                   tabindex="-1"
                                   aria-labelledby="updateStatusModalLabel<?php echo $row['applicationId']; ?>"
                                   aria-hidden="true">
                                   <div class="modal-dialog">
-                                    <form method="POST" action="department/nocReport_DB.php">
+                                    <form method="POST" action="department/nocReport_DB.php"
+                                      enctype="multipart/form-data">
                                       <div class="modal-content">
                                         <div class="modal-header">
                                           <h5 class="modal-title"
@@ -294,6 +321,12 @@ include('../include/conn.php');
                                               <option value="Rejected">Rejected</option>
                                             </select>
                                           </div>
+                                          <div class="mb-3 d-none" id="reportDiv<?php echo $row['applicationId']; ?>">
+                                            <label class="form-label">Report<span class="text-danger">*</span></label>
+                                            <input type="file" class="form-control" name="departmentReport"
+                                              accept=".png,.jpg,.jpge,.pdf">
+                                          </div>
+
                                           <div class="mb-3 d-none" id="remarkDiv<?php echo $row['applicationId']; ?>">
                                             <label class="form-label">Rejection Remark</label>
                                             <textarea class="form-control" name="remarks"
@@ -312,7 +345,8 @@ include('../include/conn.php');
                                   tabindex="-1" aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>"
                                   aria-hidden="true">
                                   <div class="modal-dialog">
-                                    <form method="POST" action="department/forwordNOC_db.php">
+                                    <form method="POST" action="department/forwordNOC_db.php"
+                                      enctype="multipart/form-data">
                                       <div class="modal-content">
                                         <div class="modal-header">
                                           <h5 class="modal-title"
@@ -324,15 +358,16 @@ include('../include/conn.php');
                                             value="<?php echo $row['applicationId']; ?>">
                                           <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
                                           <div class="mb-3">
-                                            <label for="employeeId" class="form-label">Forward to Employee</label>
+                                            <label for="employeeId" class="form-label">Forward to Employee <span
+                                                class="text-danger">*</span></label>
                                             <select name="inspectionOfficer" class="form-select" required>
                                               <option value="">Select Employee</option>
                                               <?php
                                               $empStmt = $conn->prepare("
                                                   SELECT userId, name 
                                                   FROM users 
-                                                  WHERE status = 'Active' 
-                                                  AND designation NOT IN ('Tahsildar', 'SDO', 'Department')
+                                                  WHERE status = 'Active' AND departmentId = '$departmentId'
+                                                  AND systemRole = 'Employee' 
                                               ");
                                               $empStmt->execute();
                                               $empResult = $empStmt->get_result();
@@ -343,9 +378,15 @@ include('../include/conn.php');
                                             </select>
                                           </div>
                                           <div class="mb-3">
+                                            <label for="remarks" class="form-label">Document <span
+                                                class="text-danger">*</span></label>
+                                            <input type="file" required name="toInspectionOfficer" class="form-control"
+                                              accept=".pdf, .jpg, .jpeg, .png" id="document">
+                                          </div>
+                                          <div class="mb-3">
                                             <label for="remarks" class="form-label">Remark</label>
-                                            <textarea name="HODremark" class="form-control" placeholder="Enter remark..."
-                                              required></textarea>
+                                            <textarea name="HODremark" class="form-control"
+                                              placeholder="Enter remark..."></textarea>
                                           </div>
                                         </div>
                                         <div class="modal-footer">
@@ -394,9 +435,12 @@ include('../include/conn.php');
           modal.addEventListener('show.bs.modal', function () {
             const statusSelect = modal.querySelector('#statusSelect' + modal.id.replace('updateStatusModal', ''));
             const remarkDiv = modal.querySelector('#remarkDiv' + modal.id.replace('updateStatusModal', ''));
+            const reportDiv = modal.querySelector('#reportDiv' + modal.id.replace('updateStatusModal', ''));
             if (statusSelect) {
               statusSelect.addEventListener('change', function () {
                 remarkDiv.classList.toggle('d-none', this.value !== 'Rejected');
+                reportDiv.classList.toggle('d-none', (this.value !== 'Approved'));
+                // reportDiv.classList.toggle('d-none', (this.value !== 'Rejected'));
               });
             }
           });

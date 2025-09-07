@@ -277,13 +277,6 @@ include('../include/sweetAlert.php');
                                                     $departmentResult = $deptStmt->get_result();
                                                     $department = $departmentResult->fetch_assoc();
 
-                                                    $userQuery = "SELECT * FROM users WHERE userId = ?";
-                                                    $userStmt = $con->prepare($userQuery);
-                                                    $userStmt->bind_param("s", $row['reviewedBy']);
-                                                    $userStmt->execute();
-                                                    $userResult = $userStmt->get_result();
-                                                    $user = $userResult->fetch_assoc();
-
                                                     $applicationStatus = $row['status'];
                                                     if ($row['status'] == 'Approved') {
                                                         $statusColor = '20c997';
@@ -310,7 +303,7 @@ include('../include/sweetAlert.php');
                                                                 <div class="timeline-detail">
                                                                     <span class="label">अनुमति दिनांक:</span>
                                                                     <span
-                                                                        class="value"><?php echo date("d/m/y", strtotime($row['reviewedDateTime'])) ?></span>
+                                                                        class="value"><?php echo ($row['reviewedDateTime']) ? date("d/m/y", strtotime($row['reviewedDateTime'])) : '-' ?></span>
                                                                 </div>
                                                                 <div class="timeline-detail">
                                                                     <span class="label">अनुमति स्थिति:</span>
@@ -338,7 +331,7 @@ include('../include/sweetAlert.php');
                                                                     <div class="timeline-detail">
                                                                         <span class="label">मंजूर अधिकारी:</span>
                                                                         <span
-                                                                            class="value"><?php echo $user['name'] ?? "-"; ?></span>
+                                                                            class="value"><?php echo $department['name'] ?? "-"; ?></span>
                                                                     </div>
                                                                     <?php
                                                                 }
