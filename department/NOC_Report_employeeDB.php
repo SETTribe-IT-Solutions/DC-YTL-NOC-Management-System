@@ -3,6 +3,7 @@ session_start();
 include('../include/conn.php');
 
 if (isset($_POST['update'])) {
+    $departmentId = mysqli_real_escape_string($conn, $_POST['departmentId'] ?? '');
     $applicationId = mysqli_real_escape_string($conn, $_POST['applicationId'] ?? '');
     $reportRemark = mysqli_real_escape_string($conn, $_POST['reportRemark'] ?? '');
 
@@ -61,10 +62,10 @@ HTML;
     }
 
     if ($applicationId && $reportFile) {
-        $sql = "
-            UPDATE nocApplications 
-            SET reportFile = '{$reportFile}', reportRemark = '{$reportRemark}' 
-            WHERE applicationId = '{$applicationId}'
+        echo $sql = "
+            UPDATE nocApplicationReviews 
+            SET employeeReport = '{$reportFile}', employeeRemark = '{$reportRemark}' 
+            WHERE applicationId = '{$applicationId}' AND departmentId = '{$departmentId}'
         ";
         $update = mysqli_query($conn, $sql);
 

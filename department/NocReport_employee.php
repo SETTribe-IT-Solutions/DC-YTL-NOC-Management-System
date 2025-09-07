@@ -121,6 +121,7 @@ $departmentId = $_SESSION['departmentId'];
                             <th class="min-w-100px">आधार कार्ड पहा</th>
                             <th class="min-w-100px">तारीख</th>
                             <th class="min-w-100px">स्थिती</th>
+                            <th class="min-w-100px">माझे उत्तर</th>
                             <th class="min-w-100px">Action</th>
                           </tr>
                         </thead>
@@ -142,6 +143,9 @@ $departmentId = $_SESSION['departmentId'];
                                   a.status,
                                   a.createdDateTime,
                                   a.inspectionOfficer,
+                                  r.forwardEmployee,
+                                  r.forwardEmployeeDoc,
+                                  r.employeeReport,
                                   c.name,
                                   c.address,
                                   c.aadharNo,
@@ -151,7 +155,7 @@ $departmentId = $_SESSION['departmentId'];
                               FROM nocApplications a
                               INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
                               LEFT JOIN civilianRegistrations c ON a.civilianId = c.civilianId
-                              WHERE  a.inspectionOfficer= '$userId'
+                              WHERE  r.forwardEmployee = '$userId'
                               ORDER BY a.createdDateTime DESC
                           ";
                           $result = mysqli_query($conn, $stmt);
@@ -203,24 +207,34 @@ $departmentId = $_SESSION['departmentId'];
                               <td>
                                 <?php
                                 $status = $row['status'];
-                                $color = $status == 'Approved' ? 'text-success' : ($status == 'Rejected' ? 'text-danger' : 'text-warning');
+                                $color = $row['employeeReport'] ? 'text-success' : ($status == 'Approved' ? 'text-success' : ($status == 'Rejected' ? 'text-danger' : 'text-warning'));
                                 ?>
-                                <span class="<?php echo $color; ?>"><?php echo htmlspecialchars($status); ?></span>
+                                <span
+                                  class="<?php echo $color; ?>"><?php echo ($row['employeeReport']) ? 'Sent' : htmlspecialchars($status); ?></span>
+                              </td>
+                              <td>
+                                <?php
+                                if ($row['employeeReport']) {
+                                  echo "<a target='_blank' href='department/reportDoc/" . $row['employeeReport'] . "'>View</a>";
+                                } else {
+                                  echo "-";
+                                }
+                                ?>
                               </td>
                               <td style="white-space: nowrap;">
-                                <div class="d-flex flex-wrap gap-1">
-                                  <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                    data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
-                                    Submit Report
-                                  </button>
-                                  <?php if (!isset($row['inspectionOfficer']) || trim($row['inspectionOfficer']) === ''): ?>
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                      data-bs-target="#forwardNOCModal<?php echo $row['applicationId']; ?>"
-                                      data-applicationid="<?php echo $row['applicationId']; ?>">
-                                      Forward NOC
+                                <?php
+                                if (!$row['employeeReport']) {
+                                  ?>
+                                  <div class="d-flex flex-wrap gap-1">
+                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                      data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
+                                      Submit Report
                                     </button>
-                                  <?php else: ?>
-                                  <?php endif; ?>
+                                    <?php
+                                } else {
+                                  echo "-";
+                                }
+                                ?>
                                 </div>
                                 <!-- Change Status / Report Modal -->
                                 <div class="modal fade" id="updateStatusModal<?= $row['applicationId']; ?>" tabindex="-1"
@@ -248,9 +262,9 @@ $departmentId = $_SESSION['departmentId'];
                                           </div>
 
                                           <div class="mb-3">
-                                            <label class="form-label">Upload Report Files (optional)</label>
-                                            <input type="file" name="reportFile[]" class="form-control reportFileInput"
-                                              accept=".pdf,.jpg,.jpeg,.png" multiple>
+                                            <label class="form-label">Upload Report Files</label>
+                                            <input type="file" name="reportFile[]" required
+                                              class="form-control reportFileInput" accept=".pdf,.jpg,.jpeg,.png" multiple>
                                             <div class="form-text">Allowed: PDF, JPG, PNG. Max each: 5MB.</div>
                                           </div>
                                         </div>

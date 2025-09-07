@@ -146,6 +146,7 @@ $departmentId = $_SESSION['departmentId'];
                                                             a.init_remark,
                                                             a.createdDateTime,
                                                             a.inspectionOfficer,
+                                                            a.initReportFile,
                                                             c.name,
                                                             c.address,
                                                             c.aadharNo,
@@ -224,15 +225,17 @@ $departmentId = $_SESSION['departmentId'];
                                                                     ?>
                                                                     <span
                                                                         class="<?php echo $color; ?>"><?php echo htmlspecialchars($statusinit_status); ?></span>
-                                                                    <br>
-                                                                    <span>
 
-                                                                        <?php
-                                                                        if (!empty($row['init_remark'])) {
-                                                                            echo "(" . $row['init_remark'] . ")";
-                                                                        } ?>
+                                                                    <?php
+                                                                    if (!empty($row['initReportFile'])) {
+                                                                        echo "<br>(<a target='_blank' href='" . str_replace('../', '', $row['initReportFile']) . "'>View</a>)";
+                                                                    }
 
-                                                                    </span>
+                                                                    if (!empty($row['init_remark'])) {
+                                                                        echo "<br><span>(" . $row['init_remark'] . ")</span>";
+                                                                    }
+                                                                    ?>
+
 
 
                                                                     <?php
@@ -283,12 +286,18 @@ $departmentId = $_SESSION['departmentId'];
                                                                                         data-bs-dismiss="modal"></button>
                                                                                 </div>
                                                                                 <div class="modal-body">
-
                                                                                     <input type="hidden"
                                                                                         name="applicationId"
                                                                                         value="<?= htmlspecialchars($row['applicationId']); ?>">
                                                                                     <input type="hidden" name="departmentId"
                                                                                         value="<?= htmlspecialchars($departmentId); ?>">
+                                                                                    <div class="mb-3">
+                                                                                        <label
+                                                                                            class="form-label">Report</label>
+                                                                                        <input type="file" name="reportFile"
+                                                                                            class="form-control reportFileInput"
+                                                                                            accept=".pdf,.jpg,.jpeg,.png">
+                                                                                    </div>
                                                                                     <div class="mb-3">
                                                                                         <label class="form-label">Report
                                                                                             Remark (optional)</label>

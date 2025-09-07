@@ -13,7 +13,7 @@ if (isset($_POST['ChangeFinalStatus'])) {
   $allowedTypes = ['application/pdf'];
   $allowedExtensions = ['pdf'];
 
-  // PAN Card
+  // Final DSC Document
   if (!empty($_FILES['final_dsc_document']['name'])) {
     $final_dsc_documentName = $_FILES['final_dsc_document']['name'];
     $final_dsc_documentTmp = $_FILES['final_dsc_document']['tmp_name'];
