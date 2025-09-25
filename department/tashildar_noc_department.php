@@ -105,11 +105,27 @@ if (!isset($_SESSION['userId'])) {
                           //     INNER JOIN departments d ON a.departmentId = d.id
                           //     WHERE a.inspectionOfficer = '$userId'    
                           //     ORDER BY a.createdDateTime DESC";
-                          $stmt = $conn->prepare("
+
+
+                          $sql = "
+    SELECT 
+        a.nocTypeId, a.departmentId, d.departmentName, a.applicationId, a.nocSubject,
+        a.landDesc, a.taluka, a.village, a.gatNo, a.mobileNo, a.emailId, a.status,
+        a.createdDateTime, a.inspectionOfficer,
+        a.init_status, a.init_status_tahsildar, a.init_remark_tahsildar,
+        a.final_status_tahsildar, a.final_remark_tahsildar
+    FROM departmentNocApplications a
+    INNER JOIN departments d ON a.departmentId = d.id
+    ORDER BY a.createdDateTime DESC
+";
+
+echo  $sql;$sql; // फक्त query print होईल
+
+                          echo $stmt = $conn->prepare("
                                                         SELECT 
                                                             a.nocTypeId, a.departmentId, d.departmentName, a.applicationId, a.nocSubject,
                                                             a.landDesc, a.taluka, a.village, a.gatNo, a.mobileNo, a.emailId, a.status,
-                                                            a.createdDateTime, a.inspectionOfficer,a.init_status,a.init_remark
+                                                            a.createdDateTime, a.inspectionOfficer,a.init_status,a.init_status_tahsildar,a.init_remark_tahsildar,a.final_status_tahsildar,a.final_remark_tahsildar
                                                         FROM departmentNocApplications a
                                                        
                                                         INNER JOIN departments d ON a.departmentId = d.id
@@ -153,7 +169,7 @@ if (!isset($_SESSION['userId'])) {
                                   <div class="d-flex flex-wrap gap-1">
                                     <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                       data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
-                                      Forward Noc to tahsildar
+                                      Forward Noc
                                     </button>
 
                                     <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
