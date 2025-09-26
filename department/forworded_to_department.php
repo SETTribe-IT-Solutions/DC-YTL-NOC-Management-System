@@ -1,7 +1,7 @@
 <?php
-// ini_set('display_errors', 0);
-// ini_set('display_startup_errors', 0);
-// error_reporting(0);
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);
 session_start();
 
 if (!isset($_SESSION['userId'])) {
@@ -10,6 +10,8 @@ if (!isset($_SESSION['userId'])) {
   exit();
 }
 include('../include/conn.php');
+echo $userId = $_SESSION['userId'];
+$departmentId = $_SESSION['departmentId'];
 
 ?>
 <!DOCTYPE html>
@@ -77,12 +79,12 @@ include('../include/conn.php');
                       <li class="breadcrumb-item">
                         <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
                       </li>
-                      <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC अर्ज पहा (Civilian)</li>
+                      <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Final Approval (Civilian)</li>
                     </ul>
                     <!--end::Breadcrumb-->
                     <!--begin::Title-->
                     <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
-                      NOC अर्ज पहा (Civilian)</h1>
+                      Final Approval (Civilian)</h1>
                     <!--end::Title-->
                   </div>
                   <!--end::Page title-->
@@ -104,7 +106,7 @@ include('../include/conn.php');
                           <tr class="text-start text-dark-900 fw-bold fs-6 text-uppercase">
                             <th class="min-w-70px">Sr. No.</th>
                             <th class="min-w-100px">NOC क्रमंक</th>
-                            <!-- <th class="min-w-100px">Civilian</th> -->
+                            <th class="min-w-100px">Civilian</th>
                             <th class="min-w-100px">NOC विषय</th>
                             <th class="min-w-100px">NOC प्रकार</th>
                             <th class="min-w-100px">जामिनीची तपशील</th>
@@ -118,61 +120,55 @@ include('../include/conn.php');
                             <th class="min-w-100px">पेन कार्ड पहा</th>
                             <th class="min-w-100px">आधार कार्ड पहा</th>
                             <th class="min-w-100px">तारीख</th>
-
-                             <th class="min-w-100px">NOC रिपोर्ट</th>
-
-                            <!-- <th class="min-w-100px">Inpection report</th> -->
-
                             <th class="min-w-100px">स्थिती</th>
-                            <th class="min-w-100px">कर्मचाऱ्याने पाठवलेला अहवाल</th>
                             <th class="min-w-100px">Action</th>
                           </tr>
                         </thead>
                         <tbody class="fw-semibold text-gray-600">
                           <?php
                           $departmentId = $_SESSION['departmentId'];
-                          $stmt = $conn->prepare("
+                           $stmt = " 
                               SELECT 
-    a.applicationId,
-    a.civilianId,
-    a.nocSubject,
-    a.nocTypeId,
-    a.landDesc,
-    a.taluka,
-    a.village,
-    a.gatNo,
-    a.panCard,
-    a.aadharCard,
-    a.reportFile,
-    a.reportRemark,
-    a.status as 'status',
-    a.createdDateTime,
-    a.inspectionOfficer,
-    a.reportFile,
-    a.tahildarStatus,
-    r.status as 'rStatus',
-    r.dscDocumentPath,
-    r.forwardEmployee,
-    r.forwardEmployeeDoc,
-    r.employeeReport,
-    c.name,
-    c.address,
-    c.aadharNo,
-    c.emailId,
-    c.dob,
-    c.mobileNo
-FROM nocApplications a
-INNER JOIN nocApplicationReviews r 
-    ON a.applicationId = r.applicationId
-LEFT JOIN civilianRegistrations c 
-    ON a.civilianId = c.civilianId
-WHERE r.departmentId = ?
-  AND a.tahildarStatus = 'Forwarded'
-ORDER BY a.createdDateTime DESC");
-                          echo $departmentId;
-                          $stmt->bind_param("i", $departmentId);
-                          $stmt->execute();
-                          $result = $stmt->get_result();
+                                  a.applicationId,
+                                  a.civilianId,
+                                  a.nocSubject,
+                                  a.nocTypeId,
+                                  a.landDesc,
+                                  a.taluka,
+                                  a.village,
+                                  a.gatNo,
+                                  a.panCard,
+                                  a.aadharCard,
+                                  a.status,
+                                  a.init_status,
+                                  a.init_remark,
+                                  a.final_status,
+                                  a.init_status_tahsildar,
+                                  a.init_remark_tahsildar,
+                                  a.final_status_tahsildar,
+                                  a.final_remark_tahsildar,
+                                  a.final_dsc_document,
+                                  a.createdDateTime,
+                                  a.inspectionOfficer,
+                                  c.name,
+                                  c.address,
+                                  c.aadharNo,
+                                  c.emailId,
+                                  c.dob,
+                                  c.mobileNo,
+                                  a.tahildarStatus
+                              FROM nocApplications a
+                              
+                              LEFT JOIN civilianRegistrations c ON a.civilianId = c.civilianId
+                              WHERE a.init_status = 'Forwarded'
+                            
+                              ORDER BY a.createdDateTime DESC
+                          ";
+
+                      
+                          // INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
+                          // WHERE  a.inspectionOfficer= '$userId'
+                          $result = mysqli_query($conn, $stmt);
                           $i = 1;
                           while ($row = $result->fetch_assoc()) {
                             $civilianId = $row['civilianId'];
@@ -190,7 +186,7 @@ ORDER BY a.createdDateTime DESC");
                             <tr class="odd">
                               <td><?= $i++ ?></td>
                               <td><?php echo htmlspecialchars($row['applicationId']); ?></td>
-                              <!-- <td><?php echo isset($r['name']) ? htmlspecialchars($r['name']) : '-'; ?></td> -->
+                              <td><?php echo isset($r['name']) ? htmlspecialchars($r['name']) : '-'; ?></td>
                               <td><?php echo htmlspecialchars($row['nocSubject']); ?></td>
                               <td><?php echo isset($r1['type']) ? htmlspecialchars($r1['type']) : '-'; ?></td>
                               <td><?php echo htmlspecialchars($row['landDesc']); ?></td>
@@ -217,198 +213,179 @@ ORDER BY a.createdDateTime DESC");
                                   -
                                 <?php } ?>
                               </td>
-
-                              
-                                <td><?php echo date('d-m-Y', strtotime($row['createdDateTime'])); ?></td>
-                              <td><?php echo htmlspecialchars($row['']); ?></td>
-
                               <td><?php echo date('d-m-Y', strtotime($row['createdDateTime'])); ?></td>
-                              <!-- <td>
-                                <?php
-                                /// Files part
-                                if (!empty($row['reportFile'])) {
-                                  $parts = preg_split('/\s*-Next file,?\s*/i', $row['reportFile'], -1, PREG_SPLIT_NO_EMPTY);
-                                  $i = 1;
-                                  foreach ($parts as $part) {
-                                    $fileName = trim($part);
-                                    $urlName = rawurlencode($fileName);
-                                    $filePath = "department/reportDoc/" . $urlName;
-                                    $absolutePath = $_SERVER['DOCUMENT_ROOT'] . '/' . $filePath;
-                                    $exists = is_file($absolutePath);
-                                    echo "<a target=\"_blank\" href=\"{$filePath}\">File {$i}</a>";
-                                    // if (!$exists) {
-                                    //     echo " <small style=\"color:#a00;\">(file not found)</small>";
-                                    // }
-                                    echo "<br>";
-                                    $i++;
-                                  }
-                                } else {
-                                  echo "-<br>";
-                                }
+                             <td>
+  <?php
+  if (isset($row['tahildarStatus']) && !empty(trim($row['tahildarStatus']))) {
+      $tahStatus = strtolower(trim($row['tahildarStatus']));
+      if ($tahStatus == 'forwarded ') {
+          echo '<span class="text-success">Forwarded</span>';
+      } elseif ($tahStatus == 'rejected') {
+          echo '<span class="text-danger">Rejected</span>';
+      } else {
+          echo '<span class="text-warning">' . htmlspecialchars($row['tahildarStatus']) . '</span>';
+      }
+  } else {
+      echo '<span class="text-warning">Pending</span>';
+  }
+  ?>
+</td>
+
+<td style="white-space: nowrap;">
+  <div class="d-flex flex-wrap gap-1">
+    <?php
+      if (!isset($row['tahildarStatus']) || trim($row['tahildarStatus']) == '') {
+          // Pending → show buttons
+          ?>
+          <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+            data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
+            Forward
+          </button>
+
+          <button class="btn btn-sm btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#rejectNOCModal<?php echo $row['applicationId']; ?>">
+            Reject
+          </button>
+          <?php
+      } else {
+          $tahStatus = strtolower(trim($row['tahildarStatus']));
+          if ($tahStatus == 'forwarded') {
+              echo '<span class="badge bg-success">Forwarded</span>';
+          } elseif ($tahStatus == 'rejected') {
+              echo '<span class="badge bg-danger">Rejected</span>';
+          } else {
+              echo '<span class="badge bg-warning text-dark">'.htmlspecialchars($row['tahildarStatus']).'</span>';
+          }
+      }
+    ?>
+  </div>
+</td>
 
 
-                                // Separator and remark
-                              
-                                $remark = trim($row['reportRemark'] ?? '');
-                                if ($remark !== '') {
-                                  $display = ($remark === '0') ? '-' : nl2br(htmlspecialchars($remark));
-                                  echo '<hr style="margin:4px 0;">'; // thin separator
-                                  echo '<strong>Remark:</strong> ' . $display;
-                                }
-                                ?>
-                              </td> -->
-
-
-                              </td>
-                              <td>
-                                <?php
-                                $status = $row['rStatus'];
-                                $color = $status == 'Approved' ? 'text-success' : ($status == 'Rejected' ? 'text-danger' : 'text-warning');
-                                ?>
-                                <span class="<?php echo $color; ?>"><?php echo htmlspecialchars($status); ?></span>
-                                <?php
-                                if ($row['dscDocumentPath']) {
-                                  echo "<br>(<a target='_blank' href='" . str_replace('../', '', $row['dscDocumentPath']) . "'>View</a>)";
-                                }
-                                ?>
-                              </td>
-                              <td>
-                                <?php
-                                if ($row['employeeReport']) {
-                                  echo "<a target='_blank' href='department/reportDoc/" . $row['employeeReport'] . "'>View</a>";
-                                } else {
-                                  echo "-";
-                                }
-                                ?>
-                              </td>
-                              <td style="white-space: nowrap;">
-                                <?php
-                                if (!$row['status'] != "Approved") {
-                                  ?>
-                                  <div class="d-flex flex-wrap gap-1">
-                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                      data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
-                                      Change Status
-                                    </button>
-                                    <?php if (!isset($row['forwardEmployee']) || trim($row['forwardEmployee']) === ''): ?>
-                                      <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#forwardNOCModal<?php echo $row['applicationId']; ?>"
-                                        data-applicationid="<?php echo $row['applicationId']; ?>">
-                                        Forward NOC
-                                      </button>
-                                    <?php else: ?>
-                                      <span class="badge bg-success align-self-center">NOC Forwarded</span>
-                                    <?php endif; ?>
                                   </div>
-                                  <?php
-                                }
-                                ?>
+                                  <!-- Change Status / Report Modal -->
+                                 <div class="modal fade" id="updateStatusModal<?= $row['applicationId']; ?>" tabindex="-1">
+  <div class="modal-dialog">
+    <form method="POST" action="department/forwarded_to_departmentDB.php" enctype="multipart/form-data">
+      <div class="modal-content">
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title">Forward NOC To Department</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="applicationId" value="<?= $row['applicationId']; ?>">
+          <input type="hidden" name="departmentId" value="<?= $departmentId; ?>">
+          
+          <div class="mb-3">
+            <label class="form-label">Remark</label>
+            <textarea name="tahildarRemark" class="form-control" rows="2" placeholder="Enter your remark..."></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">NOC DSC Signed Document <span class="text-danger">*</span></label>
+            <input type="file" required name="tahildarFile" class="form-control" accept=".pdf">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" name="init_status" value="Forwarded">
+          <button type="submit" name="ChangeForward" class="btn btn-warning">Forward</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal fade" id="rejectNOCModal<?php echo $row['applicationId']; ?>" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form method="POST" action="department/forwarded_to_departmentDB.php">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title">Reject Application</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="applicationId" value="<?php echo $row['applicationId']; ?>">
+          <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
+          <div class="mb-3">
+            <label class="form-label">Remark</label>
+            <textarea name="tahildarRemark" class="form-control" rows="3" placeholder="Enter rejection reason" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" name="init_status" value="Rejected">
+          <button type="submit" name="ChangeForward" class="btn btn-danger">Reject</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
-                                <!-- Change Status Modal -->
-                                <div class="modal fade" id="updateStatusModal<?php echo $row['applicationId']; ?>"
-                                  tabindex="-1"
-                                  aria-labelledby="updateStatusModalLabel<?php echo $row['applicationId']; ?>"
-                                  aria-hidden="true">
-                                  <div class="modal-dialog">
-                                    <form method="POST" action="department/nocReport_DB.php"
-                                      enctype="multipart/form-data">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <h5 class="modal-title"
-                                            id="updateStatusModalLabel<?php echo $row['applicationId']; ?>">Update
-                                            Application Status</h5>
-                                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                          <input type="hidden" name="applicationId"
-                                            value="<?php echo $row['applicationId']; ?>">
-                                          <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
-                                          <div class="mb-3">
-                                            <label for="statusSelect<?php echo $row['applicationId']; ?>"
-                                              class="form-label">Status</label>
-                                            <select class="form-select" name="status"
-                                              id="statusSelect<?php echo $row['applicationId']; ?>" required>
-                                              <option value="">Select</option>
-                                              <option value="Under Review">Under Review</option>
-                                              <option value="Approved">Approved</option>
-                                              <option value="Rejected">Rejected</option>
-                                            </select>
-                                          </div>
-                                          <div class="mb-3 d-none" id="reportDiv<?php echo $row['applicationId']; ?>">
-                                            <label class="form-label">Report<span class="text-danger">*</span></label>
-                                            <input type="file" class="form-control" name="departmentReport"
-                                              accept=".png,.jpg,.jpge,.pdf">
-                                          </div>
 
-                                          <div class="mb-3 d-none" id="remarkDiv<?php echo $row['applicationId']; ?>">
-                                            <label class="form-label">Rejection Remark</label>
-                                            <textarea class="form-control" name="remarks"
-                                              placeholder="Reason for rejection..."></textarea>
+                                  <script>
+                                    document.addEventListener('change', function (e) {
+                                      if (!e.target.matches('.reportFileInput')) return;
+                                      const input = e.target;
+                                      const allowedExt = ['pdf', 'jpg', 'jpeg', 'png'];
+                                      const maxSize = 5 * 1024 * 1024;
+                                      const files = Array.from(input.files);
+                                      const invalid = files.find(f => !allowedExt.includes(f.name.split('.').pop().toLowerCase()));
+                                      if (invalid) {
+                                        Swal.fire({
+                                          icon: 'error',
+                                          title: 'Invalid file type',
+                                          text: `File "${invalid.name}" is not allowed.`,
+                                          confirmButtonText: 'OK'
+                                        });
+                                        input.value = '';
+                                        return;
+                                      }
+                                      const tooLarge = files.find(f => f.size > maxSize);
+                                      if (tooLarge) {
+                                        Swal.fire({
+                                          icon: 'error',
+                                          title: 'Too large',
+                                          text: `File "${tooLarge.name}" exceeds 5MB.`,
+                                          confirmButtonText: 'OK'
+                                        });
+                                        input.value = '';
+                                      }
+                                    });
+                                  </script>
+
+                                  <!-- Forward NOC Modal -->
+                                  <div class="modal fade" id="forwardNOCModal<?php echo $row['applicationId']; ?>"
+                                    tabindex="-1"
+                                    aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                      <form method="POST" action="department/NocReport_FAuthFinalDB.php">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title"
+                                              id="forwardNOCModalLabel<?php echo $row['applicationId']; ?>">Reject</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <input type="hidden" name="applicationId"
+                                              value="<?php echo $row['applicationId']; ?>">
+                                            <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
+
+                                            <div class="mb-3">
+                                              <label for="remarks" class="form-label">Remark</label>
+                                              <textarea name="reportRemark" class="form-control"
+                                                placeholder="Enter remark..." required></textarea>
+                                            </div>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <input type="hidden" name="init_status" value="Rejected">
+                                            <button type="submit" name="ChangeFinalStatus"
+                                              class="btn btn-danger">Reject</button>
                                           </div>
                                         </div>
-                                        <div class="modal-footer">
-                                          <button type="submit" name="update" class="btn btn-success">Submit</button>
-                                        </div>
-                                      </div>
-                                    </form>
+                                      </form>
+                                    </div>
                                   </div>
-                                </div>
-                                <!-- Forward NOC Modal -->
-                                <div class="modal fade" id="forwardNOCModal<?php echo $row['applicationId']; ?>"
-                                  tabindex="-1" aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>"
-                                  aria-hidden="true">
-                                  <div class="modal-dialog">
-                                    <form method="POST" action="department/forwordNOC_db.php"
-                                      enctype="multipart/form-data">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <h5 class="modal-title"
-                                            id="forwardNOCModalLabel<?php echo $row['applicationId']; ?>">Forward NOC</h5>
-                                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                          <input type="hidden" name="applicationId"
-                                            value="<?php echo $row['applicationId']; ?>">
-                                          <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
-                                          <div class="mb-3">
-                                            <label for="employeeId" class="form-label">Forward to Employee <span
-                                                class="text-danger">*</span></label>
-                                            <select name="inspectionOfficer" class="form-select" required>
-                                              <option value="">Select Employee</option>
-                                              <?php
-                                              $empStmt = $conn->prepare("
-                                                  SELECT userId, name 
-                                                  FROM users 
-                                                  WHERE status = 'Active' AND departmentId = '$departmentId'
-                                                  AND systemRole = 'Employee' 
-                                              ");
-                                              $empStmt->execute();
-                                              $empResult = $empStmt->get_result();
-                                              while ($emp = $empResult->fetch_assoc()) {
-                                                echo '<option value="' . $emp['userId'] . '">' . htmlspecialchars($emp['name']) . '</option>';
-                                              }
-                                              ?>
-                                            </select>
-                                          </div>
-                                          <div class="mb-3">
-                                            <label for="remarks" class="form-label">Document <span
-                                                class="text-danger">*</span></label>
-                                            <input type="file" required name="toInspectionOfficer" class="form-control"
-                                              accept=".pdf, .jpg, .jpeg, .png" id="document">
-                                          </div>
-                                          <div class="mb-3">
-                                            <label for="remarks" class="form-label">Remark</label>
-                                            <textarea name="HODremark" class="form-control"
-                                              placeholder="Enter remark..."></textarea>
-                                          </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                          <button type="submit" name="forwardNOC" class="btn btn-success">Submit</button>
-                                        </div>
-                                      </div>
-                                    </form>
-                                  </div>
-                                </div>
+
+                                  
                               </td>
                             </tr>
                           <?php } ?>
@@ -448,12 +425,9 @@ ORDER BY a.createdDateTime DESC");
           modal.addEventListener('show.bs.modal', function () {
             const statusSelect = modal.querySelector('#statusSelect' + modal.id.replace('updateStatusModal', ''));
             const remarkDiv = modal.querySelector('#remarkDiv' + modal.id.replace('updateStatusModal', ''));
-            const reportDiv = modal.querySelector('#reportDiv' + modal.id.replace('updateStatusModal', ''));
             if (statusSelect) {
               statusSelect.addEventListener('change', function () {
                 remarkDiv.classList.toggle('d-none', this.value !== 'Rejected');
-                reportDiv.classList.toggle('d-none', (this.value !== 'Approved'));
-                // reportDiv.classList.toggle('d-none', (this.value !== 'Rejected'));
               });
             }
           });
@@ -573,7 +547,6 @@ ORDER BY a.createdDateTime DESC");
 <!--end::Body-->
 
 </html>
-
 <?php
 $con->close();
 ?>

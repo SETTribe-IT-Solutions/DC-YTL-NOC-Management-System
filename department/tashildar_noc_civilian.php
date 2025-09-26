@@ -260,10 +260,28 @@ $departmentId = $_SESSION['departmentId'];
 
                                     ?>
                                     <div class="d-flex flex-wrap gap-1">
-                                      <button class="btn btn-sm btn-success" data-bs-toggle="modal"
-                                        data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
-                                        Approve
-                                      </button>
+
+                                    <?php
+$applicationId = $row['applicationId'];
+
+// Check if all reviews are approved
+$myquery = "SELECT COUNT(*) as cnt 
+          FROM nocApplicationReviews 
+          WHERE applicationId = '$applicationId' 
+            AND status != 'Approved'";
+
+$Rresult = mysqli_query($conn, $myquery);
+$data = mysqli_fetch_assoc($Rresult);
+
+// If count > 0 → ek ya zyada reviews approved nahi → button hide
+$showButton = ($data['cnt'] == 0);
+?>
+                                      <?php if ($showButton) { ?>
+        <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+            data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
+            Forward
+        </button>
+    <?php } ?>
 
                                       <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                         data-bs-target="#forwardNOCModal<?php echo $row['applicationId']; ?>"
