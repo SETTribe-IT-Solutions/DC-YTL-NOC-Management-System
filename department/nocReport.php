@@ -109,6 +109,7 @@ include('../include/conn.php');
                             <th class="min-w-100px">पेन कार्ड पहा</th>
                             <th class="min-w-100px">आधार कार्ड पहा</th>
                             <th class="min-w-100px">तारीख</th>
+                             <th class="min-w-100px">NOC रिपोर्ट</th>
                             <th class="min-w-100px">स्थिती</th>
                             <th class="min-w-100px">Action</th>
                           </tr>
@@ -188,7 +189,9 @@ include('../include/conn.php');
                                   -
                                 <?php } ?>
                               </td>
-                              <td><?php echo date('d-m-Y', strtotime($row['createdDateTime'])); ?></td>
+                              
+                                <td><?php echo date('d-m-Y', strtotime($row['createdDateTime'])); ?></td>
+                              <td><?php echo htmlspecialchars($row['']); ?></td>
                               <td>
                                 <?php
                                 $status = $row['status'];

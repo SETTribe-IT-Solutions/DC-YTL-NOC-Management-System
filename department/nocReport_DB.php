@@ -76,7 +76,7 @@ if (isset($_POST['update'])) {
     </body>
     </html>";
         exit;
-    }
+    } 
 } else {
     echo "
     <!DOCTYPE html>
