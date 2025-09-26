@@ -1,6 +1,15 @@
 <?php
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);
 include('../include/conn.php');
 session_start();
+
+if (!isset($_SESSION['userId'])) {
+
+    header("Location: ../index.html");
+    exit();
+}
 
 ?>
 <!DOCTYPE html>
@@ -296,7 +305,7 @@ session_start();
                                                 <a href="../dist/index.html" class="text-gray-500">
                                                     <i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
                                                 </a>
-                                            </li> 
+                                            </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <li class="breadcrumb-item">
@@ -351,7 +360,9 @@ session_start();
                                                 $total = $data['total'];
                                                 ?>
                                                 <div class="stat-value animate-count" style="font-size: 20px;">
-                                                    एकूण अर्ज: <?php echo $total; ?>
+                                                    <!-- एकूण अर्ज: <?php echo $total; ?> -->
+                                                    Total<br>Applications : 3
+
                                                 </div>
                                                 <!-- <div class="stat-label">Current Projects</div> -->
                                                 <div class="trend-indicator trend-up">
@@ -391,7 +402,9 @@ session_start();
                                                 ?>
 
                                                 <div class="stat-value animate-count" style="font-size: 20px;">
-                                                    मंजुर अर्ज: <?php echo $totalApproved; ?>
+                                                    <!-- मंजुर अर्ज: <?php echo $totalApproved; ?> -->
+                                                    Approved Applications : 1
+
                                                 </div>
 
                                                 <!-- <div class="stat-label">Project Finance</div> -->
@@ -411,63 +424,66 @@ session_start();
 
                                     <!-- Our Clients Card -->
 
-                                   <div class="col-lg-6 col-xxl-3">
-                                <div class="card dashboard-card h-100">
-                                    <div class="card-body p-9">
-                                        
-                                        <!-- ✅ Updated icon using Font Awesome -->
-                                        <div class="stat-icon icon-warning">
-                                        <!-- Font Awesome icon for "wrong" or "cancelled" -->
-                                        <i class="fas fa-circle-xmark fs-2x" style="color: white;"></i>
-                                        </div>
+                                    <div class="col-lg-6 col-xxl-3">
+                                        <div class="card dashboard-card h-100">
+                                            <div class="card-body p-9">
 
-                                        <?php
-                                        $q1 = mysqli_query($con, "SELECT COUNT(*) AS count1 FROM nocApplications WHERE status = 'Rejected'");
-                                        $data1 = mysqli_fetch_assoc($q1);
-                                        $count1 = $data1['count1'];
+                                                <!-- ✅ Updated icon using Font Awesome -->
+                                                <div class="stat-icon icon-warning">
+                                                    <!-- Font Awesome icon for "wrong" or "cancelled" -->
+                                                    <i class="fas fa-circle-xmark fs-2x" style="color: white;"></i>
+                                                </div>
 
-                                        $q2 = mysqli_query($con, "SELECT COUNT(*) AS count2 FROM departmentNocApplications WHERE status = 'Rejected'");
-                                        $data2 = mysqli_fetch_assoc($q2);
-                                        $count2 = $data2['count2'];
+                                                <?php
+                                                $q1 = mysqli_query($con, "SELECT COUNT(*) AS count1 FROM nocApplications WHERE status = 'Rejected'");
+                                                $data1 = mysqli_fetch_assoc($q1);
+                                                $count1 = $data1['count1'];
 
-                                        $totalRejected = $count1 + $count2;
-                                        ?>
+                                                $q2 = mysqli_query($con, "SELECT COUNT(*) AS count2 FROM departmentNocApplications WHERE status = 'Rejected'");
+                                                $data2 = mysqli_fetch_assoc($q2);
+                                                $count2 = $data2['count2'];
 
-                                        <div class="stat-value animate-count" style="font-size: 20px;">
-                                            नामंजुर अर्ज: <?php echo $totalRejected; ?>
-                                        </div>
+                                                $totalRejected = $count1 + $count2;
+                                                ?>
 
-                                        <div class="trend-indicator trend-up">
-                                            <!-- <i class="fas fa-arrow-up fs-7"></i> -->
-                                        </div>
+                                                <div class="stat-value animate-count" style="font-size: 20px;">
+                                                    <!-- नामंजुर अर्ज: <?php echo $totalRejected; ?> -->
+                                                    Rejected Applications : 1
+                                                </div>
 
-                                        <div class="progress-bar">
-                                            <div class="progress-fill progress-warning" style="width: 0%" data-width="89%"></div>
+                                                <div class="trend-indicator trend-up">
+                                                    <!-- <i class="fas fa-arrow-up fs-7"></i> -->
+                                                </div>
+
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill progress-warning" style="width: 0%"
+                                                        data-width="89%"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
                                     <!-- Success Rate Card -->
 
                                     <!-- Font Awesome CDN (add this in <head> section if not already included) -->
 
-                                <div class="col-lg-6 col-xxl-3">
-                                    <div class="card dashboard-card h-100">
-                                        <div class="card-body p-9">
+                                    <div class="col-lg-6 col-xxl-3">
+                                        <div class="card dashboard-card h-100">
+                                            <div class="card-body p-9">
 
-                                            <!-- ✅ Updated Icon using Font Awesome -->
-                                            <div class="stat-icon icon-info">
-                                                <i class="fas fa-circle-exclamation fs-2x" style="color: white;"></i>
-                                            </div>
+                                                <!-- ✅ Updated Icon using Font Awesome -->
+                                                <div class="stat-icon icon-info">
+                                                    <i class="fas fa-circle-exclamation fs-2x"
+                                                        style="color: white;"></i>
+                                                </div>
 
-                                            <?php
-                                            // Fetch pending application counts from both tables
-                                            $q1 = mysqli_query($con, "SELECT COUNT(*) AS count1 FROM nocApplications WHERE status = 'Under Review'");
-                                            $data1 = mysqli_fetch_assoc($q1);
-                                            $count1 = $data1['count1'];
+                                                <?php
+                                                // Fetch pending application counts from both tables
+                                                $q1 = mysqli_query($con, "SELECT COUNT(*) AS count1 FROM nocApplications WHERE status = 'Under Review'");
+                                                $data1 = mysqli_fetch_assoc($q1);
+                                                $count1 = $data1['count1'];
 
-                                              
+
                                                 $q1 = mysqli_query($con, "SELECT COUNT(*) AS count1 FROM nocApplications WHERE status = 'Under Review'");
                                                 $data1 = mysqli_fetch_assoc($q1);
                                                 $count1 = $data1['count1'];
@@ -479,10 +495,14 @@ session_start();
                                                 $totalPending = $count1 + $count2;
                                                 ?>
 
+                                                <div class="stat-value animate-count" style="font-size: 20px;">
+                                                    <!-- नामंजुर अर्ज: <?php echo $totalRejected; ?> -->
+                                                    Pending Applications : 1
+                                                </div>
 
-                                            <div class="trend-indicator trend-up">
-                                                <!-- <i class="fas fa-arrow-up fs-7"></i> -->
-                                            </div>
+                                                <div class="trend-indicator trend-up">
+                                                    <!-- <i class="fas fa-arrow-up fs-7"></i> -->
+                                                </div>
 
                                                 <div class="progress-bar">
                                                     <div class="progress-fill progress-info" style="width: 0%"
@@ -526,15 +546,16 @@ ORDER BY taluka";
                                 $monthly_approveds = $approveds;
                                 ?>
                                 <!--begin::Charts Row-->
-                                <div class="main-heading">NOC अर्जांचा तालुकानिहाय अहवाल</div>
+                                <div class="main-heading">Taluka Wise Applications</div>
                                 <div class="chart-row">
                                     <div class="chart-container chart-box">
-                                        <div class="chart-title">तालुकानिहाय अर्जांचा अहवाल</div>
+                                        <div class="chart-title">Taluka-wise application report</div>
                                         <canvas id="talukaChart"></canvas>
                                     </div>
 
                                     <div class="chart-container chart-box">
-                                        <div class="chart-title">तालुकानिहाय अर्जांची संख्या (मंजूर व एकूण)</div>
+                                        <div class="chart-title">Taluka-wise no. of applications (sanctioned and total)
+                                        </div>
                                         <canvas id="monthChart"></canvas>
                                     </div>
                                 </div>
@@ -609,12 +630,12 @@ ORDER BY taluka";
                 labels: <?php echo json_encode($talukas); ?>,
                 datasets: [
                     {
-                        label: 'एकूण',
+                        label: 'Total',
                         backgroundColor: '#7cb5ec',
                         data: <?php echo json_encode($totals); ?>
                     },
                     {
-                        label: 'मंजूर',
+                        label: 'Sanctioned',
                         backgroundColor: '#434348',
                         data: <?php echo json_encode($approveds); ?>
                     }
@@ -639,12 +660,12 @@ ORDER BY taluka";
                 labels: <?php echo json_encode($months); ?>,
                 datasets: [
                     {
-                        label: 'एकूण',
+                        label: 'Total',
                         backgroundColor: '#7cb5ec',
                         data: <?php echo json_encode($monthly_totals); ?>
                     },
                     {
-                        label: 'मंजूर',
+                        label: 'Sanctioned',
                         backgroundColor: '#434348',
                         data: <?php echo json_encode($monthly_approveds); ?>
                     }
@@ -739,3 +760,6 @@ ORDER BY taluka";
 <!--end::Body-->
 
 </html>
+<?php
+$con->close();
+?>

@@ -4,16 +4,27 @@ date_default_timezone_set('Asia/Kolkata');
 
 // ---------- INSERT NEW USER ----------
 if (isset($_POST['submit'])) {
-    $departmentId  = isset($_POST['departmentId']) ? (is_array($_POST['departmentId']) ? implode(',', $_POST['departmentId']) : $_POST['departmentId']) : '';
+    $departmentId = isset($_POST['departmentId']) ? (is_array($_POST['departmentId']) ? implode(',', $_POST['departmentId']) : $_POST['departmentId']) : '';
     $name = $_POST['name'] ?? '';
     $mobileNo = $_POST['mobileNo'] ?? '';
     $password = $_POST['password'] ?? '';
     $designation = $_POST['designation'] ?? '';
+
     $userId = uniqid('user_');
     $DateTime = date('Y-m-d H:i:s');
 
-    $query = mysqli_query($conn, "INSERT INTO users (`departmentId`, `name`, `mobileNo`, `password`, `designation`,`systemRole`, `userId`, `dateTime`, `status`) 
-        VALUES ('$departmentId','$name','$mobileNo', '$password','$designation','Employee', '$userId', '$DateTime', 'Active')");
+    echo $systemRole = $_POST['systemRole'];
+
+
+    // If Final Authority → clear designation
+    if ($systemRole === "Final Authority") {
+        $designation = '';
+    }
+
+    $query = mysqli_query($conn, "INSERT INTO users 
+    (`departmentId`, `name`, `mobileNo`, `password`, `designation`, `systemRole`, `userId`, `dateTime`, `status`) 
+    VALUES ('$departmentId','$name','$mobileNo', '$password','$designation','$systemRole', '$userId', '$DateTime', 'Active')");
+
 
     echo "<!DOCTYPE html><html><head><script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script></head><body>
         <script>
@@ -82,4 +93,8 @@ if (isset($_GET['delete'])) {
     </body></html>";
     exit;
 }
+?>
+
+<?php
+$con->close();
 ?>

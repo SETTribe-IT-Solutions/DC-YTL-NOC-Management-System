@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['userId'])) {
+   
+    header("Location: ../index.html");
+    exit();
+}
+
 $designation = $_SESSION['designation'];
 
 ini_set('display_errors', 0);

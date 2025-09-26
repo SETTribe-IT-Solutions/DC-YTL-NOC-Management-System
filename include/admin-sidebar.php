@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['userId'])) {
+
+    header("Location: ../index.html");
+    exit();
+}
 ?>
 <div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true" data-kt-drawer-name="app-sidebar"
     data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px"
@@ -33,10 +39,10 @@ session_start();
             <!--end:Menu item-->
 
             <!--begin:Menu item-->
-            <div class="menu-item" onclick="window.location.href='admin/nocReport.php'">
-                <!--begin:Menu link-->
+            <!-- <div class="menu-item" onclick="window.location.href='admin/nocReport.php'"> -->
+            <!--begin:Menu link-->
 
-                <span class="menu-link">
+            <!-- <span class="menu-link">
                     <span class="menu-icon">
                         <i class="ki-duotone ki-element-11 fs-1">
                             <span class="path1"></span>
@@ -47,30 +53,11 @@ session_start();
                     </span>
                     <span class="menu-title">View NOC Application</span>
                 </span>
-                </a>
-                <!--end:Menu link-->
-            </div>
+                </a> -->
+            <!--end:Menu link-->
+            <!-- </div> -->
             <!--end:Menu item-->
 
-            <!--begin:Menu item-->
-           <!-- <div class="menu-item" onclick="window.location.href='admin/tracknoc.php'">
-               
-
-                <span class="menu-link">
-                    <span class="menu-icon">
-                        <i class="ki-duotone ki-element-11 fs-1">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                            <span class="path3"></span>
-                            <span class="path4"></span>
-                        </i>
-                    </span>
-                    <span class="menu-title">NOC Tracking</span>
-                </span>
-                </a>
-            </div> -->
-            <!--end:Menu item-->
-            <!--begin:Menu item-->
             <!-- <div class="menu-item" onclick="window.location.href='#'">
             
                 <span class="menu-link">
@@ -89,52 +76,71 @@ session_start();
             </div> -->
 
             <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                            <!--begin:Menu link-->
-                            <span class="menu-link">
-                                <span class="menu-icon">
-                                    <i class="ki-duotone ki-rescue fs-1">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                    </i>
-                                </span>
-                                <span class="menu-title">NOC Application</span>
-                                <span class="menu-arrow"></span>
+                <!--begin:Menu link-->
+                <span class="menu-link">
+                    <span class="menu-icon">
+                        <i class="ki-duotone ki-rescue fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </span>
+                    <span class="menu-title">NOC Applications</span>
+                    <span class="menu-arrow"></span>
+                </span>
+                <!--end:Menu link-->
+                <!--begin:Menu sub-->
+                <div class="menu-sub menu-sub-accordion">
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link" href="admin/department-report.php" data-bs-toggle="tooltip"
+                            data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
                             </span>
-                            <!--end:Menu link-->
-                            <!--begin:Menu sub-->
-                            <div class="menu-sub menu-sub-accordion">
-                                <!--begin:Menu item-->
-                                <div class="menu-item">
-                                    <!--begin:Menu link-->
-                                    <a class="menu-link" href="admin/department-report.php" data-bs-toggle="tooltip"
-                                        data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Department</span>
-                                    </a>
-                                    <!--end:Menu link-->
-                                </div>
-                                <!--end:Menu item-->
-                                <!--begin:Menu item-->
-                                <div class="menu-item">
-                                    <!--begin:Menu link-->
-                                    <a class="menu-link" href="officers/civilian-report.php" data-bs-toggle="tooltip" data-bs-trigger="hover"
-                                        data-bs-dismiss="click" data-bs-placement="right">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Civilian</span>
-                                    </a>
-                                    <!--end:Menu link-->
-                                </div>
-                                <!--end:Menu item-->
+                            <span class="menu-title">Department</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link" href="admin/civilian-report.php" data-bs-toggle="tooltip"
+                            data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
 
-                                <!--end:Menu item-->
-                            </div>
-                            <!--end:Menu sub-->
-                        </div>
+                            </span>
+
+                            <span class="menu-title">Civilian</span>
+                        </a>
+                    </div>
+                    <!--end:Menu item-->
+                </div>
+                <!--end:Menu sub-->
+            </div>
             <!--end:Menu item-->
+
+            <!--begin:Menu item-->
+            <div class="menu-item" onclick="window.location.href='admin/report.php'">
+                <!--begin:Menu link-->
+                <span class="menu-link">
+                    <span class="menu-icon">
+                        <i class="ki-duotone ki-add-files fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                        </i>
+
+                    </span>
+                    <span class="menu-title">NOC Report</span>
+                </span>
+                <!--end:Menu link-->
+
+            </div>
+            <!--end:Menu item-->
+
             <!--begin:Menu item-->
             <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                 <!--begin:Menu link-->
@@ -180,10 +186,10 @@ session_start();
 
                     <!--end:Menu item-->
 
-                     <div class="menu-item">
+                    <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="admin/user_master.php" data-bs-toggle="tooltip" data-bs-trigger="hover"
-                            data-bs-dismiss="click" data-bs-placement="right">
+                        <a class="menu-link" href="admin/user_master.php" data-bs-toggle="tooltip"
+                            data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
@@ -195,7 +201,7 @@ session_start();
                 <!--end:Menu sub-->
             </div>
             <!--end:Menu item-->
-     <div class="menu-item" onclick="window.location.href='admin/logout.php'">
+            <div class="menu-item" onclick="window.location.href='admin/logout.php'">
                 <!--begin:Menu link-->
 
                 <span class="menu-link">

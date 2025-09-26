@@ -3,8 +3,16 @@ ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
 session_start();
+
+if (!isset($_SESSION['userId'])) {
+
+  header("Location: ../index.html");
+  exit();
+}
 include('../include/conn.php');
-$userId = $_SESSION['userId'];
+echo $userId = $_SESSION['userId'];
+$departmentId = $_SESSION['departmentId'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +31,7 @@ $userId = $_SESSION['userId'];
     #datatable th {
       border: 1px solid #F4F4F4;
     }
+
     #datatable td {
       border: 1px solid #F4F4F4;
     }
@@ -30,6 +39,7 @@ $userId = $_SESSION['userId'];
   <?php include("../include/cssLinks.php"); ?>
 </head>
 >
+
 <body id="kt_app_body" data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true"
   data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
   data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true"
@@ -111,13 +121,14 @@ $userId = $_SESSION['userId'];
                             <th class="min-w-100px">आधार कार्ड पहा</th>
                             <th class="min-w-100px">तारीख</th>
                             <th class="min-w-100px">स्थिती</th>
+                            <th class="min-w-100px">माझे उत्तर</th>
                             <th class="min-w-100px">Action</th>
                           </tr>
                         </thead>
                         <tbody class="fw-semibold text-gray-600">
                           <?php
                           $departmentId = $_SESSION['departmentId'];
-                          $stmt = $conn->prepare("
+                          $stmt = "
                               SELECT 
                                   a.applicationId,
                                   a.civilianId,
@@ -132,6 +143,9 @@ $userId = $_SESSION['userId'];
                                   a.status,
                                   a.createdDateTime,
                                   a.inspectionOfficer,
+                                  r.forwardEmployee,
+                                  r.forwardEmployeeDoc,
+                                  r.employeeReport,
                                   c.name,
                                   c.address,
                                   c.aadharNo,
@@ -141,12 +155,10 @@ $userId = $_SESSION['userId'];
                               FROM nocApplications a
                               INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
                               LEFT JOIN civilianRegistrations c ON a.civilianId = c.civilianId
-                              WHERE  a.inspectionOfficer=?
+                              WHERE  r.forwardEmployee = '$userId'
                               ORDER BY a.createdDateTime DESC
-                          ");
-                          $stmt->bind_param("s", $userId);
-                          $stmt->execute();
-                          $result = $stmt->get_result();
+                          ";
+                          $result = mysqli_query($conn, $stmt);
                           $i = 1;
                           while ($row = $result->fetch_assoc()) {
                             $civilianId = $row['civilianId'];
@@ -177,14 +189,16 @@ $userId = $_SESSION['userId'];
                               <td><?php echo date('d-m-Y', strtotime($row['dob'])); ?></td>
                               <td>
                                 <?php if ($row['panCard']) { ?>
-                                  <a target="_blank" href="Uploads/<?php echo htmlspecialchars($row['panCard']); ?>">View</a>
+                                  <a target="_blank"
+                                    href="Uploads/<?php echo htmlspecialchars($row['panCard']); ?>">View</a>
                                 <?php } else { ?>
                                   -
                                 <?php } ?>
                               </td>
                               <td>
                                 <?php if ($row['aadharCard']) { ?>
-                                  <a target="_blank" href="Uploads/<?php echo htmlspecialchars($row['aadharCard']); ?>">View</a>
+                                  <a target="_blank"
+                                    href="Uploads/<?php echo htmlspecialchars($row['aadharCard']); ?>">View</a>
                                 <?php } else { ?>
                                   -
                                 <?php } ?>
@@ -193,93 +207,121 @@ $userId = $_SESSION['userId'];
                               <td>
                                 <?php
                                 $status = $row['status'];
-                                $color = $status == 'Approved' ? 'text-success' : ($status == 'Rejected' ? 'text-danger' : 'text-warning');
+                                $color = $row['employeeReport'] ? 'text-success' : ($status == 'Approved' ? 'text-success' : ($status == 'Rejected' ? 'text-danger' : 'text-warning'));
                                 ?>
-                                <span class="<?php echo $color; ?>"><?php echo htmlspecialchars($status); ?></span>
+                                <span
+                                  class="<?php echo $color; ?>"><?php echo ($row['employeeReport']) ? 'Sent' : htmlspecialchars($status); ?></span>
+                              </td>
+                              <td>
+                                <?php
+                                if ($row['employeeReport']) {
+                                  echo "<a target='_blank' href='department/reportDoc/" . $row['employeeReport'] . "'>View</a>";
+                                } else {
+                                  echo "-";
+                                }
+                                ?>
                               </td>
                               <td style="white-space: nowrap;">
-                                <div class="d-flex flex-wrap gap-1">
-                                  <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                    data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
-                                   Submit Report
-                                  </button>
-                                  <?php if (!isset($row['inspectionOfficer']) || trim($row['inspectionOfficer']) === ''): ?>
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                      data-bs-target="#forwardNOCModal<?php echo $row['applicationId']; ?>"
-                                      data-applicationid="<?php echo $row['applicationId']; ?>">
-                                      Forward NOC
+                                <?php
+                                if (!$row['employeeReport']) {
+                                  ?>
+                                  <div class="d-flex flex-wrap gap-1">
+                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                      data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
+                                      Submit Report
                                     </button>
-                                  <?php else: ?>
-                                    <span class="badge bg-success align-self-center">NOC Forwarded</span>
-                                  <?php endif; ?>
+                                    <?php
+                                } else {
+                                  echo "-";
+                                }
+                                ?>
                                 </div>
-                                <!-- Change Status Modal -->
-                               <div class="modal fade" id="updateStatusModal<?php echo $row['applicationId']; ?>" tabindex="-1"
-     aria-labelledby="updateStatusModalLabel<?php echo $row['applicationId']; ?>" aria-hidden="true">
-  <div class="modal-dialog">
-    <form method="POST" action="department/nocReport_DB.php" enctype="multipart/form-data">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="updateStatusModalLabel<?php echo $row['applicationId']; ?>">Submit File</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" name="applicationId" value="<?php echo $row['applicationId']; ?>">
-          <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
+                                <!-- Change Status / Report Modal -->
+                                <div class="modal fade" id="updateStatusModal<?= $row['applicationId']; ?>" tabindex="-1"
+                                  aria-labelledby="updateStatusModalLabel<?= $row['applicationId']; ?>"
+                                  aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <form method="POST" action="department/NOC_Report_employeeDB.php"
+                                      enctype="multipart/form-data">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title"
+                                            id="updateStatusModalLabel<?= $row['applicationId']; ?>">Submit Report</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
 
+                                          <input type="hidden" name="applicationId"
+                                            value="<?= htmlspecialchars($row['applicationId']); ?>">
+                                          <input type="hidden" name="departmentId"
+                                            value="<?= htmlspecialchars($departmentId); ?>">
+                                          <div class="mb-3">
+                                            <label class="form-label">Report Remark (optional)</label>
+                                            <textarea name="reportRemark" class="form-control" rows="2"
+                                              placeholder="Enter report remark..."></textarea>
+                                          </div>
 
-          <div class="mb-3 d-none" id="remarkDiv<?php echo $row['applicationId']; ?>">
-            <label class="form-label">Rejection Remark</label>
-            <textarea class="form-control" name="remarks" placeholder="Reason for rejection..."></textarea>
-          </div>
-<form method="POST" action="department/visitReport_DB.php" enctype="multipart/form-data">
-  ...
-  
-  <div class="mb-3">
-    <label class="form-label">Upload Files (optional)</label>
-    <input type="file" name="fildFile[]" class="form-control" accept=".pdf,.jpg,.jpeg,.png" multiple>
-    <div class="form-text">Allowed: PDF, JPG, PNG. You can select multiple. Max each: 5MB.</div>
-  </div>
-  <div class="mb-3">
-  <label class="form-label">Remark (optional)</label>
-  <textarea name="fildRemark" class="form-control" rows="2" placeholder="Add your remark..."></textarea>
-  <div class="form-text">Any note or comment regarding this update.</div>
-</div>
-  ...
-</form>
-                                    
-        <div class="modal-footer">
-          <button type="submit" name="update" class="btn btn-success">Submit</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+                                          <div class="mb-3">
+                                            <label class="form-label">Upload Report Files</label>
+                                            <input type="file" name="reportFile[]" required
+                                              class="form-control reportFileInput" accept=".pdf,.jpg,.jpeg,.png" multiple>
+                                            <div class="form-text">Allowed: PDF, JPG, PNG. Max each: 5MB.</div>
+                                          </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="submit" name="update" class="btn btn-success">Submit</button>
+                                        </div>
+                                      </div>
+                                    </form>
+                                  </div>
+                                </div>
 
-<script>
-  // show remark only when Rejected selected
-  document.getElementById("statusSelect<?php echo $row['applicationId']; ?>").addEventListener('change', function() {
-    const remarkDiv = document.getElementById("remarkDiv<?php echo $row['applicationId']; ?>");
-    if (this.value === 'Rejected') {
-      remarkDiv.classList.remove('d-none');
-    } else {
-      remarkDiv.classList.add('d-none');
-    }
-  });
-</script>
+                                <script>
+                                  document.addEventListener('change', function (e) {
+                                    if (!e.target.matches('.reportFileInput')) return;
+                                    const input = e.target;
+                                    const allowedExt = ['pdf', 'jpg', 'jpeg', 'png'];
+                                    const maxSize = 5 * 1024 * 1024;
+                                    const files = Array.from(input.files);
+                                    const invalid = files.find(f => !allowedExt.includes(f.name.split('.').pop().toLowerCase()));
+                                    if (invalid) {
+                                      Swal.fire({
+                                        icon: 'error',
+                                        title: 'Invalid file type',
+                                        text: `File "${invalid.name}" is not allowed.`,
+                                        confirmButtonText: 'OK'
+                                      });
+                                      input.value = '';
+                                      return;
+                                    }
+                                    const tooLarge = files.find(f => f.size > maxSize);
+                                    if (tooLarge) {
+                                      Swal.fire({
+                                        icon: 'error',
+                                        title: 'Too large',
+                                        text: `File "${tooLarge.name}" exceeds 5MB.`,
+                                        confirmButtonText: 'OK'
+                                      });
+                                      input.value = '';
+                                    }
+                                  });
+                                </script>
 
                                 <!-- Forward NOC Modal -->
-                                <div class="modal fade" id="forwardNOCModal<?php echo $row['applicationId']; ?>" tabindex="-1"
-                                  aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>" aria-hidden="true">
+                                <div class="modal fade" id="forwardNOCModal<?php echo $row['applicationId']; ?>"
+                                  tabindex="-1" aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>"
+                                  aria-hidden="true">
                                   <div class="modal-dialog">
                                     <form method="POST" action="department/forwordNOC_db.php">
                                       <div class="modal-content">
                                         <div class="modal-header">
-                                          <h5 class="modal-title" id="forwardNOCModalLabel<?php echo $row['applicationId']; ?>">Forward NOC</h5>
+                                          <h5 class="modal-title"
+                                            id="forwardNOCModalLabel<?php echo $row['applicationId']; ?>">Forward NOC</h5>
                                           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
-                                          <input type="hidden" name="applicationId" value="<?php echo $row['applicationId']; ?>">
+                                          <input type="hidden" name="applicationId"
+                                            value="<?php echo $row['applicationId']; ?>">
                                           <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
                                           <div class="mb-3">
                                             <label for="employeeId" class="form-label">Forward to Employee</label>
@@ -302,7 +344,8 @@ $userId = $_SESSION['userId'];
                                           </div>
                                           <div class="mb-3">
                                             <label for="remarks" class="form-label">Remark</label>
-                                            <textarea name="HODremark" class="form-control" placeholder="Enter remark..." required></textarea>
+                                            <textarea name="HODremark" class="form-control" placeholder="Enter remark..."
+                                              required></textarea>
                                           </div>
                                         </div>
                                         <div class="modal-footer">
@@ -471,4 +514,8 @@ $userId = $_SESSION['userId'];
     <?php endif; ?>
 </body>
 <!--end::Body-->
+
 </html>
+<?php
+$con->close();
+?>

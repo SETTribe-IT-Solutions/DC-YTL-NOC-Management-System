@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
@@ -232,13 +234,9 @@ error_reporting(0);
                             <h3 class="text-center mb-4">युजर नोंदणी</h3>
                             <form method="post" action="registrationDB.php" enctype="multipart/form-data">
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <label class="form-label">पुर्ण नाव</label><span style="color: red;">*</span>
                                         <input type="text" name="name" class="form-control" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">पत्ता</label><span style="color: red;">*</span>
-                                        <input type="text" name="address" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -265,12 +263,24 @@ error_reporting(0);
                                     </div>
                                 </div>
 
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">पत्ता</label><span style="color: red;">*</span>
+                                        <input type="text" name="address" class="form-control" required>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">पिन कोड</label><span style="color: red;">*</span>
+                                        <input type="tel" minlength="6" maxlength="6" name="pinCode"
+                                            class="form-control" required>
+                                    </div>
+                                </div>
 
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label">आधार क्रमांक</label><span style="color: red;">*</span>
-                                        <input type="text" name="aadharNo" class="form-control" maxlength="12"
-                                            pattern="\d{12}" required>
+                                        <input type="tel" name="aadharNo" class="form-control" minlength="12"
+                                            maxlength="12" pattern="\d{12}" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">ईमेल</label><span style="color: red;">*</span>
@@ -287,8 +297,8 @@ error_reporting(0);
                                     <div class="col-md-6">
                                         <label class="form-label">मोबाईल क्रमांक</label><span
                                             style="color: red;">*</span>
-                                        <input type="text" name="mobileNo" class="form-control" maxlength="10"
-                                            pattern="\d{10}" required>
+                                        <input type="tel" name="mobileNo" class="form-control" minlength="10"
+                                            maxlength="10" pattern="\d{10}" required>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -312,7 +322,7 @@ error_reporting(0);
 
                                     <div class="col-md-6">
                                         <label class="form-label">OTP टाका</label><span style="color: red;">*</span>
-                                        <input type="text" name="otp" class="form-control" maxlength="6" required>
+                                        <input type="tel" name="otp" class="form-control" maxlength="6" required>
                                     </div>
                                 </div>
                                 <div class="d-grid mb-3">

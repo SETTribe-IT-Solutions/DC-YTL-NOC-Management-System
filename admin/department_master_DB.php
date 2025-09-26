@@ -1,6 +1,8 @@
 <?php
 include('../include/conn.php');
 
+
+
 if (isset($_POST['submit'])) {
     date_default_timezone_set('Asia/Kolkata');
     $departmentName = $_POST['departmentName'];
@@ -17,20 +19,23 @@ if (isset($_POST['submit'])) {
     ?>
     <!DOCTYPE html>
     <html lang="en">
+
     <head>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
+
     <body>
-    <script>
-        Swal.fire({
-            icon: '<?php echo $query ? "success" : "error"; ?>',
-            title: '<?php echo $query ? "Success!" : "Oops..."; ?>',
-            text: '<?php echo $query ? "Department created successfully" : "Something went wrong! Please try again."; ?>',
-        }).then(() => {
-            window.location.href = '<?php echo $query ? "department_master.php" : "javascript:history.back()"; ?>';
-        });
-    </script>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $query ? "success" : "error"; ?>',
+                title: '<?php echo $query ? "Success!" : "Oops..."; ?>',
+                text: '<?php echo $query ? "Department created successfully" : "Something went wrong! Please try again."; ?>',
+            }).then(() => {
+                window.location.href = '<?php echo $query ? "department_master.php" : "javascript:history.back()"; ?>';
+            });
+        </script>
     </body>
+
     </html>
     <?php
 }
@@ -40,10 +45,10 @@ if (isset($_POST['submit'])) {
 if (isset($_POST['update'])) {
     date_default_timezone_set('Asia/Kolkata');
 
-        $id = $_POST['id'];
+    $id = $_POST['id'];
 
     $departmentName = $_POST['departmentName'];
-        $HodName = $_POST['HodName'];
+    $HodName = $_POST['HodName'];
     $HodNumber = $_POST['HodNumber'];
     $HodPassword = $_POST['HodPassword'];
 
@@ -54,20 +59,23 @@ if (isset($_POST['update'])) {
     ?>
     <!DOCTYPE html>
     <html lang="en">
+
     <head>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
+
     <body>
-    <script>
-        Swal.fire({
-            icon: '<?php echo $query ? "success" : "error"; ?>',
-            title: '<?php echo $query ? "Updated!" : "Oops..."; ?>',
-            text: '<?php echo $query ? "Department updated successfully" : "Something went wrong!"; ?>',
-        }).then(() => {
-            window.location.href = '<?php echo $query ? "department_master.php" : "javascript:history.back()"; ?>';
-        });
-    </script>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $query ? "success" : "error"; ?>',
+                title: '<?php echo $query ? "Updated!" : "Oops..."; ?>',
+                text: '<?php echo $query ? "Department updated successfully" : "Something went wrong!"; ?>',
+            }).then(() => {
+                window.location.href = '<?php echo $query ? "department_master.php" : "javascript:history.back()"; ?>';
+            });
+        </script>
     </body>
+
     </html>
     <?php
 }
@@ -80,20 +88,23 @@ if (isset($_GET['delete'])) {
     ?>
     <!DOCTYPE html>
     <html lang="en">
+
     <head>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
+
     <body>
-    <script>
-        Swal.fire({
-            icon: '<?php echo $query ? "success" : "error"; ?>',
-            title: '<?php echo $query ? "Deleted!" : "Oops..."; ?>',
-            text: '<?php echo $query ? "Department marked as Inactive." : "Something went wrong!"; ?>',
-        }).then(() => {
-            window.location.href = 'department_master.php';
-        });
-    </script>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $query ? "success" : "error"; ?>',
+                title: '<?php echo $query ? "Deleted!" : "Oops..."; ?>',
+                text: '<?php echo $query ? "Department marked as Inactive." : "Something went wrong!"; ?>',
+            }).then(() => {
+                window.location.href = 'department_master.php';
+            });
+        </script>
     </body>
+
     </html>
     <?php
 }
@@ -102,3 +113,6 @@ if (isset($_GET['delete'])) {
 
 
 
+<?php
+$con->close();
+?>

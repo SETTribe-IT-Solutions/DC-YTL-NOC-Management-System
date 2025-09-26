@@ -105,3 +105,6 @@ if (isset($_POST['update'])) {
 
 
 ?>
+<?php
+$con->close();
+?>

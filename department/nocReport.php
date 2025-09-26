@@ -1,9 +1,16 @@
 <?php
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
-error_reporting(0);
+// ini_set('display_errors', 0);
+// ini_set('display_startup_errors', 0);
+// error_reporting(0);
 session_start();
+
+if (!isset($_SESSION['userId'])) {
+
+  header("Location: ../index.html");
+  exit();
+}
 include('../include/conn.php');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +29,7 @@ include('../include/conn.php');
     #datatable th {
       border: 1px solid #F4F4F4;
     }
+
     #datatable td {
       border: 1px solid #F4F4F4;
     }
@@ -29,6 +37,7 @@ include('../include/conn.php');
   <?php include("../include/cssLinks.php"); ?>
 </head>
 >
+
 <body id="kt_app_body" data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true"
   data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
   data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true"
@@ -95,7 +104,7 @@ include('../include/conn.php');
                           <tr class="text-start text-dark-900 fw-bold fs-6 text-uppercase">
                             <th class="min-w-70px">Sr. No.</th>
                             <th class="min-w-100px">NOC क्रमंक</th>
-                            <th class="min-w-100px">Civilian</th>
+                            <!-- <th class="min-w-100px">Civilian</th> -->
                             <th class="min-w-100px">NOC विषय</th>
                             <th class="min-w-100px">NOC प्रकार</th>
                             <th class="min-w-100px">जामिनीची तपशील</th>
@@ -109,8 +118,13 @@ include('../include/conn.php');
                             <th class="min-w-100px">पेन कार्ड पहा</th>
                             <th class="min-w-100px">आधार कार्ड पहा</th>
                             <th class="min-w-100px">तारीख</th>
+
                              <th class="min-w-100px">NOC रिपोर्ट</th>
+
+                            <!-- <th class="min-w-100px">Inpection report</th> -->
+
                             <th class="min-w-100px">स्थिती</th>
+                            <th class="min-w-100px">कर्मचाऱ्याने पाठवलेला अहवाल</th>
                             <th class="min-w-100px">Action</th>
                           </tr>
                         </thead>
@@ -119,31 +133,43 @@ include('../include/conn.php');
                           $departmentId = $_SESSION['departmentId'];
                           $stmt = $conn->prepare("
                               SELECT 
-                                  a.applicationId,
-                                  a.civilianId,
-                                  a.nocSubject,
-                                  a.nocTypeId,
-                                  a.landDesc,
-                                  a.taluka,
-                                  a.village,
-                                  a.gatNo,
-                                  a.panCard,
-                                  a.aadharCard,
-                                  a.status,
-                                  a.createdDateTime,
-                                  a.inspectionOfficer,
-                                  c.name,
-                                  c.address,
-                                  c.aadharNo,
-                                  c.emailId,
-                                  c.dob,
-                                  c.mobileNo
-                              FROM nocApplications a
-                              INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
-                              LEFT JOIN civilianRegistrations c ON a.civilianId = c.civilianId
-                              WHERE r.departmentId = ?
-                              ORDER BY a.createdDateTime DESC
-                          ");
+    a.applicationId,
+    a.civilianId,
+    a.nocSubject,
+    a.nocTypeId,
+    a.landDesc,
+    a.taluka,
+    a.village,
+    a.gatNo,
+    a.panCard,
+    a.aadharCard,
+    a.reportFile,
+    a.reportRemark,
+    a.status as 'status',
+    a.createdDateTime,
+    a.inspectionOfficer,
+    a.reportFile,
+    a.tahildarStatus,
+    r.status as 'rStatus',
+    r.dscDocumentPath,
+    r.forwardEmployee,
+    r.forwardEmployeeDoc,
+    r.employeeReport,
+    c.name,
+    c.address,
+    c.aadharNo,
+    c.emailId,
+    c.dob,
+    c.mobileNo
+FROM nocApplications a
+INNER JOIN nocApplicationReviews r 
+    ON a.applicationId = r.applicationId
+LEFT JOIN civilianRegistrations c 
+    ON a.civilianId = c.civilianId
+WHERE r.departmentId = ?
+  AND a.tahildarStatus = 'Forwarded'
+ORDER BY a.createdDateTime DESC");
+                          echo $departmentId;
                           $stmt->bind_param("i", $departmentId);
                           $stmt->execute();
                           $result = $stmt->get_result();
@@ -164,7 +190,7 @@ include('../include/conn.php');
                             <tr class="odd">
                               <td><?= $i++ ?></td>
                               <td><?php echo htmlspecialchars($row['applicationId']); ?></td>
-                              <td><?php echo isset($r['name']) ? htmlspecialchars($r['name']) : '-'; ?></td>
+                              <!-- <td><?php echo isset($r['name']) ? htmlspecialchars($r['name']) : '-'; ?></td> -->
                               <td><?php echo htmlspecialchars($row['nocSubject']); ?></td>
                               <td><?php echo isset($r1['type']) ? htmlspecialchars($r1['type']) : '-'; ?></td>
                               <td><?php echo htmlspecialchars($row['landDesc']); ?></td>
@@ -177,69 +203,147 @@ include('../include/conn.php');
                               <td><?php echo date('d-m-Y', strtotime($row['dob'])); ?></td>
                               <td>
                                 <?php if ($row['panCard']) { ?>
-                                  <a target="_blank" href="Uploads/<?php echo htmlspecialchars($row['panCard']); ?>">View</a>
+                                  <a target="_blank"
+                                    href="Uploads/<?php echo htmlspecialchars($row['panCard']); ?>">View</a>
                                 <?php } else { ?>
                                   -
                                 <?php } ?>
                               </td>
                               <td>
                                 <?php if ($row['aadharCard']) { ?>
-                                  <a target="_blank" href="Uploads/<?php echo htmlspecialchars($row['aadharCard']); ?>">View</a>
+                                  <a target="_blank"
+                                    href="Uploads/<?php echo htmlspecialchars($row['aadharCard']); ?>">View</a>
                                 <?php } else { ?>
                                   -
                                 <?php } ?>
                               </td>
+
                               
                                 <td><?php echo date('d-m-Y', strtotime($row['createdDateTime'])); ?></td>
                               <td><?php echo htmlspecialchars($row['']); ?></td>
+
+                              <td><?php echo date('d-m-Y', strtotime($row['createdDateTime'])); ?></td>
+                              <!-- <td>
+                                <?php
+                                /// Files part
+                                if (!empty($row['reportFile'])) {
+                                  $parts = preg_split('/\s*-Next file,?\s*/i', $row['reportFile'], -1, PREG_SPLIT_NO_EMPTY);
+                                  $i = 1;
+                                  foreach ($parts as $part) {
+                                    $fileName = trim($part);
+                                    $urlName = rawurlencode($fileName);
+                                    $filePath = "department/reportDoc/" . $urlName;
+                                    $absolutePath = $_SERVER['DOCUMENT_ROOT'] . '/' . $filePath;
+                                    $exists = is_file($absolutePath);
+                                    echo "<a target=\"_blank\" href=\"{$filePath}\">File {$i}</a>";
+                                    // if (!$exists) {
+                                    //     echo " <small style=\"color:#a00;\">(file not found)</small>";
+                                    // }
+                                    echo "<br>";
+                                    $i++;
+                                  }
+                                } else {
+                                  echo "-<br>";
+                                }
+
+
+                                // Separator and remark
+                              
+                                $remark = trim($row['reportRemark'] ?? '');
+                                if ($remark !== '') {
+                                  $display = ($remark === '0') ? '-' : nl2br(htmlspecialchars($remark));
+                                  echo '<hr style="margin:4px 0;">'; // thin separator
+                                  echo '<strong>Remark:</strong> ' . $display;
+                                }
+                                ?>
+                              </td> -->
+
+
+                              </td>
                               <td>
                                 <?php
-                                $status = $row['status'];
+                                $status = $row['rStatus'];
                                 $color = $status == 'Approved' ? 'text-success' : ($status == 'Rejected' ? 'text-danger' : 'text-warning');
                                 ?>
                                 <span class="<?php echo $color; ?>"><?php echo htmlspecialchars($status); ?></span>
+                                <?php
+                                if ($row['dscDocumentPath']) {
+                                  echo "<br>(<a target='_blank' href='" . str_replace('../', '', $row['dscDocumentPath']) . "'>View</a>)";
+                                }
+                                ?>
+                              </td>
+                              <td>
+                                <?php
+                                if ($row['employeeReport']) {
+                                  echo "<a target='_blank' href='department/reportDoc/" . $row['employeeReport'] . "'>View</a>";
+                                } else {
+                                  echo "-";
+                                }
+                                ?>
                               </td>
                               <td style="white-space: nowrap;">
-                                <div class="d-flex flex-wrap gap-1">
-                                  <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                    data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
-                                    Change Status
-                                  </button>
-                                  <?php if (!isset($row['inspectionOfficer']) || trim($row['inspectionOfficer']) === ''): ?>
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                      data-bs-target="#forwardNOCModal<?php echo $row['applicationId']; ?>"
-                                      data-applicationid="<?php echo $row['applicationId']; ?>">
-                                      Forward NOC
+                                <?php
+                                if (!$row['status'] != "Approved") {
+                                  ?>
+                                  <div class="d-flex flex-wrap gap-1">
+                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                      data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
+                                      Change Status
                                     </button>
-                                  <?php else: ?>
-                                    <span class="badge bg-success align-self-center">NOC Forwarded</span>
-                                  <?php endif; ?>
-                                </div>
+                                    <?php if (!isset($row['forwardEmployee']) || trim($row['forwardEmployee']) === ''): ?>
+                                      <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#forwardNOCModal<?php echo $row['applicationId']; ?>"
+                                        data-applicationid="<?php echo $row['applicationId']; ?>">
+                                        Forward NOC
+                                      </button>
+                                    <?php else: ?>
+                                      <span class="badge bg-success align-self-center">NOC Forwarded</span>
+                                    <?php endif; ?>
+                                  </div>
+                                  <?php
+                                }
+                                ?>
+
                                 <!-- Change Status Modal -->
-                                <div class="modal fade" id="updateStatusModal<?php echo $row['applicationId']; ?>" tabindex="-1"
-                                  aria-labelledby="updateStatusModalLabel<?php echo $row['applicationId']; ?>" aria-hidden="true">
+                                <div class="modal fade" id="updateStatusModal<?php echo $row['applicationId']; ?>"
+                                  tabindex="-1"
+                                  aria-labelledby="updateStatusModalLabel<?php echo $row['applicationId']; ?>"
+                                  aria-hidden="true">
                                   <div class="modal-dialog">
-                                    <form method="POST" action="department/nocReport_DB.php">
+                                    <form method="POST" action="department/nocReport_DB.php"
+                                      enctype="multipart/form-data">
                                       <div class="modal-content">
                                         <div class="modal-header">
-                                          <h5 class="modal-title" id="updateStatusModalLabel<?php echo $row['applicationId']; ?>">Update Application Status</h5>
+                                          <h5 class="modal-title"
+                                            id="updateStatusModalLabel<?php echo $row['applicationId']; ?>">Update
+                                            Application Status</h5>
                                           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
-                                          <input type="hidden" name="applicationId" value="<?php echo $row['applicationId']; ?>">
+                                          <input type="hidden" name="applicationId"
+                                            value="<?php echo $row['applicationId']; ?>">
                                           <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
                                           <div class="mb-3">
-                                            <label for="statusSelect<?php echo $row['applicationId']; ?>" class="form-label">Status</label>
-                                            <select class="form-select" name="status" id="statusSelect<?php echo $row['applicationId']; ?>" required>
+                                            <label for="statusSelect<?php echo $row['applicationId']; ?>"
+                                              class="form-label">Status</label>
+                                            <select class="form-select" name="status"
+                                              id="statusSelect<?php echo $row['applicationId']; ?>" required>
                                               <option value="">Select</option>
                                               <option value="Under Review">Under Review</option>
                                               <option value="Approved">Approved</option>
                                               <option value="Rejected">Rejected</option>
                                             </select>
                                           </div>
+                                          <div class="mb-3 d-none" id="reportDiv<?php echo $row['applicationId']; ?>">
+                                            <label class="form-label">Report<span class="text-danger">*</span></label>
+                                            <input type="file" class="form-control" name="departmentReport"
+                                              accept=".png,.jpg,.jpge,.pdf">
+                                          </div>
+
                                           <div class="mb-3 d-none" id="remarkDiv<?php echo $row['applicationId']; ?>">
                                             <label class="form-label">Rejection Remark</label>
-                                            <textarea class="form-control" name="remarks" placeholder="Reason for rejection..."></textarea>
+                                            <textarea class="form-control" name="remarks"
+                                              placeholder="Reason for rejection..."></textarea>
                                           </div>
                                         </div>
                                         <div class="modal-footer">
@@ -250,28 +354,33 @@ include('../include/conn.php');
                                   </div>
                                 </div>
                                 <!-- Forward NOC Modal -->
-                                <div class="modal fade" id="forwardNOCModal<?php echo $row['applicationId']; ?>" tabindex="-1"
-                                  aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>" aria-hidden="true">
+                                <div class="modal fade" id="forwardNOCModal<?php echo $row['applicationId']; ?>"
+                                  tabindex="-1" aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>"
+                                  aria-hidden="true">
                                   <div class="modal-dialog">
-                                    <form method="POST" action="department/forwordNOC_db.php">
+                                    <form method="POST" action="department/forwordNOC_db.php"
+                                      enctype="multipart/form-data">
                                       <div class="modal-content">
                                         <div class="modal-header">
-                                          <h5 class="modal-title" id="forwardNOCModalLabel<?php echo $row['applicationId']; ?>">Forward NOC</h5>
+                                          <h5 class="modal-title"
+                                            id="forwardNOCModalLabel<?php echo $row['applicationId']; ?>">Forward NOC</h5>
                                           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
-                                          <input type="hidden" name="applicationId" value="<?php echo $row['applicationId']; ?>">
+                                          <input type="hidden" name="applicationId"
+                                            value="<?php echo $row['applicationId']; ?>">
                                           <input type="hidden" name="departmentId" value="<?php echo $departmentId; ?>">
                                           <div class="mb-3">
-                                            <label for="employeeId" class="form-label">Forward to Employee</label>
+                                            <label for="employeeId" class="form-label">Forward to Employee <span
+                                                class="text-danger">*</span></label>
                                             <select name="inspectionOfficer" class="form-select" required>
                                               <option value="">Select Employee</option>
                                               <?php
                                               $empStmt = $conn->prepare("
                                                   SELECT userId, name 
                                                   FROM users 
-                                                  WHERE status = 'Active' 
-                                                  AND designation NOT IN ('Tahsildar', 'SDO', 'Department')
+                                                  WHERE status = 'Active' AND departmentId = '$departmentId'
+                                                  AND systemRole = 'Employee' 
                                               ");
                                               $empStmt->execute();
                                               $empResult = $empStmt->get_result();
@@ -282,8 +391,15 @@ include('../include/conn.php');
                                             </select>
                                           </div>
                                           <div class="mb-3">
+                                            <label for="remarks" class="form-label">Document <span
+                                                class="text-danger">*</span></label>
+                                            <input type="file" required name="toInspectionOfficer" class="form-control"
+                                              accept=".pdf, .jpg, .jpeg, .png" id="document">
+                                          </div>
+                                          <div class="mb-3">
                                             <label for="remarks" class="form-label">Remark</label>
-                                            <textarea name="HODremark" class="form-control" placeholder="Enter remark..." required></textarea>
+                                            <textarea name="HODremark" class="form-control"
+                                              placeholder="Enter remark..."></textarea>
                                           </div>
                                         </div>
                                         <div class="modal-footer">
@@ -332,9 +448,12 @@ include('../include/conn.php');
           modal.addEventListener('show.bs.modal', function () {
             const statusSelect = modal.querySelector('#statusSelect' + modal.id.replace('updateStatusModal', ''));
             const remarkDiv = modal.querySelector('#remarkDiv' + modal.id.replace('updateStatusModal', ''));
+            const reportDiv = modal.querySelector('#reportDiv' + modal.id.replace('updateStatusModal', ''));
             if (statusSelect) {
               statusSelect.addEventListener('change', function () {
                 remarkDiv.classList.toggle('d-none', this.value !== 'Rejected');
+                reportDiv.classList.toggle('d-none', (this.value !== 'Approved'));
+                // reportDiv.classList.toggle('d-none', (this.value !== 'Rejected'));
               });
             }
           });
@@ -452,4 +571,9 @@ include('../include/conn.php');
     <?php endif; ?>
 </body>
 <!--end::Body-->
+
 </html>
+
+<?php
+$con->close();
+?>

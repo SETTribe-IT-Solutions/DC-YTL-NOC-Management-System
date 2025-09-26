@@ -101,7 +101,53 @@
                         <!--end:Menu link-->
                     </div>
                     <!--end:Menu item-->
+                    <!--begin:Menu item-->
+                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                        <!--begin:Menu link-->
+                        <span class="menu-link">
+                            <span class="menu-icon">
+                                <i class="ki-duotone ki-rescue fs-1">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                            </span>
+                            <span class="menu-title">NOC Application</span>
+                            <span class="menu-arrow"></span>
+                        </span>
+                        <!--end:Menu link-->
+                        <!--begin:Menu sub-->
+                        <div class="menu-sub menu-sub-accordion">
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link" href="officers/nocApplicationDept.php" data-bs-toggle="tooltip"
+                                    data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">Department</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link" href="civilian/nocApplication.php" data-bs-toggle="tooltip"
+                                    data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">Civilian</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
 
+                            <!--end:Menu item-->
+                        </div>
+                        <!--end:Menu sub-->
+                    </div>
                     <!--begin:Menu item-->
                     <div class="menu-item" onclick="window.location.href='department/nocReport.php'">
                         <!--begin:Menu link-->
@@ -361,8 +407,315 @@
                             </div>
 
                 <?php
+            } else if ($_SESSION['systemRole'] == "Employee") {
+                ?>
+                                <!--begin:Menu item-->
+                                <!-- <div class="menu-item" onclick="window.location.href='officers/tahsildar-dashboard.php'">
+                              
+                                <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-element-11 fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">Dashboards</span>
+                                </span>
+                                </a>
+                               
+                            </div> -->
+                                <!--end:Menu item-->
+
+                                <!--begin:Menu item-->
+                                <div class="menu-item" onclick="window.location.href='department/aplication_Report.php'">
+                                    <!-- begin:Menu link-->
+
+                                    <!-- <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-element-11 fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">View NOC Application</span>
+                                </span>
+                                </a> -->
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+
+                                <!--begin:Menu item-->
+                                <div class="menu-item" onclick="window.location.href='department/nocReport_employee.php'">
+                                    <!--begin:Menu link-->
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <i class="fa-solid fa-user fs-3"></i>
+                                        </span>
+                                        <span class="menu-title">NOC अर्ज पहा (Civilian)</span>
+                                    </span>
+                                    <!--end:Menu link-->
+
+                                </div>
+                                <div class="menu-item" onclick="window.location.href='department/department_Employee_Report.php'">
+                                    <!--begin:Menu link-->
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <i class="fa-solid fa-building fs-3"></i>
+                                        </span>
+                                        <span class="menu-title">NOC अर्ज पहा (Department)</span>
+                                    </span>
+                                    <!--end:Menu link-->
+
+                                </div>
+
+                <?php
+            } else if ($_SESSION['systemRole'] == "Final Authority") {
+                ?>
+                                    <!--begin:Menu item-->
+                                    <!-- <div class="menu-item" onclick="window.location.href='officers/tahsildar-dashboard.php'">
+                              
+                                <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-element-11 fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">Dashboards</span>
+                                </span>
+                                </a>
+                               
+                            </div> -->
+                                    <!--end:Menu item-->
+
+
+                                    <!--begin:Menu item-->
+                                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                        <!--begin:Menu link-->
+                                        <span class="menu-link">
+                                            <span class="menu-icon">
+                                                <i class="ki-duotone ki-rescue fs-1">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                            </span>
+                                            <span class="menu-title">Forward to departments</span>
+                                            <span class="menu-arrow"></span>
+                                        </span>
+                                        <!--end:Menu link-->
+                                        <!--begin:Menu sub-->
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <!--begin:Menu item-->
+                                            <div class="menu-item">
+                                                <!--begin:Menu link-->
+                                                <a class="menu-link" href="department/NocReport_FAuth.php" data-bs-toggle="tooltip"
+                                                    data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title">Civilian</span>
+                                                </a>
+                                                <!--end:Menu link-->
+                                            </div>
+                                            <!--end:Menu item-->
+                                            <!--begin:Menu item-->
+                                            <div class="menu-item">
+                                                <!--begin:Menu link-->
+                                                <a class="menu-link" href="department/department_Employee_ReportFAuth.php"
+                                                    data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click"
+                                                    data-bs-placement="right">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title">Department</span>
+                                                </a>
+                                                <!--end:Menu link-->
+                                            </div>
+                                            <!--end:Menu item-->
+                                        </div>
+                                        <!--end:Menu sub-->
+                                    </div>
+                                    <!--end:Menu item-->
+
+                                    <!--begin:Menu item-->
+                                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                        <!--begin:Menu link-->
+                                        <span class="menu-link">
+                                            <span class="menu-icon">
+                                                <i class="ki-duotone ki-rescue fs-1">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                            </span>
+                                            <span class="menu-title">Final Approval</span>
+                                            <span class="menu-arrow"></span>
+                                        </span>
+                                        <!--end:Menu link-->
+                                        <!--begin:Menu sub-->
+                                        <div class="menu-sub menu-sub-accordion">
+                                            <!--begin:Menu item-->
+                                            <div class="menu-item">
+                                                <!--begin:Menu link-->
+                                                <a class="menu-link" href="department/NocReport_FAuthFinal.php" data-bs-toggle="tooltip"
+                                                    data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title">Civilian</span>
+                                                </a>
+                                                <!--end:Menu link-->
+                                            </div>
+                                            <!--end:Menu item-->
+                                            <!--begin:Menu item-->
+                                            <div class="menu-item">
+                                                <!--begin:Menu link-->
+                                                <a class="menu-link" href="department/department_Employee_ReportFAuthFinal.php"
+                                                    data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click"
+                                                    data-bs-placement="right">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title">Department</span>
+                                                </a>
+                                                <!--end:Menu link-->
+                                            </div>
+                                            <!--end:Menu item-->
+                                        </div>
+                                        <!--end:Menu sub-->
+                                    </div>
+                                    <!--end:Menu item-->
+
+                <?php
             }
             ?>
+            <?php
+if ($_SESSION['systemRole'] == "Tahsildar") {
+?>
+    <!--begin:Menu item-->
+    <!-- <div class="menu-item" onclick="window.location.href='officers/tahsildar-dashboard.php'">
+        <span class="menu-link">
+            <span class="menu-icon">
+                <i class="ki-duotone ki-element-11 fs-1">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                    <span class="path3"></span>
+                    <span class="path4"></span>
+                </i>
+            </span>
+            <span class="menu-title">Dashboards</span>
+        </span>
+    </div> -->
+    <!--end:Menu item-->
+
+    <!--begin:Menu item-->
+    <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+        <!--begin:Menu link-->
+        <span class="menu-link">
+            <span class="menu-icon">
+                <i class="ki-duotone ki-rescue fs-1">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                </i>
+            </span>
+            <span class="menu-title">Forward to departments</span>
+            <span class="menu-arrow"></span>
+        </span>
+        <!--end:Menu link-->
+        <!--begin:Menu sub-->
+        <div class="menu-sub menu-sub-accordion">
+            <!--begin:Menu item-->
+            <div class="menu-item">
+                <!--begin:Menu link-->
+                <a class="menu-link" href="department/forworded_to_department.php" 
+                   data-bs-toggle="tooltip" data-bs-trigger="hover" 
+                   data-bs-dismiss="click" data-bs-placement="right">
+                    <span class="menu-bullet">
+                        <span class="bullet bullet-dot"></span>
+                    </span>
+                    <span class="menu-title">Civilian</span>
+                </a>
+                <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+
+            <!--begin:Menu item-->
+            <div class="menu-item">
+                <!--begin:Menu link-->
+                <a class="menu-link" href="department/tashildar_noc_department.php"
+                   data-bs-toggle="tooltip" data-bs-trigger="hover" 
+                   data-bs-dismiss="click" data-bs-placement="right">
+                    <span class="menu-bullet">
+                        <span class="bullet bullet-dot"></span>
+                    </span>
+                    <span class="menu-title">Department</span>
+                </a>
+                <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+        </div>
+        <!--end:Menu sub-->
+    </div>
+    <!--end:Menu item-->
+
+    <!--begin:Menu item-->
+    <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+        <!--begin:Menu link-->
+        <span class="menu-link">
+            <span class="menu-icon">
+                <i class="ki-duotone ki-rescue fs-1">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                </i>
+            </span>
+            <span class="menu-title">Final Approval</span>
+            <span class="menu-arrow"></span>
+        </span>
+        <!--end:Menu link-->
+        <!--begin:Menu sub-->
+        <div class="menu-sub menu-sub-accordion">
+            <!--begin:Menu item-->
+            <div class="menu-item">
+                <!--begin:Menu link-->
+                <a class="menu-link" href="department/tashildar_noc_civilian.php" 
+                   data-bs-toggle="tooltip" data-bs-trigger="hover" 
+                   data-bs-dismiss="click" data-bs-placement="right">
+                    <span class="menu-bullet">
+                        <span class="bullet bullet-dot"></span>
+                    </span>
+                    <span class="menu-title">Civilian</span>
+                </a>
+                <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+
+            <!--begin:Menu item-->
+            <div class="menu-item">
+                <!--begin:Menu link-->
+                <a class="menu-link" href="department/department_Employee_ReportFAuthFinal.php"
+                   data-bs-toggle="tooltip" data-bs-trigger="hover" 
+                   data-bs-dismiss="click" data-bs-placement="right">
+                    <span class="menu-bullet">
+                        <span class="bullet bullet-dot"></span>
+                    </span>
+                    <span class="menu-title">Department</span>
+                </a>
+                <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+        </div>
+        <!--end:Menu sub-->
+    </div>
+    <!--end:Menu item-->
+<?php
+} // end if Final Authority
+?>
+
 
             <!--begin:Menu item-->
             <div class="menu-item" onclick="window.location.href='logout.php'">
