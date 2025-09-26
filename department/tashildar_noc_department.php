@@ -119,9 +119,9 @@ if (!isset($_SESSION['userId'])) {
     ORDER BY a.createdDateTime DESC
 ";
 
-echo  $sql;$sql; // फक्त query print होईल
+echo  //$sql;$sql; // फक्त query print होईल
 
-                          echo $stmt = $conn->prepare("
+                         $stmt = $conn->prepare("
                                                         SELECT 
                                                             a.nocTypeId, a.departmentId, d.departmentName, a.applicationId, a.nocSubject,
                                                             a.landDesc, a.taluka, a.village, a.gatNo, a.mobileNo, a.emailId, a.status,
@@ -132,9 +132,15 @@ echo  $sql;$sql; // फक्त query print होईल
                                                         
                                                         ORDER BY a.createdDateTime DESC
                                                     ");
+
+                                                    
                           //  INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
                           // $stmt->bind_param("s", $userId);
+
+
                           $stmt->execute();
+
+                          
                           $result = $stmt->get_result();
                           $i = 1;
                           while ($row = $result->fetch_assoc()) {
