@@ -2,13 +2,12 @@
 session_start();
 
 if (!isset($_SESSION['userId'])) {
-
     header("Location: ../index.html");
     exit();
 }
 include('../include/conn.php');
-echo $userId = $_SESSION['userId'];
-$departmentId = $_SESSION['departmentId'];
+$userId = $_SESSION['userId'];
+$departmentId = $_SESSION['departmentId']; // Assuming Tashildar has a specific departmentId or role; adjust if needed
 
 ?>
 <!DOCTYPE html>
@@ -35,7 +34,6 @@ $departmentId = $_SESSION['departmentId'];
     </style>
     <?php include("../include/cssLinks.php"); ?>
 </head>
->
 
 <body id="kt_app_body" data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true"
     data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
@@ -77,15 +75,14 @@ $departmentId = $_SESSION['departmentId'];
                                             <li class="breadcrumb-item">
                                                 <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
                                             </li>
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Forward to
-                                                departments
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Final Approval
                                                 (Civilian)</li>
                                         </ul>
                                         <!--end::Breadcrumb-->
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
-                                            Forward to departments (Civilian)</h1>
+                                            Final Approval (Civilian)</h1>
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
@@ -154,13 +151,10 @@ $departmentId = $_SESSION['departmentId'];
                                                             c.dob,
                                                             c.mobileNo
                                                         FROM nocApplications a
-                                                        
                                                         LEFT JOIN civilianRegistrations c ON a.civilianId = c.civilianId
-                                                        
+                                                        WHERE a.init_status = 'Forwarded'
                                                         ORDER BY a.createdDateTime DESC
                                                     ";
-                                                    // INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
-                                                    // WHERE  a.inspectionOfficer= '$userId'
                                                     $result = mysqli_query($conn, $stmt);
                                                     $i = 1;
                                                     while ($row = $result->fetch_assoc()) {
@@ -245,43 +239,42 @@ $departmentId = $_SESSION['departmentId'];
                                                             </td>
                                                             <td style="white-space: nowrap;">
                                                                 <?php
-                                                                if (!isset($row['init_status']) || trim($row['init_status']) == '') {
+                                                                if ($row['init_status'] == 'Forwarded' && (!isset($row['status']) || trim($row['status']) == '' || $row['status'] == 'Pending')) {
                                                                     ?>
                                                                     <div class="d-flex flex-wrap gap-1">
-                                                                        <button class="btn btn-sm btn-warning"
+                                                                        <button class="btn btn-sm btn-success"
                                                                             data-bs-toggle="modal"
-                                                                            data-bs-target="#updateStatusModal<?php echo $row['applicationId']; ?>">
-                                                                            Forward Noc
+                                                                            data-bs-target="#approveModal<?php echo $row['applicationId']; ?>">
+                                                                            Approve
                                                                         </button>
 
                                                                         <button class="btn btn-sm btn-danger"
                                                                             data-bs-toggle="modal"
-                                                                            data-bs-target="#forwardNOCModal<?php echo $row['applicationId']; ?>"
+                                                                            data-bs-target="#rejectModal<?php echo $row['applicationId']; ?>"
                                                                             data-applicationid="<?php echo $row['applicationId']; ?>">
                                                                             Reject
                                                                         </button>
-                                                                        <?php
+                                                                    </div>
+                                                                    <?php
                                                                 } else {
                                                                     echo "-";
                                                                 }
-                                                                ;
                                                                 ?>
-                                                                </div>
-                                                                <!-- Change Status / Report Modal -->
+                                                                <!-- Approve Modal -->
                                                                 <div class="modal fade"
-                                                                    id="updateStatusModal<?= $row['applicationId']; ?>"
+                                                                    id="approveModal<?= $row['applicationId']; ?>"
                                                                     tabindex="-1"
-                                                                    aria-labelledby="updateStatusModalLabel<?= $row['applicationId']; ?>"
+                                                                    aria-labelledby="approveModalLabel<?= $row['applicationId']; ?>"
                                                                     aria-hidden="true">
                                                                     <div class="modal-dialog">
                                                                         <form method="POST"
-                                                                            action="department/NocReport_FAuthDB.php"
+                                                                            action="tashildar/finalStatusDB.php"  <!-- Create this DB script similar to NocReport_FAuthDB.php -->
                                                                             enctype="multipart/form-data">
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header">
                                                                                     <h5 class="modal-title"
-                                                                                        id="updateStatusModalLabel<?= $row['applicationId']; ?>">
-                                                                                        Forward Noc To Department</h5>
+                                                                                        id="approveModalLabel<?= $row['applicationId']; ?>">
+                                                                                        Approve NOC</h5>
                                                                                     <button type="button" class="btn-close"
                                                                                         data-bs-dismiss="modal"></button>
                                                                                 </div>
@@ -289,31 +282,27 @@ $departmentId = $_SESSION['departmentId'];
                                                                                     <input type="hidden"
                                                                                         name="applicationId"
                                                                                         value="<?= htmlspecialchars($row['applicationId']); ?>">
-                                                                                    <input type="hidden" name="departmentId"
-                                                                                        value="<?= htmlspecialchars($departmentId); ?>">
                                                                                     <div class="mb-3">
                                                                                         <label
-                                                                                            class="form-label">Report</label>
-                                                                                        <input type="file" name="reportFile"
+                                                                                            class="form-label">Final Report</label>
+                                                                                        <input type="file" name="finalReportFile"
                                                                                             class="form-control reportFileInput"
                                                                                             accept=".pdf,.jpg,.jpeg,.png">
                                                                                     </div>
                                                                                     <div class="mb-3">
-                                                                                        <label class="form-label">Report
+                                                                                        <label class="form-label">Final
                                                                                             Remark (optional)</label>
-                                                                                        <textarea name="reportRemark"
+                                                                                        <textarea name="finalRemark"
                                                                                             class="form-control" rows="2"
-                                                                                            placeholder="Enter report remark..."></textarea>
+                                                                                            placeholder="Enter final remark..."></textarea>
                                                                                     </div>
-
-
                                                                                 </div>
                                                                                 <div class="modal-footer">
-                                                                                    <input type="hidden" name="init_status"
-                                                                                        value="Forwarded">
+                                                                                    <input type="hidden" name="status"
+                                                                                        value="Approved">
                                                                                     <button type="submit"
                                                                                         name="ChangeFinalStatus"
-                                                                                        class="btn btn-success">Forward
+                                                                                        class="btn btn-success">Approve
                                                                                     </button>
                                                                                 </div>
                                                                             </div>
@@ -352,20 +341,20 @@ $departmentId = $_SESSION['departmentId'];
                                                                     });
                                                                 </script>
 
-                                                                <!-- Forward NOC Modal -->
+                                                                <!-- Reject Modal -->
                                                                 <div class="modal fade"
-                                                                    id="forwardNOCModal<?php echo $row['applicationId']; ?>"
+                                                                    id="rejectModal<?php echo $row['applicationId']; ?>"
                                                                     tabindex="-1"
-                                                                    aria-labelledby="forwardNOCModalLabel<?php echo $row['applicationId']; ?>"
+                                                                    aria-labelledby="rejectModalLabel<?php echo $row['applicationId']; ?>"
                                                                     aria-hidden="true">
                                                                     <div class="modal-dialog">
                                                                         <form method="POST"
-                                                                            action="department/NocReport_FAuthDB.php">
+                                                                            action="tashildar/finalStatusDB.php">  <!-- Create this DB script similar to NocReport_FAuthDB.php -->
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header">
                                                                                     <h5 class="modal-title"
-                                                                                        id="forwardNOCModalLabel<?php echo $row['applicationId']; ?>">
-                                                                                        Reject</h5>
+                                                                                        id="rejectModalLabel<?php echo $row['applicationId']; ?>">
+                                                                                        Reject NOC</h5>
                                                                                     <button type="button" class="btn-close"
                                                                                         data-bs-dismiss="modal"></button>
                                                                                 </div>
@@ -373,20 +362,18 @@ $departmentId = $_SESSION['departmentId'];
                                                                                     <input type="hidden"
                                                                                         name="applicationId"
                                                                                         value="<?php echo $row['applicationId']; ?>">
-                                                                                    <input type="hidden" name="departmentId"
-                                                                                        value="<?php echo $departmentId; ?>">
 
                                                                                     <div class="mb-3">
                                                                                         <label for="remarks"
                                                                                             class="form-label">Remark</label>
-                                                                                        <textarea name="reportRemark"
+                                                                                        <textarea name="finalRemark"
                                                                                             class="form-control"
                                                                                             placeholder="Enter remark..."
                                                                                             required></textarea>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="modal-footer">
-                                                                                    <input type="hidden" name="init_status"
+                                                                                    <input type="hidden" name="status"
                                                                                         value="Rejected">
                                                                                     <button type="submit"
                                                                                         name="ChangeFinalStatus"
@@ -430,11 +417,11 @@ $departmentId = $_SESSION['departmentId'];
         <!--end::Scrolltop-->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const allModals = document.querySelectorAll('[id^="updateStatusModal"]');
+                const allModals = document.querySelectorAll('[id^="approveModal"]');
                 allModals.forEach(modal => {
                     modal.addEventListener('show.bs.modal', function () {
-                        const statusSelect = modal.querySelector('#statusSelect' + modal.id.replace('updateStatusModal', ''));
-                        const remarkDiv = modal.querySelector('#remarkDiv' + modal.id.replace('updateStatusModal', ''));
+                        const statusSelect = modal.querySelector('#statusSelect' + modal.id.replace('approveModal', ''));
+                        const remarkDiv = modal.querySelector('#remarkDiv' + modal.id.replace('approveModal', ''));
                         if (statusSelect) {
                             statusSelect.addEventListener('change', function () {
                                 remarkDiv.classList.toggle('d-none', this.value !== 'Rejected');
@@ -443,13 +430,11 @@ $departmentId = $_SESSION['departmentId'];
                     });
                 });
 
-                const allForwardModals = document.querySelectorAll('[id^="forwardNOCModal"]');
-                allForwardModals.forEach(modal => {
+                const allRejectModals = document.querySelectorAll('[id^="rejectModal"]');
+                allRejectModals.forEach(modal => {
                     modal.addEventListener('show.bs.modal', function () {
-                        const remarkTextarea = modal.querySelector('textarea[name="HODremark"]');
+                        const remarkTextarea = modal.querySelector('textarea[name="finalRemark"]');
                         if (remarkTextarea) remarkTextarea.value = '';
-                        const employeeSelect = modal.querySelector('select[name="inspectionOfficer"]');
-                        if (employeeSelect) employeeSelect.selectedIndex = 0;
                     });
                 });
             });
@@ -540,7 +525,7 @@ $departmentId = $_SESSION['departmentId'];
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
-                        text: 'NOC forwarded successfully.',
+                        text: 'NOC processed successfully.',
                         confirmButtonText: 'OK'
                     });
                 <?php elseif ($_GET['status'] === 'error'): ?>
@@ -558,5 +543,5 @@ $departmentId = $_SESSION['departmentId'];
 
 </html>
 <?php
-$con->close();
+$conn->close();
 ?>
