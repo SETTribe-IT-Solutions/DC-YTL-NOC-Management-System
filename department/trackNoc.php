@@ -335,6 +335,20 @@ include('../include/sweetAlert.php');
                                                                     </div>
                                                                     <?php
                                                                 }
+
+                                                                if ($row['dscDocumentPath']) {
+                                                                    ?>
+
+                                                                    <div class="timeline-detail">
+                                                                        <span class="label">Document Download:</span>
+                                                                        <a href="noc_certificate.pdf" download>
+                                                                            <button class="btn-download">
+                                                                                <i class="fas fa-download me-2"></i>Download
+                                                                            </button>
+                                                                            <a>
+                                                                    </div>
+                                                                    <?php
+                                                                }
                                                                 ?>
                                                                 <!-- <button class="btn-view">
                                                                     <i class="fas fa-eye me-1"></i>स्वीकृतिपेखें
