@@ -3,9 +3,9 @@ session_start();
 include('../include/conn.php');
 
 if (isset($_POST['ChangeForward'])) {
-  $finalTahildarStatus = mysqli_real_escape_string($conn, $_POST['finalTahildarStatus'] ?? '');
+  $SDO_final_status = mysqli_real_escape_string($conn, $_POST['SDO_final_status'] ?? '');
   $applicationId = mysqli_real_escape_string($conn, $_POST['applicationId'] ?? '');
-  $finalTahildarRemark = mysqli_real_escape_string($conn, $_POST['finalTahildarRemark'] ?? '');
+  $SDO_final_remark = mysqli_real_escape_string($conn, $_POST['SDO_final_remark'] ?? '');
 
   $uploadDir = "../documents/"; // folder to store files
 
@@ -44,34 +44,34 @@ HTML;
   }
 
   // Final DSC Document (only for Forwarded)
-  $finalTahildarFilePath = "";
-  if ($finalTahildarStatus === 'Forwarded' && !empty($_FILES['finalTahildarFile']['name'])) {
-    $fileName = $_FILES['finalTahildarFile']['name'];
-    $fileTmp = $_FILES['finalTahildarFile']['tmp_name'];
+  $SDO_final_document = "";
+  if ($SDO_final_status === 'Forwarded' && !empty($_FILES['SDO_final_document']['name'])) {
+    $fileName = $_FILES['SDO_final_document']['name'];
+    $fileTmp = $_FILES['SDO_final_document']['tmp_name'];
     $fileType = mime_content_type($fileTmp);
     $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
     if (in_array($fileType, $allowedTypes) && in_array($fileExt, $allowedExtensions)) {
-      $finalTahildarFilePath = $uploadDir . time() . "_finalTahildarFile_" . basename($fileName);
-      if (!move_uploaded_file($fileTmp, $finalTahildarFilePath)) {
-        swal('error', 'File Upload Error', 'Failed to upload the file.', 'tashildar_noc_civilian.php');
+      $SDO_final_document = $uploadDir . time() . "SDO_final_document" . basename($fileName);
+      if (!move_uploaded_file($fileTmp, $SDO_final_document)) {
+        swal('error', 'File Upload Error', 'Failed to upload the file.', 'SDO_noc_civilian.php');
         exit;
       }
     } else {
-      swal('warning', 'Invalid file type', 'Invalid file type. Only PDF, JPEG, JPG, PNG allowed.', 'tashildar_noc_civilian.php');
+      swal('warning', 'Invalid file type', 'Invalid file type. Only PDF, JPEG, JPG, PNG allowed.', 'SDO_noc_civilian.php');
       exit;
     }
-  } elseif ($finalTahildarStatus === 'Forwarded' && empty($_FILES['finalTahildarFile']['name'])) {
-    swal('warning', 'Missing File', 'DSC Signed Document is required for forwarding.', 'tashildar_noc_civilian.php');
+  } elseif ($SDO_final_status === 'Forwarded' && empty($_FILES['SDO_final_status']['name'])) {
+    swal('warning', 'Missing File', 'DSC Signed Document is required for forwarding.', 'SDO_noc_civilian.php');
     exit;
   }
 
-  if ($applicationId && $finalTahildarStatus) {
+  if ($applicationId && $SDO_final_status) {
     $sql = "
             UPDATE nocApplications 
-            SET finalTahildarStatus = '$finalTahildarStatus', 
+            SET SDO_final_status = '$SDO_final_status', 
                 finalTahildarRemark = '$finalTahildarRemark',
-                finalTahildarFile = '$finalTahildarFilePath' 
+                finalTahildarFile = '$SDO_final_document' 
             WHERE applicationId = '$applicationId'
         ";
     $update = mysqli_query($conn, $sql);

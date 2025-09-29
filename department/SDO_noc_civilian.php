@@ -127,21 +127,18 @@ $departmentId = $_SESSION['departmentId'];
                         <tbody class="fw-semibold text-gray-600">
                           <?php
                           $departmentId = $_SESSION['departmentId'];
-                           $stmt = " 
-                                FROM nocApplications a
-                              INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
-                              LEFT JOIN civilianRegistrations c ON a.civilianId = c.civilianId
-                              WHERE r.departmentId = ? AND a.init_status = 'Forwarded'
-    ORDER BY a.createdDateTime DESC
-                          ";
+            $status = "Forwarded";      
+                           
+$stmt = "SELECT * 
+         FROM nocApplications 
+         WHERE finalTahildarStatus = ?
+         ORDER BY createdDateTime DESC";
 
-                          $stmt = $conn->prepare($stmt);
-                          $stmt->bind_param("i", $departmentId);
-                          $stmt->execute();
-                          $result = $stmt->get_result();
-                          // INNER JOIN nocApplicationReviews r ON a.applicationId = r.applicationId
-                          // WHERE  a.inspectionOfficer= '$userId'
-                          $result = mysqli_query($conn, $stmt);
+$stmt = $conn->prepare($stmt);
+$stmt->bind_param("s", $status);
+$stmt->execute();
+$result = $stmt->get_result();
+
                           $i = 1;
                           while ($row = $result->fetch_assoc()) {
                             $civilianId = $row['civilianId'];

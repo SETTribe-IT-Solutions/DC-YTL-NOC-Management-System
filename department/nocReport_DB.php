@@ -62,6 +62,9 @@ if (isset($_POST['update'])) {
             WHERE applicationId = '$applicationId' AND departmentId = '$departmentId'
         ");
 
+
+        $upddateNoc = mysqli_query($conn,"update nocApplications set  departmentStatus='$status', departmentFile='$departmentReportPath' WHERE applicationId = '$applicationId'") or die($conn->error);
+
     }
 
     if ($updateReview) {
