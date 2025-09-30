@@ -156,7 +156,7 @@ $departmentId = $_SESSION['departmentId'];
                               FROM nocApplications a
                               
                               LEFT JOIN civilianRegistrations c ON a.civilianId = c.civilianId
-                              WHERE a.init_status = 'Forwarded'
+                              WHERE a.SDO_final_status = 'Forwarded'
                             
                               ORDER BY a.createdDateTime DESC
                           ";
