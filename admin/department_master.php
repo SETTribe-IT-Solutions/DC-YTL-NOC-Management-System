@@ -1,3 +1,15 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['userId'])) {
+   
+    header("Location: ../index.html");
+    exit();
+}
+
+$designation = $_SESSION['designation'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <!--begin::Head-->
@@ -5,7 +17,7 @@
 
 <head>
     <base href="../">
-    <title>Saul Theme by Keenthemes</title>
+    <title>NOC Portal</title>
     <meta charset="utf-8" />
     <meta name="description" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
     <meta name="keywords"
@@ -36,7 +48,14 @@
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                <?php include("../include/sidebar.php"); ?>
+                 <?php
+
+if ($designation === 'admin') {
+    include("../include/admin-sidebar.php");
+} else {
+    include("../include/sidebar.php");
+}
+?>
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -66,14 +85,14 @@
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Blank</li>
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">विभाग निर्मिती</li>
                                             <!--end::Item-->
                                         </ul>
                                         <!--end::Breadcrumb-->
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
-                                            Blank</h1>
+                                            विभाग निर्मिती</h1>
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
@@ -106,19 +125,33 @@
       <!-- department Name -->
 
   
-      <div class="col-md-4 mb-3">
+      <div class="col-md-6 mb-3">
         <label for="fullname" class="form-label">Department</label>
         <input type="text" value="<?php echo $result['departmentName'];  ?>" name="departmentName" id="Department" class="form-control" required placeholder="Department">
       </div>
 
+ <div class="col-md-6 mb-3">
+        <label for="fullname" class="form-label">HOD Name</label>
+        <input type="text" value="<?php echo $result['HodName'];  ?>" name="HodName" id="HodName" class="form-control" required placeholder="Enter Name">
+      </div>
+
+ <div class="col-md-6 mb-3">
+        <label for="fullname" class="form-label">HOD Mobile Number</label>
+        <input type="text" value="<?php echo $result['HodNumber'];  ?>" name="HodNumber" id="HodNumber" class="form-control" required placeholder="Enter MObile Number">
+      </div>
+
+       <div class="col-md-6 mb-3">
+        <label for="fullname" class="form-label">Password</label>
+        <input type="text" value="<?php echo $result['HodPassword'];  ?>" name="HodPassword" id="HodPassword" class="form-control" required placeholder="Enter Password">
+      </div>
 
     </div>
   <?php if (isset($_REQUEST['edit'])) { ?>
         <input type="hidden" name="id" value="<?php echo $result['id']; ?>">
 
-  <button type="submit" name="update" class="btn btn-warning w-100 mt-3">Update</button>
+  <button type="submit" name="update" class="btn btn-warning w-100 mt-3" style="width: 10% !important;">Update</button>
 <?php } else { ?>
-  <button type="submit" name="submit" class="btn btn-primary w-100 mt-3">Submit</button>
+  <button type="submit" name="submit" class="btn btn-primary w-100 mt-3" style="width: 10% !important;">Submit</button>
 <?php } ?>
   </form>
 
@@ -130,6 +163,9 @@
         <tr>
           <th>Sr. No.</th>
           <th>Department</th>
+          <th>HOD NAME </th>
+           <th>HOD MOBILE </th>
+            <th>HOD PASSWORD </th>
           <th>Action</th>
         </tr>
       </thead>
@@ -144,6 +180,9 @@
        <tr>
         <td><?php echo $i++ ?></td>
         <td><?php echo $row['departmentName'] ?></td>
+        <td><?php echo $row['HodName'] ?></td>
+        <td><?php echo $row['HodNumber'] ?></td>
+        <td><?php echo $row['HodPassword'] ?></td>
         <td>
           <a href="admin/department_master.php?edit=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning me-1">
                     <i class="fas fa-edit"></i>
@@ -233,3 +272,6 @@
 </html>
 
 
+<?php
+$con->close();
+?>

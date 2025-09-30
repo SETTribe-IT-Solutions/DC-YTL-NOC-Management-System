@@ -1,9 +1,14 @@
+<?php
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <!--begin::Head-->
 
 <head>
-    <title>Saul Theme by Keenthemes</title>
+    <title>NOC Portal</title>
     <meta charset="utf-8" />
     <meta name="description" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
     <meta name="keywords"
@@ -31,7 +36,7 @@
             ?>
             <!--end::Header-->
             <!--begin::Wrapper-->
-            <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
+            <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper" style="margin-top: 13%;">
                 <!--begin::Sidebar-->
                 <?php include("include/sidebar.php"); ?>
                 <!--end::Sidebar-->

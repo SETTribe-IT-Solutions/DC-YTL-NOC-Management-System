@@ -11,7 +11,7 @@ if (isset($_POST['taluka']) && !empty($_POST['taluka'])) {
 
     echo '<option value="">गाव निवडा</option>';
     while ($row = $result->fetch_assoc()) {
-        echo '<option >' . $row['village'] . '</option>';
+        echo '<option value="' . $row['village'] . '">' . $row['village'] . '</option>';
     }
 
     $stmt->close();

@@ -48,17 +48,17 @@
           </div>
 
           <!-- Login Form -->
-          <div class="col-md-6 col-sm-12 p-4">
+          <div class="col-md-6 col-sm-12 p-4 card">
             <h3 class="mb-4 text-center">Login Form</h3>
             <form action="login_DB.php" method="POST">
               <div class="mb-3">
-                <label for="username" class="form-label">Mobile Number</label>
-                <input type="text" name="mobileNumber" id="username" class="form-control" maxlength="10" required>
+                <!-- <label for="username" class="form-label">Mobile Number</label> -->
+                <input type="text" name="mobileNumber" id="username" class="form-control" maxlength="10" required placeholder="Mobile Number">
               </div>
 
               <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" id="password" class="form-control" required>
+                <!-- <label for="password" class="form-label">Password</label> -->
+                <input type="password" name="password" id="password" class="form-control" required placeholder="Password">
               </div>
               <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
   <p class="mt-3 text-center">

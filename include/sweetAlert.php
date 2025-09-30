@@ -6,7 +6,8 @@ function setSession($status, $msg)
     $_SESSION['msg'] = $msg;
 }
 ?>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+<script src="assets/plugins/global/plugins.bundle.js"></script>
 <script>
     const Toast = Swal.mixin({
         toast: true,
@@ -85,30 +86,4 @@ function sweetMsg($status, $msg)
             }
         })
     }
-
-
-
-    let alreadyExit = () => {
-        var status;
-        Swal.fire({
-            title: 'This scheme is already exit.',
-            text: "You want to continue?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $("#habitation").val(null).trigger("change");
-                // status = true;
-            } else {
-                // status = false;
-            }
-        });
-
-        return status;
-    }
-
 </script>
