@@ -93,6 +93,7 @@ $departmentId = $_SESSION['departmentId'];
                         <tbody class="fw-semibold text-gray-600">
                           <?php
                           $departmentId = $_SESSION['departmentId'];
+
                           $stmt = "
                             SELECT 
                                 a.applicationId,
@@ -131,6 +132,7 @@ $departmentId = $_SESSION['departmentId'];
                             WHERE 
                     a.departmentStatus='Approved'
                             ORDER BY a.createdDateTime DESC;
+
                           ";
                           $result = mysqli_query($conn, $stmt);
                           $i = 1;
@@ -199,6 +201,7 @@ $departmentId = $_SESSION['departmentId'];
                                 }
                                 ?>
                               </td>
+
                               <td style="white-space: nowrap;">
                                 <div class="d-flex flex-wrap gap-1">
                                   <?php
@@ -281,6 +284,7 @@ $departmentId = $_SESSION['departmentId'];
                                 </form>
                               </div>
                             </div>
+
                           <?php } ?>
                         </tbody>
                       </table>

@@ -72,21 +72,21 @@ HTML;
         $fileQuery = $tahildarFileName ? ", tahildarFile = '{$tahildarFileName}'" : "";
 
 
-        echo "
-            UPDATE nocApplications
-            SET 
-              
-                tahildarStatus = '{$init_status}',
-                tahildarRemark = '{$tahildarRemark}'
-                {$fileQuery}
-            WHERE applicationId = '{$applicationId}'
-        ";
+        // echo "
+        //     UPDATE nocApplications
+        //     SET 
+                
+        //         finalTahildarStatus = '{$init_status}',
+        //         finalTahildarRemark = '{$tahildarRemark}'
+        //         {$fileQuery}
+        //     WHERE applicationId = '{$applicationId}'
+        // ";
         $sql = "
             UPDATE nocApplications
             SET 
                
-                tahildarStatus = '{$init_status}',
-                tahildarRemark = '{$tahildarRemark}'
+                finalTahildarStatus = '{$init_status}',
+                finalTahildarRemark = '{$tahildarRemark}'
                 {$fileQuery}
             WHERE applicationId = '{$applicationId}'
         ";
@@ -94,7 +94,7 @@ HTML;
         $update = mysqli_query($conn, $sql);
         if ($update) {
             $msg = ucfirst($init_status); // Forwarded / Rejected
-            swal('success', 'Success!', "NOC {$msg} successfully.", 'forworded_to_department.php');
+            swal('success', 'Success!', "NOC {$msg} successfully.", 'tashildar_noc_civilian.php');
         } else {
             swal('error', 'Database Error', 'Database update failed.');
         }
