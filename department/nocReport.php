@@ -272,15 +272,7 @@ ORDER BY a.createdDateTime DESC");
                                 }
                                 ?>
                               </td>
-                              <td>
-                                <?php
-                                if ($row['employeeReport']) {
-                                  echo "<a target='_blank' href='department/reportDoc/" . $row['employeeReport'] . "'>View</a>";
-                                } else {
-                                  echo "-";
-                                }
-                                ?>
-                              </td>
+                           
                               <td style="white-space: nowrap;">
                                 <?php
                                 if (!$row['status'] != "Approved") {
