@@ -2,22 +2,14 @@
 session_start();
 include('../include/conn.php');
 
-if (isset($_POST['ChangeForward'])) {
-  $SDO_final_status = mysqli_real_escape_string($conn, $_POST['SDO_final_status'] ?? '');
-  $applicationId = mysqli_real_escape_string($conn, $_POST['applicationId'] ?? '');
-  $SDO_final_remark = mysqli_real_escape_string($conn, $_POST['SDO_final_remark'] ?? '');
+if (!isset($_SESSION['userId'])) {
+    header("Location: ../index.html");
+    exit();
+}
 
-  $uploadDir = "../documents/"; // folder to store files
-
-  // Allowed MIME types and extensions
-  $allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
-  $allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png'];
-
-  function swal($icon, $title, $text, $redirect = null)
-  {
-    $redirect_js = $redirect
-      ? "window.location.href = '" . addslashes($redirect) . "';"
-      : "window.history.back();";
+// SweetAlert helper function
+function swal($icon, $title, $text, $redirect = null) {
+    $redirect_js = $redirect ? "window.location.href = '" . addslashes($redirect) . "';" : "window.history.back();";
     echo <<<HTML
 <!DOCTYPE html>
 <html>
@@ -41,49 +33,69 @@ if (isset($_POST['ChangeForward'])) {
 </html>
 HTML;
     exit;
-  }
+}
 
-  // Final DSC Document (only for Forwarded)
-  $SDO_final_document = "";
-  if ($SDO_final_status === 'Forwarded' && !empty($_FILES['SDO_final_document']['name'])) {
-    $fileName = $_FILES['SDO_final_document']['name'];
-    $fileTmp = $_FILES['SDO_final_document']['tmp_name'];
-    $fileType = mime_content_type($fileTmp);
-    $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+// Check if form submitted
+if (isset($_POST['ChangeForward'])) {
+    $SDO_final_status = trim($_POST['SDO_final_status'] ?? '');
+    $applicationId = mysqli_real_escape_string($conn, $_POST['applicationId'] ?? '');
+    $SDO_final_remark = mysqli_real_escape_string($conn, $_POST['SDO_final_remark'] ?? '');
 
-    if (in_array($fileType, $allowedTypes) && in_array($fileExt, $allowedExtensions)) {
-      $SDO_final_document = $uploadDir . time() . "SDO_final_document" . basename($fileName);
-      if (!move_uploaded_file($fileTmp, $SDO_final_document)) {
-        swal('error', 'File Upload Error', 'Failed to upload the file.', 'SDO_noc_civilian.php');
-        exit;
-      }
-    } else {
-      swal('warning', 'Invalid file type', 'Invalid file type. Only PDF, JPEG, JPG, PNG allowed.', 'SDO_noc_civilian.php');
-      exit;
+    // Validate required fields
+    if (empty($applicationId) || empty($SDO_final_status)) {
+        swal('warning', 'Missing Data', 'Application ID or status missing.', '../department/SDO_noc_civilian.php');
     }
-  } elseif ($SDO_final_status === 'Forwarded' && empty($_FILES['SDO_final_status']['name'])) {
-    swal('warning', 'Missing File', 'DSC Signed Document is required for forwarding.', 'SDO_noc_civilian.php');
-    exit;
-  }
 
-  if ($applicationId && $SDO_final_status) {
+    // Handle file upload if Forwarded
+    $SDO_final_document = null;
+    if ($SDO_final_status == 'Forwarded') {
+        if (isset($_FILES['SDO_final_document']) && is_uploaded_file($_FILES['SDO_final_document']['tmp_name']) && $_FILES['SDO_final_document']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = "../Uploads/";
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            $fileTmpPath = $_FILES['SDO_final_document']['tmp_name'];
+            $fileName = basename($_FILES['SDO_final_document']['name']);
+            $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+            // Allowed extensions (only PDF)
+            $allowedExt = ['pdf'];
+            if (!in_array($fileExt, $allowedExt)) {
+                swal('error', 'Invalid File Type', 'Only PDF files are allowed.', '../department/SDO_noc_civilian.php');
+            }
+
+            // Unique filename
+            $newFileName = "SDO_" . time() . "_" . uniqid() . "." . $fileExt;
+            $destPath = $uploadDir . $newFileName;
+
+            if (!move_uploaded_file($fileTmpPath, $destPath)) {
+                swal('error', 'File Upload Failed', 'Failed to upload the file.', '../department/SDO_noc_civilian.php');
+            }
+            $SDO_final_document = $destPath; // Store full path for DB
+        } else {
+            swal('error', 'Missing File', 'Please upload the signed PDF document.', '../department/SDO_noc_civilian.php');
+        }
+    }
+
+    // Update NOC application
+    $fileQuery = $SDO_final_document ? ", SDO_final_document = '{$SDO_final_document}'" : "";
     $sql = "
-            UPDATE nocApplications 
-            SET SDO_final_status = '$SDO_final_status', 
-                finalTahildarRemark = '$finalTahildarRemark',
-                finalTahildarFile = '$SDO_final_document' 
-            WHERE applicationId = '$applicationId'
-        ";
-    $update = mysqli_query($conn, $sql);
+        UPDATE nocApplications
+        SET 
+            SDO_final_status = '{$SDO_final_status}',
+            SDO_final_remark = '{$SDO_final_remark}'
+            {$fileQuery}
+        WHERE applicationId = '{$applicationId}'
+    ";
 
+    $update = mysqli_query($conn, $sql);
     if ($update) {
-      swal('success', 'Success!', 'NOC updated successfully.', 'tashildar_noc_civilian.php');
+        $msg = ucfirst($SDO_final_status); // Forwarded / Rejected
+        swal('success', 'Success!', "NOC {$msg} successfully.", '../department/SDO_noc_civilian.php');
     } else {
-      swal('error', 'Database Error', 'Database update failed.', 'tashildar_noc_civilian.php');
+        swal('error', 'Database Error', 'Database update failed.', '../department/SDO_noc_civilian.php');
     }
-  } else {
-    swal('warning', 'Missing Data', 'No NOC Updated or application ID missing.', 'tashildar_noc_civilian.php');
-  }
 }
 
 $conn->close();
