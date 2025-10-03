@@ -220,7 +220,14 @@ ORDER BY a.createdDateTime DESC");
 
                               
                                 <td><?php echo date('d-m-Y', strtotime($row['createdDateTime'])); ?></td>
-                              <td><?php echo htmlspecialchars($row['']); ?></td>
+                             <td>
+                                <?php if ($row['reportFile']) { ?>
+                                  <a target="_blank"
+                                    href="Uploads/<?php echo htmlspecialchars($row['reportFile']); ?>">View</a>
+                                <?php } else { ?>
+                                  -
+                                <?php } ?>
+                              </td>
 
                               <td><?php echo date('d-m-Y', strtotime($row['createdDateTime'])); ?></td>
                               <!-- <td>
