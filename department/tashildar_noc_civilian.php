@@ -96,44 +96,9 @@ $departmentId = $_SESSION['departmentId'];
 
                           $stmt = "
                             SELECT 
-                                a.applicationId,
-                                a.civilianId,
-                                a.nocSubject,
-                                a.nocTypeId,
-                                a.landDesc,
-                                a.taluka,
-                                a.village,
-                                a.gatNo,
-                                a.panCard,
-                                a.aadharCard,
-                                a.status,
-                                a.init_status,
-                                a.init_remark,
-                                a.final_status,
-                                a.init_status_tahsildar,
-                                a.init_remark_tahsildar,
-                                a.final_status_tahsildar,
-                                a.final_remark_tahsildar,
-                                a.final_dsc_document,
-                                a.finalTahildarStatus,
-                                a.finalTahildarRemark,
-                                a.finalTahildarFile,
-                                a.createdDateTime,
-                                a.inspectionOfficer,
-                                c.name,
-                                c.address,
-                                c.aadharNo,
-                                c.emailId,
-                                c.dob,
-                                c.mobileNo
-                            FROM nocApplications a
-                            LEFT JOIN civilianRegistrations c 
-                                ON a.civilianId = c.civilianId
-                            WHERE 
-                    a.departmentStatus='Approved'
-                            ORDER BY a.createdDateTime DESC;
-
-                          ";
+                      * from nocApplications where
+                    departmentStatus ='Approved'
+                            ORDER BY createdDateTime DESC";
                           $result = mysqli_query($conn, $stmt);
                           $i = 1;
                           while ($row = $result->fetch_assoc()) {

@@ -277,7 +277,7 @@
                     <span class="path2"></span>
                 </i>
             </span>
-            <span class="menu-title">Forward to departments</span>
+            <span class="menu-title">Forward to  Final Authority</span>
             <span class="menu-arrow"></span>
         </span>
         <!--end:Menu link-->
@@ -391,10 +391,10 @@
                             <!--end:Menu item-->
 
                             <!--begin:Menu item-->
-                            <div class="menu-item" onclick="window.location.href='officers/aplication_Report.php'">
+                            <!-- <div class="menu-item" onclick="window.location.href='officers/aplication_Report.php'"> -->
                                 <!--begin:Menu link-->
 
-                                <span class="menu-link">
+                                <!-- <span class="menu-link">
                                     <span class="menu-icon">
                                         <i class="ki-duotone ki-element-11 fs-1">
                                             <span class="path1"></span>
@@ -405,15 +405,15 @@
                                     </span>
                                     <span class="menu-title">View NOC Application</span>
                                 </span>
-                                </a>
+                                </a> -->
                                 <!--end:Menu link-->
-                            </div>
+                            <!-- </div> -->
                             <!--end:Menu item-->
 
                             <!--begin:Menu item-->
-                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                            <!-- <div data-kt-menu-trigger="click" class="menu-item menu-accordion"> -->
                                 <!--begin:Menu link-->
-                                <span class="menu-link">
+                                <!-- <span class="menu-link">
                                     <span class="menu-icon">
                                         <i class="ki-duotone ki-rescue fs-1">
                                             <span class="path1"></span>
@@ -422,41 +422,41 @@
                                     </span>
                                     <span class="menu-title">NOC Application</span>
                                     <span class="menu-arrow"></span>
-                                </span>
+                                </span> -->
                                 <!--end:Menu link-->
                                 <!--begin:Menu sub-->
-                                <div class="menu-sub menu-sub-accordion">
+                                <!-- <div class="menu-sub menu-sub-accordion"> -->
                                     <!--begin:Menu item-->
-                                    <div class="menu-item">
+                                    <!-- <div class="menu-item"> -->
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="officers/nocApplicationDept.php" data-bs-toggle="tooltip"
+                                        <!-- <a class="menu-link" href="officers/nocApplicationDept.php" data-bs-toggle="tooltip"
                                             data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
                                             <span class="menu-title">Department</span>
-                                        </a>
+                                        </a> -->
                                         <!--end:Menu link-->
-                                    </div>
+                                    <!-- </div> -->
                                     <!--end:Menu item-->
                                     <!--begin:Menu item-->
-                                    <div class="menu-item">
+                                    <!-- <div class="menu-item"> -->
                                         <!--begin:Menu link-->
-                                        <a class="menu-link" href="civilian/nocApplication.php" data-bs-toggle="tooltip"
+                                        <!-- <a class="menu-link" href="civilian/nocApplication.php" data-bs-toggle="tooltip"
                                             data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
                                             <span class="menu-title">Civilian</span>
-                                        </a>
+                                        </a> -->
                                         <!--end:Menu link-->
-                                    </div>
+                                    <!-- </div> -->
                                     <!--end:Menu item-->
 
                                     <!--end:Menu item-->
-                                </div>
+                                <!-- </div> -->
                                 <!--end:Menu sub-->
-                            </div>
+                            <!-- </div> -->
 
                 <?php
             } else if ($_SESSION['systemRole'] == "Employee") {
@@ -527,7 +527,7 @@
                 <?php
             } else if ($_SESSION['systemRole'] == "Final Authority") {
                 ?>
-                                    <!--begin:Menu item-->
+                                    <!-- begin:Menu item-->
                                     <!-- <div class="menu-item" onclick="window.location.href='officers/tahsildar-dashboard.php'">
                               
                                 <span class="menu-link">
@@ -557,7 +557,7 @@
                                                     <span class="path2"></span>
                                                 </i>
                                             </span>
-                                            <span class="menu-title">Forward to departments</span>
+                                            <span class="menu-title">Forward to tahsildar</span>
                                             <span class="menu-arrow"></span>
                                         </span>
                                         <!--end:Menu link-->
@@ -605,7 +605,7 @@
                                                     <span class="path2"></span>
                                                 </i>
                                             </span>
-                                            <span class="menu-title">Final Approval</span>
+                                            <span class="menu-title">Final Recived From SDO</span>
                                             <span class="menu-arrow"></span>
                                         </span>
                                         <!--end:Menu link-->
@@ -725,7 +725,7 @@ if ($_SESSION['systemRole'] == "Tahsildar") {
                     <span class="path2"></span>
                 </i>
             </span>
-            <span class="menu-title">Final Approval</span>
+            <span class="menu-title">Recived From Department</span>
             <span class="menu-arrow"></span>
         </span>
         <!--end:Menu link-->
