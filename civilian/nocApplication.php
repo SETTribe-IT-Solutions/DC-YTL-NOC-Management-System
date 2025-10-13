@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['userId'])) {
+
+    header("Location: ../index.html");
+    exit();
+}
 $designation = $_SESSION['designation'];
 
 ini_set('display_errors', 0);
@@ -15,7 +21,7 @@ include('../include/conn.php');
     <base href="../">
     </base>
 
-    <title>NOC Application</title>
+    <title>NOC Portal</title>
     <meta charset="utf-8" />
     <meta name="description" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
     <meta name="keywords"
@@ -52,14 +58,14 @@ include('../include/conn.php');
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                         <?php
+                <?php
 
-if ($designation === 'admin') {
-    include("../include/admin-sidebar.php");
-} else {
-    include("../include/sidebar.php");
-}
-?>
+                if ($designation === 'admin') {
+                    include("../include/admin-sidebar.php");
+                } else {
+                    include("../include/sidebar.php");
+                }
+                ?>
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -76,7 +82,7 @@ if ($designation === 'admin') {
                                     <!--begin::Page title-->
                                     <div class="page-title d-flex flex-column gap-1 me-3 mb-2">
                                         <!--begin::Breadcrumb-->
-                                        <ul class="breadcrumb breadcrumb-separatorless fw-semibold mb-6">
+                                        <ul class="breadcrumb breadcrumb-separatorless fw-bold mb-6">
                                             <!--begin::Item-->
                                             <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
                                                 <a href="civilian/index.php" class="text-gray-500">
@@ -136,6 +142,7 @@ if ($designation === 'admin') {
                                                 $resultCivilian = mysqli_fetch_assoc($queryCivilian);
                                                 $civilianRow = mysqli_num_rows($queryCivilian);
                                                 $name = $resultCivilian['name'];
+                                                $dob = $resultCivilian['dob'];
                                                 $aadharNo = $resultCivilian['aadharNo'];
                                                 $address = $resultCivilian['address'];
                                                 $mobileNo = $resultCivilian['mobileNo'];
@@ -158,8 +165,8 @@ if ($designation === 'admin') {
                                                     <!--begin::Input group-->
                                                     <div class="row">
                                                         <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">NOC क्रमांक <span
+                                                        <div class="col-md-3 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">NOC क्रमांक <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
                                                                 value="<?php echo $applicationId; ?>" name="nocNumber"
@@ -171,16 +178,17 @@ if ($designation === 'admin') {
                                                         <!--end::Col-->
 
                                                         <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">NOC प्रकार निवडा <span
+                                                        <div class="col-md-5 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">NOC प्रकार निवडा <span
                                                                     class="text-danger">*</span></label>
                                                             <select data-control="select2" name="nocType"
+                                                                onchange="getfinalAuthority()"
                                                                 data-placeholder="प्रकार निवडा" id="nocType"
                                                                 class="form-control">
                                                                 <option value="" disabled selected>NOC प्रकार निवडा
                                                                 </option>
                                                                 <?php
-                                                                $sql = "SELECT type,id FROM nocTypes";
+                                                                $sql = "SELECT type, id FROM nocTypes ORDER BY id DESC";
                                                                 $stmt = $conn->prepare($sql);
 
                                                                 if ($stmt->execute()) {
@@ -199,29 +207,14 @@ if ($designation === 'admin') {
                                                             </div>
                                                         </div>
                                                         <!--end::Col-->
-                                                    </div>
-                                                    <!--end::Input group-->
-
-                                                    <!--begin::Input group-->
-                                                    <div class="row">
-                                                        <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">जन्मतारीख <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="date" class="form-control" id="dob" name="dob"
-                                                                placeholder="जन्मतारीख">
-                                                            <div
-                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                            </div>
-                                                        </div>
 
                                                         <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">पूर्ण नाव <span
+                                                        <div class="col-md-4 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">Final Authority <span
                                                                     class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control"
-                                                                value="<?php echo $name; ?>" <?php echo $readonly; ?>
-                                                                name="fullName" placeholder="पूर्ण नाव">
+                                                            <input type="text" class="form-control" id="finalAuthority"
+                                                                name="finalAuthority" readonly
+                                                                placeholder="Final Authority">
                                                             <div
                                                                 class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                                             </div>
@@ -234,7 +227,55 @@ if ($designation === 'admin') {
                                                     <div class="row">
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">आधार क्रमांक <span
+                                                            <label class="fs-5 fw-bold mb-2">पूर्ण नाव <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control"
+                                                                value="<?php echo $name; ?>" <?php echo $readonly; ?>
+                                                                name="fullName" placeholder="पूर्ण नाव">
+                                                            <div
+                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                            </div>
+                                                        </div>
+                                                        <!--end::Col-->
+
+                                                        <!--begin::Col-->
+                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">इमेल ID <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="email" <?php echo $readonly; ?>
+                                                                class="form-control" value="<?php echo $emailId; ?>"
+                                                                name="email" placeholder="इमेल ID" required>
+                                                            <div
+                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                            </div>
+                                                        </div>
+                                                        <!--end::Col-->
+
+                                                    </div>
+                                                    <!--end::Input group-->
+
+                                                    <!--begin::Input group-->
+                                                    <div class="row">
+
+                                                        <!--begin::Col-->
+                                                        <div class="col-md-4 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">मोबाईल क्र. <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" name="mobileNo"
+                                                                placeholder="मोबाईल क्र." <?php echo $readonly; ?>
+                                                                maxlength="10" value="<?php echo $mobileNo; ?>"
+                                                                minlength="10" pattern="\d{10}"
+                                                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                                                required>
+                                                            <div
+                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                            </div>
+                                                        </div>
+                                                        <!--end::Col-->
+
+                                                        <!--begin::Col-->
+                                                        <div class="col-md-4 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">आधार क्रमांक <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control" name="aadharNo"
                                                                 placeholder="आधार क्रमांक" <?php echo $readonly; ?>
@@ -249,8 +290,27 @@ if ($designation === 'admin') {
                                                         <!--end::Col-->
 
                                                         <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">पत्ता <span
+                                                        <div class="col-md-4 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">जन्मतारीख <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="date" class="form-control"
+                                                                value="<?php echo $dob ?>" id="dob" name="dob"
+                                                                placeholder="जन्मतारीख">
+                                                            <div
+                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                            </div>
+                                                        </div>
+                                                        <!--end::Col-->
+
+
+                                                    </div>
+                                                    <!--end::Input group-->
+
+                                                    <!--begin::Input group-->
+                                                    <div class="row">
+                                                        <!--begin::Col-->
+                                                        <div class="col-md-12 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">पत्ता <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" <?php echo $readonly; ?>
                                                                 class="form-control" value="<?php echo $address; ?>"
@@ -260,34 +320,19 @@ if ($designation === 'admin') {
                                                             </div>
                                                         </div>
                                                         <!--end::Col-->
+
                                                     </div>
                                                     <!--end::Input group-->
 
                                                     <!--begin::Input group-->
                                                     <div class="row">
-                                                        <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">इमेल ID <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="email" <?php echo $readonly; ?>
-                                                                class="form-control" value="<?php echo $emailId; ?>"
-                                                                name="email" placeholder="इमेल ID" required>
-                                                            <div
-                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Col-->
 
                                                         <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">मोबाईल क्र. <span
+                                                        <div class="col-md-12 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">विषय <span
                                                                     class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" name="mobileNo"
-                                                                placeholder="मोबाईल क्र." <?php echo $readonly; ?>
-                                                                maxlength="10" value="<?php echo $mobileNo; ?>"
-                                                                minlength="10" pattern="\d{10}"
-                                                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                                                                required>
+                                                            <textarea class="form-control" name="nocSubject"
+                                                                placeholder="विषय" rows="3"></textarea>
                                                             <div
                                                                 class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                                             </div>
@@ -296,39 +341,12 @@ if ($designation === 'admin') {
                                                     </div>
                                                     <!--end::Input group-->
 
-                                                    <!--begin::Input group-->
-                                                    <div class="row">
-                                                        <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">जामिनीची तपशील <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" name="landDesc"
-                                                                placeholder="जामिनीची तपशील" required>
-                                                            <div
-                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Col-->
-
-                                                        <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">विषय <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" name="nocSubject"
-                                                                placeholder="विषय" required>
-                                                            <div
-                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Col-->
-                                                    </div>
-                                                    <!--end::Input group-->
 
                                                     <!--begin::Input group-->
                                                     <div class="row">
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">तालुका <span
+                                                            <label class="fs-5 fw-bold mb-2">तालुका <span
                                                                     class="text-danger">*</span></label>
                                                             <select name="taluka" data-control="select2"
                                                                 data-placeholder="तालुका निवडा" id="taluka"
@@ -357,7 +375,7 @@ if ($designation === 'admin') {
 
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">गाव <span
+                                                            <label class="fs-5 fw-bold mb-2">गाव <span
                                                                     class="text-danger">*</span></label>
                                                             <select id="villageSelect" name="village"
                                                                 data-control="select2" data-placeholder="गाव निवडा"
@@ -369,14 +387,18 @@ if ($designation === 'admin') {
                                                             </div>
                                                         </div>
                                                         <!--end::Col-->
+
+
                                                     </div>
                                                     <!--end::Input group-->
+
+
 
                                                     <!--begin::Input group-->
                                                     <div class="row">
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">गट क्रमांक <span
+                                                            <label class="fs-5 fw-bold mb-2">गट क्रमांक <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control" name="gatNo"
                                                                 placeholder="गट क्रमांक" required>
@@ -388,7 +410,31 @@ if ($designation === 'admin') {
 
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">पेन कार्ड अपलोड करा
+                                                            <label class="fs-5 fw-bold mb-2">जमिनीचा प्रकार <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" name="landType"
+                                                                placeholder="जमिनीचा प्रकार" required>
+                                                            <div
+                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                            </div>
+                                                        </div>
+                                                        <!--end::Col-->
+
+
+
+
+
+
+                                                    </div>
+                                                    <!--end::Input group-->
+
+
+                                                    <!--begin::Input group-->
+                                                    <div class="row">
+
+                                                        <!--begin::Col-->
+                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">पेन कार्ड अपलोड करा
                                                                 <span class="text-danger">*</span></label>
                                                             <input type="file" class="form-control"
                                                                 accept="image/*, .pdf" id="penCard" name="penCard"
@@ -398,11 +444,10 @@ if ($designation === 'admin') {
                                                             </div>
                                                         </div>
                                                         <!--end::Col-->
-                                                    </div>
-                                                    <div class="row">
+
                                                         <!--begin::Col-->
                                                         <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">आधारकार्ड अपलोड करा
+                                                            <label class="fs-5 fw-bold mb-2">आधारकार्ड अपलोड करा
                                                                 <span class="text-danger">*</span></label>
                                                             <input type="file" class="form-control"
                                                                 accept="image/*, .pdf" id="aadharCard" name="aadharCard"
@@ -412,8 +457,46 @@ if ($designation === 'admin') {
                                                             </div>
                                                         </div>
                                                         <!--end::Col-->
+
                                                     </div>
                                                     <!--end::Input group-->
+
+                                                    <!--begin::Input group-->
+                                                    <div class="row">
+                                                        <!--begin::Col-->
+                                                        <!-- <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">जामिनीची तपशील <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" name="landDesc"
+                                                                placeholder="जामिनीची तपशील" required>
+                                                            <div
+                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                            </div>
+                                                        </div> -->
+                                                        <!--end::Col-->
+
+
+
+
+
+
+                                                        <!--begin::Col-->
+                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
+                                                            <label class="fs-5 fw-bold mb-2">NOC अर्ज
+                                                                <span class="text-danger">*</span></label>
+                                                            <input type="file" class="form-control"
+                                                                accept="image/*, .pdf" id="nocApplicationFile"
+                                                                name="nocApplicationFile" required>
+                                                            <div
+                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                            </div>
+                                                        </div>
+                                                        <!--end::Col-->
+
+
+                                                    </div>
+                                                    <!--end::Input group-->
+
                                                     <!--begin::Submit-->
                                                     <button type="submit" name="submit" class="btn btn-primary"
                                                         id="kt_contact_submit_button">
@@ -480,6 +563,24 @@ if ($designation === 'admin') {
 
 
     <script>
+        function getfinalAuthority() {
+            var nocType = $('#nocType').val();
+
+            if (nocType !== "") {
+                $.ajax({
+                    url: 'ajax/finalAuthority.php',
+                    type: 'POST',
+                    data: { nocType: nocType },
+                    success: function (response) {
+                        console.log(response);
+                        $('#finalAuthority').val(response);
+                    }
+                });
+            } else {
+                $('#finalAuthority').val('Na');
+            }
+        }
+
         function getVillages() {
             var taluka = $('#taluka').val();
             var taluka = document.getElementById("taluka").value;
@@ -539,3 +640,6 @@ if ($designation === 'admin') {
 <!--end::Body-->
 
 </html>
+<?php
+$con->close();
+?>

@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['userId'])) {
+
+    header("Location: ../index.html");
+    exit();
+}
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
@@ -17,7 +23,7 @@ include('../include/sweetAlert.php');
 
 <head>
     <base href="../">
-    <title>NOC अर्ज पहा</title>
+    <title>NOC Portal</title>
     <meta charset="utf-8" />
     <meta name="description" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
     <meta name="keywords"
@@ -222,13 +228,13 @@ include('../include/sweetAlert.php');
                                                                                         <tr
                                                                                             class="fw-bold fs-6 text-gray-800">
                                                                                             <th>पण कार्ड</th>
-                                                                                            <td><?php echo $panCard; ?>
+                                                                                            <td><?= $panCard ? '<a href="' . str_replace("../", "", $panCard) . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?>
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr
                                                                                             class="fw-bold fs-6 text-gray-800">
                                                                                             <th>आधार कार्ड</th>
-                                                                                            <td><?php echo $aadharCard; ?>
+                                                                                            <td><?= $aadharCard ? '<a href="' . str_replace("../", "", $aadharCard) . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?>
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr
@@ -417,3 +423,6 @@ include('../include/sweetAlert.php');
 <!--end::Body-->
 
 </html>
+<?php
+$con->close();
+?>

@@ -4,7 +4,7 @@ ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
 if (!isset($_SESSION['userId'])) {
-    header('location:../login.php');
+    header('location:../index.html');
     exit;
 }
 
@@ -17,7 +17,7 @@ include('../include/sweetAlert.php');
 
 <head>
     <base href="../">
-    <title>Saul Theme by Keenthemes</title>
+    <title>NOC Portal</title>
     <meta charset="utf-8" />
     <meta name="description" content="Saul HTML Free - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme" />
     <meta name="keywords"
@@ -63,7 +63,7 @@ include('../include/sweetAlert.php');
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                <?php include("../include/sidebar.php"); ?>
+                <?php include("../include/admin-sidebar.php"); ?>
                 <!--end::Sidebar-->
                 <!--begin::Main-->
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -93,7 +93,8 @@ include('../include/sweetAlert.php');
                                             </li>
                                             <!--end::Item-->
                                             <!--begin::Item-->
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC अर्जाची ट्रॅकिंग अहवाल
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">NOC अर्जाची ट्रॅकिंग
+                                                अहवाल
                                             </li>
                                             <!--end::Item-->
                                         </ul>
@@ -167,61 +168,66 @@ include('../include/sweetAlert.php');
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                      <table class="table align-middle border rounded table-row-dashed fs-6 g-5" id="kt_datatable_example">
-    <thead>
-        <tr class="text-start text-black-500 fw-bold fs-7 text-uppercase">
-            <th>NOC क्रमांक</th>
-            <th>NOC प्रकार</th>
-            <th>पूर्ण नाव</th>
-            <th>पत्ता</th>
-            <th>ईमेल ID</th>
-            <th>मोबाईल क्र.</th>
-            <th>आधार क्रमांक</th>
-            <th>जमिनीची तपशील</th>
-            <th>तालुका</th>
-            <th>गाव</th>
-            <th>गट क्रमांक</th>
-            <th>आधार कार्ड अपलोड करा</th>
-            <th>पॅन कार्ड अपलोड करा</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody class="fw-semibold text-black-800">
-        <?php
-        // civilianId filter हटा दिया गया
-        $sql = "SELECT na.*, nt.type AS nocType 
+                                        <table class="table align-middle border rounded table-row-dashed fs-6 g-5"
+                                            id="kt_datatable_example">
+                                            <thead>
+                                                <tr class="text-start text-black-500 fw-bold fs-7 text-uppercase">
+                                                    <th>NOC क्रमांक</th>
+                                                    <th>NOC प्रकार</th>
+                                                    <th>पूर्ण नाव</th>
+                                                    <th>पत्ता</th>
+                                                    <th>ईमेल ID</th>
+                                                    <th>मोबाईल क्र.</th>
+                                                    <th>आधार क्रमांक</th>
+                                                    <th>जमिनीची तपशील</th>
+                                                    <th>तालुका</th>
+                                                    <th>गाव</th>
+                                                    <th>गट क्रमांक</th>
+                                                    <th>आधार कार्ड अपलोड करा</th>
+                                                    <th>पॅन कार्ड अपलोड करा</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="fw-semibold text-black-800">
+                                                <?php
+                                                // civilianId filter हटा दिया गया
+                                                $sql = "SELECT na.*, nt.type AS nocType 
                 FROM nocApplications na
                 LEFT JOIN nocTypes nt ON nt.id = na.nocTypeId
                 ORDER BY na.createdDateTime DESC";
 
-        $q = mysqli_query($con, $sql);
-        while ($r = mysqli_fetch_assoc($q)) {
-        ?>
-            <tr class="odd">
-                <td><?= $r['applicationId']; ?></td>
-                <td><?= $r['nocType']; ?></td>
-                <td><?= $r['name']; ?></td>
-                <td><?= $r['address']; ?></td>
-                <td><?= $r['emailId']; ?></td>
-                <td><?= $r['mobileNo']; ?></td>
-                <td><?= $r['aadharNo']; ?></td>
-                <td><?= $r['landDesc']; ?></td>
-                <td><?= $r['taluka']; ?></td>
-                <td><?= $r['village']; ?></td>
-                <td><?= $r['gatNo']; ?></td>
-                <td><?= $r['aadharCard'] ? '<a href="' . $r['aadharCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?></td>
-                <td><?= $r['panCard'] ? '<a href="' . $r['panCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?></td>
-                <td>
-                    <a href="civilian/trackNoc.php?applicationId=<?= $r['applicationId'] ?>">
-                        <button type="button" class="btn btn-primary btn-sm">Track</button>
-                    </a>
-                </td>
-            </tr>
-        <?php
-        }
-        ?>
-    </tbody>
-</table>
+                                                $q = mysqli_query($con, $sql);
+                                                while ($r = mysqli_fetch_assoc($q)) {
+                                                    ?>
+                                                    <tr class="odd">
+                                                        <td><?= $r['applicationId']; ?></td>
+                                                        <td><?= $r['nocType']; ?></td>
+                                                        <td><?= $r['name']; ?></td>
+                                                        <td><?= $r['address']; ?></td>
+                                                        <td><?= $r['emailId']; ?></td>
+                                                        <td><?= $r['mobileNo']; ?></td>
+                                                        <td><?= $r['aadharNo']; ?></td>
+                                                        <td><?= $r['landDesc']; ?></td>
+                                                        <td><?= $r['taluka']; ?></td>
+                                                        <td><?= $r['village']; ?></td>
+                                                        <td><?= $r['gatNo']; ?></td>
+                                                        <td><?= $r['aadharCard'] ? '<a href="' . $r['aadharCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?>
+                                                        </td>
+                                                        <td><?= $r['panCard'] ? '<a href="' . $r['panCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?>
+                                                        </td>
+                                                        <td>
+                                                            <a
+                                                                href="civilian/trackNoc.php?applicationId=<?= $r['applicationId'] ?>">
+                                                                <button type="button"
+                                                                    class="btn btn-primary btn-sm">Track</button>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </tbody>
+                                        </table>
 
                                     </div>
                                 </div>
@@ -350,3 +356,6 @@ include('../include/sweetAlert.php');
 <!--end::Body-->
 
 </html>
+<?php
+$con->close();
+?>

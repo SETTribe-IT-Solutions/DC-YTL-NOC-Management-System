@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['userId'])) {
+   
+    header("Location: ../index.html");
+    exit();
+}
 include('../include/conn.php');
 ?>
 <!DOCTYPE html>
@@ -8,7 +14,7 @@ include('../include/conn.php');
 
 <head>
     <base href="../" />
-    <title>Saul Theme by Keenthemes</title>
+    <title>NOC Portal</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--begin::Fonts(mandatory for all pages)-->

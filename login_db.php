@@ -16,14 +16,22 @@ if (isset($_REQUEST['logIn'])) {
     } else if ($role == "Officer") {
         $sql = "SELECT * FROM users WHERE `mobileNo` = '$mobileNo' AND `password` = '$password' AND status = 'Active'";
 
+    } else if ($role == "Department") {
+        $sql = "SELECT * FROM departments WHERE `HodNumber` = '$mobileNo' AND `HodPassword` = '$password' AND status = 'Active'";
     }
 
     $query = mysqli_query($con, $sql);
 
 
 
+
     if (mysqli_num_rows($query) > 0) {
         $result = mysqli_fetch_assoc($query);
+
+        if ($role == "Department") {
+            $result['mobileNo'] = $result['HodNumber'];
+            $result['password'] = $result['HodPassword'];
+        }
 
         if ($result['mobileNo'] == $mobileNo && $result['password'] == $password) {
             $_SESSION['name'] = $result['name'];
@@ -41,6 +49,7 @@ if (isset($_REQUEST['logIn'])) {
             } else if ($role == "Officer") {
                 $_SESSION['userId'] = $result['userId'];
                 $_SESSION['designation'] = $result['designation'];
+                $_SESSION['systemRole'] = $result['systemRole'];
                 $_SESSION['role'] = "Officer";
                 $_SESSION['taluka'] = $result['taluka'];
                 if (isset($_POST['signed'])) {
@@ -50,13 +59,29 @@ if (isset($_REQUEST['logIn'])) {
 
                 if ($result['designation'] == "SDO") {
                     echo "<script>window.location = 'officers/sdo-dashboard.php';</script>";
+
                 } else if ($result['designation'] == "Tahsildar") {
                     echo "<script>window.location = 'officers/tahsildar-dashboard.php';</script>";
+
                 } else if ($result['designation'] == "Department") {
-                    echo "<script>window.location = 'department/department-dashboard.php';</script>";
                     $_SESSION['departmentId'] = $result['departmentId'];
+                    echo "<script>window.location = 'department/department-dashboard.php';</script>";
+
+                } else if ($result['systemRole'] == "Employee") {
+                    $_SESSION['departmentId'] = $result['departmentId'];
+                    echo "<script>window.location = 'department/NocReport_employee.php';</script>";
+
+                } else if ($result['systemRole'] == "Final Authority") {
+                    echo "<script>window.location = 'department/NocReport_FAuth.php';</script>";
 
                 }
+            } else if ($role == "Department") {
+                $_SESSION['userId'] = $result['id'];
+                $_SESSION['departmentId'] = $result['id'];
+                $_SESSION['designation'] = "Department";
+                $_SESSION['role'] = "Department";
+                echo "<script>window.location = 'department/department-dashboard.php';</script>";
+
             } else {
                 $_SESSION['status'] = false;
                 $_SESSION['msg'] = "Invalid Mobile No. & Password";
@@ -77,6 +102,6 @@ if (isset($_REQUEST['logIn'])) {
         echo "<script>window.location = 'login.php?role=" . $role . "';</script>";
 
     }
-
 }
+$con->close();
 ?>

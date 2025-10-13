@@ -1,4 +1,10 @@
 <?php
+
+if (!isset($_SESSION['userId'])) {
+   
+    header("Location: ../index.html");
+    exit();
+}
 include('include/conn.php');
 
 if (isset($_POST['taluka'])) {

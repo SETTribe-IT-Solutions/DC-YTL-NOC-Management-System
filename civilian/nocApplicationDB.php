@@ -16,18 +16,19 @@ if (isset($_POST['submit'])) {
     $address = $_POST['address'];
     $email = $_POST['email'];
     $mobileNo = $_POST['mobileNo'];
-    $landDesc = $_POST['landDesc'];
+    $landDesc = $_POST['landDesc'] ?? NULl;
     $nocSubject = $_POST['nocSubject'];
     $taluka = $_POST['taluka'];
     $village = $_POST['village'];
     // $departmentId  = $_POST['departmentId'];
     $gatNo = $_POST['gatNo'];
+    $landType = $_POST['landType'];
     $status = $_POST['status'] ?? 'Pending'; // default status
     $createdDateTime = date("Y-m-d H:i:s");
     // $updateDateTime  = date("Y-m-d H:i:s");
     $civilianId = $_SESSION['userId'];
     // die();
-    $uploadDir = "documents/"; // folder to store files
+    $uploadDir = "../documents/"; // folder to store files
 
     // Allowed MIME types and extensions
     $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
@@ -70,6 +71,23 @@ if (isset($_POST['submit'])) {
     }
 
 
+    // Phyical NOC
+    if (!empty($_FILES['nocApplicationFile']['name'])) {
+        $nocApplicationFileName = $_FILES['nocApplicationFile']['name'];
+        $nocApplicationFileTmp = $_FILES['nocApplicationFile']['tmp_name'];
+        $nocApplicationFileType = mime_content_type($nocApplicationFileTmp);
+        $nocApplicationFileExt = strtolower(pathinfo($nocApplicationFileName, PATHINFO_EXTENSION));
+
+        if (in_array($nocApplicationFileType, $allowedTypes) && in_array($nocApplicationFileExt, $allowedExtensions)) {
+            $nocApplicationFilePath = $uploadDir . time() . "_noc_" . basename($nocApplicationFileName);
+            move_uploaded_file($nocApplicationFileTmp, $nocApplicationFilePath);
+        } else {
+            $nocApplicationFilePath = "";
+            echo "Invalid NOC application file type. Only JPG, PNG, and PDF allowed.";
+        }
+    } else {
+        $nocApplicationFilePath = "";
+    }
 
     // Step 1: Get the latest applicationId
     $queryGet = mysqli_query($conn, "SELECT COUNT(*) as applicationId FROM `nocApplicationIds` ") or die($conn->error);
@@ -101,44 +119,91 @@ if (isset($_POST['submit'])) {
     }
 
     // Step 2: Prepare the statement
-    $stmt = $conn->prepare("INSERT INTO nocApplications (
-    applicationId, civilianId, nocSubject, nocTypeId, name, address, emailId, mobileNo, aadharNo, landDesc, taluka, village, gatNo, panCard, aadharCard, createdDateTime, userId
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+//     $stmt = $conn->prepare("INSERT INTO nocApplications (
+//     applicationId, civilianId, nocSubject, nocTypeId, name, address, emailId, mobileNo, aadharNo, landDesc, taluka, village, gatNo, landType, panCard, aadharCard, nocApplicationFile, createdDateTime, userId
+// ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    // Step 3: Bind parameters
-    $stmt->bind_param(
-        "sssisssssssssssss",  // ✅ 18 type characters matching data types
-        $applicationId,
-        $civilianId,
-        $nocSubject,
-        $nocType,         // likely an integer
-        $fullName,
-        $address,
-        $email,
-        $mobileNo,
-        $aadharNo,
-        $landDesc,
-        $taluka,
-        $village,
-        $gatNo,
-        $panCardPath,
-        $aadharCardPath,
-        $createdDateTime,
-        $userId           // likely an integer
-    );
+    //     $stmt->bind_param(
+//         "sssssssssssssssssss",  // 19 characters
+//         $applicationId,
+//         $civilianId,
+//         $nocSubject,
+//         $nocType,           // i (integer)
+//         $fullName,
+//         $address,
+//         $email,
+//         $mobileNo,
+//         $aadharNo,
+//         $landDesc,
+//         $taluka,
+//         $village,
+//         $gatNo,
+//         $landType,
+//         $panCardPath,
+//         $aadharCardPath,
+//         $nocApplicationFile,
+//         $createdDateTime,
+//         $userId             // i if numeric, s if varchar
+//     );
+    // try {
+    //     $stmt->execute();
+    // } catch (PDOException $e) {
+    //     echo "❌ PDO Error: " . $e->getMessage();
+    // }
+
+    $sql = "
+        INSERT INTO nocApplications (
+            applicationId, civilianId, nocSubject, nocTypeId, name, address, emailId, mobileNo, aadharNo, 
+            landDesc, taluka, village, gatNo, landType, panCard, aadharCard, nocApplicationFile, createdDateTime
+        ) VALUES (
+            '$applicationId',
+            '$civilianId',
+            '$nocSubject',
+            '$nocType',
+            '$fullName',
+            '$address',
+            '$email',
+            '$mobileNo',
+            '$aadharNo',
+            '$landDesc',
+            '$taluka',
+            '$village',
+            '$gatNo',
+            '$landType',
+            '$panCardPath',
+            '$aadharCardPath',
+            '$nocApplicationFile',
+            '$createdDateTime'
+        )";
+
+
+
+
+
 
 
     // Step 4: Execute and check
-    if ($stmt->execute()) {
+    if (mysqli_query($conn, $sql)) {
         $_SESSION['status'] = true;
         $_SESSION['msg'] = "Application Submitted successfully.";
+
+
     } else {
         $_SESSION['status'] = false;
         $_SESSION['msg'] = "Something went wrong";
+
+
         //  echo "Error: " . $stmt->error;
     }
 
-    header('location:nocApplication.php');
+    echo "
+    <script>
+    window.location = 'nocApplication.php'
+    </script>
+    ";
+
+
+    // header('location:nocApplication.php');
     $stmt->close();
 }
 

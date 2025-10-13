@@ -1,100 +1,113 @@
 <?php
 include('../include/conn.php');
+date_default_timezone_set('Asia/Kolkata');
 
+// ---------------- INSERT ----------------
 if (isset($_POST['submit'])) {
-        date_default_timezone_set('Asia/Kolkata');
     $type = $_POST['type'];
-      $departmentIdArray = $_POST['departmentId']; // This is an array
-    $departmentIdString = implode(',', $departmentIdArray); // Converts [2, 4, 5] → "2,4,5"
-    $userId = 'userId_001';
+    $departmentIdArray = $_POST['departmentId'];
+    $departmentIdString = implode(',', $departmentIdArray);
+    $finalAuthority = $_POST['finalAuthority'];
+    $userId = $_SESSION['userId'] ?? 'userId_001';  // session se user id lo
     $createdDateTime = date('Y-m-d H:i:s');
 
-          $query = mysqli_query($conn, "INSERT INTO nocTypes (`type`, `departmentId`, `userId`, `createdDateTime`) 
-        VALUES ('$type', '$departmentIdString', '$userId', '$createdDateTime')");
-
-
-
-
- ?>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    </head>
-    <body>
-    <script>
-        Swal.fire({
-            icon: '<?php echo $query ? "success" : "error"; ?>',
-            title: '<?php echo $query ? "Success!" : "Oops..."; ?>',
-            text: '<?php echo $query ? "NOC Type created successfully" : "Something went wrong! Please try again."; ?>',
-        }).then(() => {
-            window.location.href = '<?php echo $query ? "nocType.php" : "javascript:history.back()"; ?>';
-        });
-    </script>
-    </body>
-    </html>
-
-    
-    <?php
-}
-if (isset($_GET['delete'])) {
-    $id = $_GET['delete'];
-
-    $query = mysqli_query($conn, "UPDATE nocTypes SET status = 'Inactive' WHERE id = '$id'");
-
+    $query = mysqli_query($conn, "INSERT INTO nocTypes (`type`, `departmentId`, `finalAuthority`, `userId`, `createdDateTime`) 
+        VALUES ('$type', '$departmentIdString', '$finalAuthority', '$userId', '$createdDateTime')");
     ?>
     <!DOCTYPE html>
     <html lang="en">
+
     <head>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
+
     <body>
-    <script>
-        Swal.fire({
-            icon: '<?php echo $query ? "success" : "error"; ?>',
-            title: '<?php echo $query ? "Deleted!" : "Oops..."; ?>',
-            text: '<?php echo $query ? "NOC Type deleted." : "Something went wrong!"; ?>',
-        }).then(() => {
-            window.location.href = 'nocType.php';
-        });
-    </script>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $query ? "success" : "error"; ?>',
+                title: '<?php echo $query ? "Success!" : "Oops..."; ?>',
+                text: '<?php echo $query ? "NOC Type created successfully" : "Something went wrong! Please try again."; ?>',
+            }).then(() => {
+                window.location.href = 'nocType.php';
+            });
+        </script>
     </body>
+
     </html>
     <?php
+    exit;
 }
+
+// ---------------- UPDATE ----------------
 if (isset($_POST['update'])) {
-    date_default_timezone_set('Asia/Kolkata');
-    
-    $id = $_POST['id']; // ID to identify record to update
+    $id = $_POST['id'];
     $type = $_POST['type'];
-    $departmentIdArray = $_POST['departmentId']; // Array from multiselect
-    $departmentIdString = implode(',', $departmentIdArray); // Convert to comma-separated string
+    $departmentIdArray = $_POST['departmentId'];
+    $departmentIdString = implode(',', $departmentIdArray);
+    $finalAuthority = $_POST['finalAuthority'];
     $updatedDateTime = date('Y-m-d H:i:s');
 
     $query = mysqli_query($conn, "UPDATE nocTypes 
         SET type = '$type', 
             departmentId = '$departmentIdString', 
+            finalAuthority = '$finalAuthority',
             updatedDateTime = '$updatedDateTime' 
         WHERE id = '$id'");
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<body>
-<script>
-    Swal.fire({
-        icon: '<?php echo $query ? "success" : "error"; ?>',
-        title: '<?php echo $query ? "Updated!" : "Oops..."; ?>',
-        text: '<?php echo $query ? "NOC Type updated successfully" : "Update failed! Please try again."; ?>',
-    }).then(() => {
-        window.location.href = 'nocType.php';
-    });
-</script>
-</body>
-</html>
-<?php
+    ?>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+
+    <body>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $query ? "success" : "error"; ?>',
+                title: '<?php echo $query ? "Updated!" : "Oops..."; ?>',
+                text: '<?php echo $query ? "NOC Type updated successfully" : "Update failed! Please try again."; ?>',
+            }).then(() => {
+                window.location.href = 'nocType.php';
+            });
+        </script>
+    </body>
+
+    </html>
+    <?php
+    exit;
 }
 
+// ---------------- DELETE ----------------
+if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+    $query = mysqli_query($conn, "DELETE FROM nocTypes WHERE id = '$id'");
+    ?>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+
+    <body>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $query ? "success" : "error"; ?>',
+                title: '<?php echo $query ? "Deleted!" : "Oops..."; ?>',
+                text: '<?php echo $query ? "NOC Type deleted successfully" : "Delete failed! Please try again."; ?>',
+            }).then(() => {
+                window.location.href = 'nocType.php';
+            });
+        </script>
+    </body>
+
+    </html>
+    <?php
+    exit;
+}
+?>
+
+<?php
+$con->close();
 ?>
