@@ -501,7 +501,7 @@
                                 <!--end:Menu item-->
 
                                 <!--begin:Menu item-->
-                                <div class="menu-item" onclick="window.location.href='department/nocReport_employee.php'">
+                                <div class="menu-item" onclick="window.location.href='department/NocReport_employee.php'">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
