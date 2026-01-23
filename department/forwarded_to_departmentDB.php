@@ -70,6 +70,20 @@ HTML;
     if ($applicationId && $init_status) {
         // File part conditionally set
         $fileQuery = $tahildarFileName ? ", tahildarFile = '{$tahildarFileName}'" : "";
+<<<<<<< HEAD
+=======
+
+
+        echo "
+            UPDATE nocApplications
+            SET 
+              
+                tahildarStatus = '{$init_status}',
+                tahildarRemark = '{$tahildarRemark}'
+                {$fileQuery}
+            WHERE applicationId = '{$applicationId}'
+        ";
+>>>>>>> cfc37a2f35c40df462da9b774ac5b26988bba5ea
         $sql = "
             UPDATE nocApplications
             SET 
