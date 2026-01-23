@@ -131,7 +131,7 @@ $applicationId = "NOC-2025-"."".$formatted_count;
                                       ?>
                                     
                                             <!--begin::Form-->
-                                            <form action="officers/ApplicationDb.php" 
+                                            <form method="POST" enctype="multipart/form-data" action="officers/ApplicationDb.php"
                                                 class="form mb-15 fv-plugins-bootstrap5 fv-plugins-framework"
                                                 method="post" id="kt_contact_form">
                                                 <!-- <h1 class="fw-bold text-gray-900 mb-9">Send Us Email</h1> -->
@@ -287,15 +287,31 @@ $applicationId = "NOC-2025-"."".$formatted_count;
 
 
 
-                                                    
-                  <div class="col-md-6 fv-row fv-plugins-icon-container">
+<div class="col-md-6 fv-row fv-plugins-icon-container">
     <label class="fs-5 fw-semibold mb-2">विभाग</label>
      <input type="text" class="form-control form-control-solid"
-                                                            placeholder="विभाग" name="department">
-      <div
-                                                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                        </div>
-                                                    </div>
+     placeholder="विभाग" name="department">
+      <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+</div>
+ </div>
+
+ 
+<div class="col-md-6 fv-row fv-plugins-icon-container">
+    <label class="fs-5 fw-semibold mb-2"> NOC अर्ज </label>
+
+    <input type="file"
+           name="noc_file"
+           id="noc_file"
+           accept=".jpg,.jpeg,.png,.pdf"
+           required
+           class="form-control form-control-solid">
+
+    <small class="text-danger" id="fileError"></small>
+</div>
+
+
+   
+
 </div>
                                                 <!--end::Input group-->
 
@@ -370,6 +386,25 @@ $("#kt_datepicker_2").flatpickr();
             }
         });
     }
+
+
+
+document.getElementById("noc_file").addEventListener("change", function () {
+
+    const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+    const file = this.files[0];
+    const error = document.getElementById("fileError");
+
+    error.innerHTML = "";
+
+    if (file) {
+        if (!allowedTypes.includes(file.type)) {
+            error.innerHTML = "फक्त JPG, PNG किंवा PDF file upload करा.";
+            this.value = ""; // file reset
+        }
+    }
+});
+
 
 </script>
 

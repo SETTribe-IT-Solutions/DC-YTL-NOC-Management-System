@@ -77,15 +77,15 @@ $departmentId = $_SESSION['departmentId'];
                                             <li class="breadcrumb-item">
                                                 <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
                                             </li>
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Forward to
-                                                departments
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Forward To
+                                                Tahsildar
                                                 (Civilian)</li>
                                         </ul>
                                         <!--end::Breadcrumb-->
                                         <!--begin::Title-->
                                         <h1
                                             class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">
-                                            Forward to departments (Civilian)</h1>
+                                            Forward To Tahsildar (Civilian)</h1>
                                         <!--end::Title-->
                                     </div>
                                     <!--end::Page title-->
@@ -260,12 +260,18 @@ $departmentId = $_SESSION['departmentId'];
                                                                             data-applicationid="<?php echo $row['applicationId']; ?>">
                                                                             Reject
                                                                         </button>
-                                                                        <?php
-                                                                } else {
-                                                                    echo "-";
-                                                                }
-                                                                ;
-                                                                ?>
+                                                                       <?php
+    } else {
+        // Forwarded किंवा Rejected status print करतो
+        if ($row['init_status'] == "Forwarded") {
+            echo "<span class='badge bg-success'>Forwarded</span>";
+        } elseif ($row['init_status'] == "Rejected") {
+            echo "<span class='badge bg-danger'>Rejected</span>";
+        } else {
+            echo htmlspecialchars($row['init_status']);
+        }
+    }
+    ?>
                                                                 </div>
                                                                 <!-- Change Status / Report Modal -->
                                                                 <div class="modal fade"

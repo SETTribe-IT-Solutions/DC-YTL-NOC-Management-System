@@ -231,7 +231,10 @@ error_reporting(0);
 
 
                         <div class="register-form login-form">
-                            <h3 class="text-center mb-4">युजर नोंदणी</h3>
+                            <h3 class="text-center mb-4"></h3>
+                            <!--begin::Title-->
+                            <h1 class="text-dark mb-3 text-center" style="color: #1e3c72 !important;">युजर नोंदणी</h1>
+                            <!--end::Title-->
                             <form method="post" action="registrationDB.php" enctype="multipart/form-data">
                                 <div class="row mb-3">
                                     <div class="col-md-12">
@@ -320,10 +323,10 @@ error_reporting(0);
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <!--<div class="col-md-6">
                                         <label class="form-label">OTP टाका</label><span style="color: red;">*</span>
                                         <input type="tel" name="otp" class="form-control" maxlength="6" required>
-                                    </div>
+                                    </div>-->
                                 </div>
                                 <div class="d-grid mb-3">
                                     <button type="submit" name="submit" class="btn btn-lg btn-government w-100 mb-5"

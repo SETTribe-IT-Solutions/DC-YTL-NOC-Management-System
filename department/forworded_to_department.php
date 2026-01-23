@@ -156,7 +156,9 @@ $departmentId = $_SESSION['departmentId'];
                                   c.emailId,
                                   c.dob,
                                   c.mobileNo,
-                                  a.tahildarStatus
+                                  a.tahildarStatus,
+                                  a.tahildarRemark,
+                                  a.tahildarFile
                               FROM nocApplications a
                               
                               LEFT JOIN civilianRegistrations c ON a.civilianId = c.civilianId
@@ -214,22 +216,35 @@ $departmentId = $_SESSION['departmentId'];
                                 <?php } ?>
                               </td>
                               <td><?php echo date('d-m-Y', strtotime($row['createdDateTime'])); ?></td>
-                             <td>
-  <?php
-  if (isset($row['tahildarStatus']) && !empty(trim($row['tahildarStatus']))) {
-      $tahStatus = strtolower(trim($row['tahildarStatus']));
-      if ($tahStatus == 'forwarded ') {
-          echo '<span class="text-success">Forwarded</span>';
-      } elseif ($tahStatus == 'rejected') {
-          echo '<span class="text-danger">Rejected</span>';
-      } else {
-          echo '<span class="text-warning">' . htmlspecialchars($row['tahildarStatus']) . '</span>';
-      }
-  } else {
-      echo '<span class="text-warning">Pending</span>';
-  }
-  ?>
+                                                          <td>
+<?php
+if (!empty(trim($row['tahildarStatus']))) {
+    $tahStatus = strtolower(trim($row['tahildarStatus']));
+    if ($tahStatus == 'forwarded') {
+        echo '<span class="text-success">Forwarded</span>';
+        $row['tahildarRemark'];
+    } elseif ($tahStatus == 'rejected') {
+        echo '<span class="text-danger">Rejected</span>';
+    } else {
+        echo '<span class="text-warning">'.htmlspecialchars($row['tahildarStatus']).'</span>';
+    }
+} else {
+    echo '<span class="text-warning">Pending</span>';
+}
+
+// Show tahildarRemark
+if (!empty($row['tahildarRemark'])) {
+    echo "<br><small>Remark: ".htmlspecialchars($row['tahildarRemark'])."</small>";
+}
+
+// Show tahildarFile
+if (!empty($row['tahildarFile'])) {
+    echo "<br><a target='_blank' href='documents/".htmlspecialchars($row['tahildarFile'])."'>View File</a>";
+}
+?>
 </td>
+
+                             
 
 <td style="white-space: nowrap;">
   <div class="d-flex flex-wrap gap-1">
@@ -282,7 +297,7 @@ $departmentId = $_SESSION['departmentId'];
             <textarea name="tahildarRemark" class="form-control" rows="2" placeholder="Enter your remark..."></textarea>
           </div>
           <div class="mb-3">
-            <label class="form-label">NOC DSC Signed Document <span class="text-danger">*</span></label>
+            <label class="form-label">Document <span class="text-danger">*</span></label>
             <input type="file" required name="tahildarFile" class="form-control" accept=".pdf">
           </div>
         </div>
@@ -308,6 +323,10 @@ $departmentId = $_SESSION['departmentId'];
           <div class="mb-3">
             <label class="form-label">Remark</label>
             <textarea name="tahildarRemark" class="form-control" rows="3" placeholder="Enter rejection reason" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Document <span class="text-danger">*</span></label>
+            <input type="file" required name="tahildarFile" class="form-control" accept=".pdf">
           </div>
         </div>
         <div class="modal-footer">

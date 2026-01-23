@@ -109,7 +109,7 @@ $designation = $_SESSION['designation'];
                             <!--begin::Content container-->
                             <div id="kt_app_content_container" class="app-container container-fluid">
                                 <!--begin::Contact-->
-                                <div class="card">
+                               
                                     <!--begin::Body-->
                                     <div class="row">
 
@@ -121,13 +121,12 @@ $designation = $_SESSION['designation'];
                                         <?php } ?>
 
                                         <div class="col-md-12 col-sm-12 p-4">
-                                            <h3 class="mb-4 text-center">विभाग निर्मिती</h3>
                                             <form action="admin/user_master-DB.php" method="POST">
                                                 <div class="row">
                                                     <!-- department Name -->
 
 
-                                                    <div class="col-md-6 fv-row fv-plugins-icon-container">
+                                                    <div class="col-md-6 mb-3 fv-row fv-plugins-icon-container">
                                                         <label class="fs-5 fw-semibold mb-2">Department</label>
 
                                                         <select class="form-select form-select-solid"
@@ -143,6 +142,29 @@ $designation = $_SESSION['designation'];
                                                                     $selected = 'selected';
                                                                 }
                                                                 echo '<option value="' . $rows['id'] . '" ' . $selected . '>' . $rows['departmentName'] . '</option>';
+                                                            }
+                                                            ?>
+                                                        </select>
+
+                                                    </div>
+                                                    
+                                                    
+                                                    <div class="col-md-6 mb-3 fv-row fv-plugins-icon-container">
+                                                        <label class="fs-5 fw-semibold mb-2">Taluka</label>
+
+                                                        <select class="form-select form-select-solid"
+                                                            data-control="select2"
+                                                            data-placeholder="Select Taluka" name="taluka"
+                                                            required>
+                                                            <option></option>
+                                                            <?php
+                                                            $talukaResult = mysqli_query($conn, "SELECT DISTINCT taluka FROM taluka");
+                                                            while ($rows = mysqli_fetch_assoc($talukaResult)) {
+                                                                $selected = '';
+                                                                if (isset($result['taluka']) && $result['taluka'] == $rows['id']) {
+                                                                    $selected = 'selected';
+                                                                }
+                                                                echo '<option value="' . $rows['taluka'] . '" ' . $selected . '>' . $rows['taluka'] . '</option>';
                                                             }
                                                             ?>
                                                         </select>
@@ -171,28 +193,28 @@ $designation = $_SESSION['designation'];
                                                             placeholder="Enter Password">
                                                     </div>
                                                    <div class="col-md-6 mb-3">
-    <label class="form-label">System Role</label><br>
-    <input type="radio" name="systemRole" value="Employee" 
-        <?php  (!isset($result['systemRole']) || $result['systemRole'] == 'Employee') ? 'checked' : ''; ?> 
-        onclick="toggleDesignation(true)"> Employee
-    <input type="radio" name="systemRole" value="Final Authority" 
-        <?php echo (isset($result['systemRole']) && $result['systemRole'] == 'Final Authority') ? 'checked' : ''; ?> 
-        onclick="toggleDesignation(false)"> Final Authority
-</div>
-
-<div class="col-md-6 mb-3" id="designationField" 
-    style="<?php echo (isset($result['systemRole']) && $result['systemRole'] == 'Final Authority') ? 'display:none;' : ''; ?>">
-    <label for="designation" class="form-label">Designation</label>
-    <input type="text" value="<?php echo $result['designation'] ?? ''; ?>"
-        name="designation" id="designation" class="form-control"
-        placeholder="Enter designation">
-</div>
-
-<script>
-function toggleDesignation(show) {
-    document.getElementById('designationField').style.display = show ? 'block' : 'none';
-}
-</script>
+                                                        <label class="form-label">System Role</label><br>
+                                                        <input type="radio" name="systemRole" value="Employee" 
+                                                            <?php  (!isset($result['systemRole']) || $result['systemRole'] == 'Employee') ? 'checked' : ''; ?> 
+                                                            onclick="toggleDesignation(true)"> Employee
+                                                        <input type="radio" name="systemRole" value="Final Authority" 
+                                                            <?php echo (isset($result['systemRole']) && $result['systemRole'] == 'Final Authority') ? 'checked' : ''; ?> 
+                                                            onclick="toggleDesignation(false)"> Final Authority
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6 mb-3" id="designationField" 
+                                                        style="<?php echo (isset($result['systemRole']) && $result['systemRole'] == 'Final Authority') ? 'display:none;' : ''; ?>">
+                                                        <label for="designation" class="form-label">Designation</label>
+                                                        <input type="text" value="<?php echo $result['designation'] ?? ''; ?>"
+                                                            name="designation" id="designation" class="form-control"
+                                                            placeholder="Enter designation">
+                                                    </div>
+                                                    
+                                                    <script>
+                                                    function toggleDesignation(show) {
+                                                        document.getElementById('designationField').style.display = show ? 'block' : 'none';
+                                                    }
+                                                    </script>
 
                                                 </div>
                                                 <?php if (isset($_REQUEST['edit'])) { ?>
@@ -224,9 +246,10 @@ function toggleDesignation(show) {
                                                     <tr>
                                                         <th>Sr. No.</th>
                                                         <th>Department</th>
-                                                        <th>EMPLOYEE NAME</th>
-                                                        <th>MOBILE</th>
-                                                        <th>PASSWORD</th>
+                                                        <th>Taluka</th>
+                                                        <th>Employee Name</th>
+                                                        <th>Mobile</th>
+                                                        <th>Password</th>
                                                         <th>Designation</th>
                                                         <th>Action</th>
                                                     </tr>
@@ -234,11 +257,11 @@ function toggleDesignation(show) {
                                                 <tbody>
                                                     <?php
                                                     $result = mysqli_query($conn, "
-      SELECT users.*, departments.departmentName 
-      FROM users 
-      LEFT JOIN departments ON users.departmentId = departments.id 
-      WHERE users.status = 'Active'
-    ") or die($conn->error);
+                                                      SELECT users.*, departments.departmentName 
+                                                      FROM users 
+                                                      LEFT JOIN departments ON users.departmentId = departments.id 
+                                                      WHERE users.status = 'Active'
+                                                    ") or die($conn->error);
 
                                                     $i = 1;
                                                     while ($row = mysqli_fetch_assoc($result)) {
@@ -246,6 +269,7 @@ function toggleDesignation(show) {
                                                         <tr>
                                                             <td><?php echo $i++ ?></td>
                                                             <td><?php echo $row['departmentName'] ?></td>
+                                                            <td><?php echo ($row['taluka'] ?? '-') ?></td>
                                                             <td><?php echo $row['name'] ?></td>
                                                             <td><?php echo $row['mobileNo'] ?></td>
                                                             <td><?php echo $row['password'] ?></td>
@@ -270,7 +294,7 @@ function toggleDesignation(show) {
 
                                     </div>
                                     <!--end::Body-->
-                                </div>
+                                
                                 <!--end::Contact-->
                             </div>
                             <!--end::Content container-->

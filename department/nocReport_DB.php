@@ -53,14 +53,37 @@ if (isset($_POST['update'])) {
 
 
         // ✅ Update nocApplicationReviews (check column 'remarks' or 'remark')
-        $updateReview = mysqli_query($conn, "
-            UPDATE nocApplicationReviews 
-            SET 
-                status = '$status', 
-                dscDocumentPath = '$departmentReportPath',
-                reviewedDateTime = '$dateTime'
-            WHERE applicationId = '$applicationId' AND departmentId = '$departmentId'
-        ");
+       $updateReview = mysqli_query($conn, "
+    UPDATE nocApplicationReviews 
+    SET 
+        status = '$status', 
+        dscDocumentPath = '$departmentReportPath',
+        reviewedDateTime = '$dateTime'
+    WHERE applicationId = '$applicationId' AND departmentId = '$departmentId'
+");
+
+if ($updateReview) {
+    // Check if all reviews for this application are approved
+    $checkAll = mysqli_query($conn, "
+        SELECT COUNT(*) as total, 
+               SUM(CASE WHEN status='Approved' THEN 1 ELSE 0 END) as approved
+        FROM nocApplicationReviews 
+        WHERE applicationId = '$applicationId'
+    ");
+
+    $row = mysqli_fetch_assoc($checkAll);
+
+    if ($row['total'] == $row['approved']) {
+        // All reviews approved -> Update main nocApplications
+        $upddateNoc = mysqli_query($conn,"
+            UPDATE nocApplications 
+            SET departmentStatus='$status', 
+                departmentFile='$departmentReportPath' 
+            WHERE applicationId = '$applicationId'
+        ") or die($conn->error);
+    }
+}
+
 
     }
 

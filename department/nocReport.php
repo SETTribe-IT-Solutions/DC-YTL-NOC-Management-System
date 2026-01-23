@@ -220,7 +220,14 @@ ORDER BY a.createdDateTime DESC");
 
                               
                                 <td><?php echo date('d-m-Y', strtotime($row['createdDateTime'])); ?></td>
-                              <td><?php echo htmlspecialchars($row['']); ?></td>
+                             <td>
+                                <?php if ($row['reportFile']) { ?>
+                                  <a target="_blank"
+                                    href="Uploads/<?php echo htmlspecialchars($row['reportFile']); ?>">View</a>
+                                <?php } else { ?>
+                                  -
+                                <?php } ?>
+                              </td>
 
                               <td><?php echo date('d-m-Y', strtotime($row['createdDateTime'])); ?></td>
                               <!-- <td>
@@ -272,15 +279,7 @@ ORDER BY a.createdDateTime DESC");
                                 }
                                 ?>
                               </td>
-                              <td>
-                                <?php
-                                if ($row['employeeReport']) {
-                                  echo "<a target='_blank' href='department/reportDoc/" . $row['employeeReport'] . "'>View</a>";
-                                } else {
-                                  echo "-";
-                                }
-                                ?>
-                              </td>
+                           
                               <td style="white-space: nowrap;">
                                 <?php
                                 if (!$row['status'] != "Approved") {
