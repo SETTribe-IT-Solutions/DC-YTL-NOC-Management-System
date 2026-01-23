@@ -131,23 +131,23 @@ include('../include/sweetAlert.php');
                                             <thead>
                                                 <!--begin::Table row-->
                                                 <tr class="text-start text-dark-900 fw-bold fs-6 text-uppercase">
-                                                    <th class="min-w-70px">Sr. No.</th>
-                                                    <th>NOC क्रमांक</th>
-                                                    <th>NOC प्रकार निवडा</th>
-                                                    <th>जन्मतारीख</th>
-                                                    <th>पूर्ण नाव</th>
-                                                    <th>आधार क्रमांक</th>
-                                                    <th>पत्ता</th>
-                                                    <th>ईमेल ID</th>
-                                                    <th>मोबाईल क्र.</th>
-                                                    <!-- <th>जमिनीची तपशील</th> -->
-                                                    <th>विषय</th>
-                                                    <th>तालुका</th>
-                                                    <th>गाव</th>
-                                                    <th>गट क्रमांक</th>
-                                                    <th>आधार कार्ड अपलोड करा</th>
-                                                    <th>पॅन कार्ड अपलोड करा</th>
-                                                    <th>Action</th>
+                                                    <th class="min-w-70px">Sr. No. :</th>
+                                                    <th>NOC क्रमांक :</th>
+                                                    <th>NOC प्रकार निवडा :</th>
+                                                    <th>जन्मतारीख :</th>
+                                                    <th>पूर्ण नाव :</th>
+                                                    <th>आधार क्रमांक :</th>
+                                                    <th>पत्ता :</th>
+                                                    <th>ईमेल ID :</th>
+                                                    <th>मोबाईल क्र. :</th>
+                                                    <!-- <th>जमिनीची तपशील :</th> -->
+                                                    <th>विषय :</th>
+                                                    <th>तालुका :</th>
+                                                    <th>गाव :</th>
+                                                    <th>गट क्रमांक :</th>
+                                                    <th>आधार कार्ड अपलोड करा :</th>
+                                                    <th>पॅन कार्ड अपलोड करा :</th>
+                                                    <th>Action :</th>
                                                 </tr>
                                                 <!--end::Table row-->
                                             </thead>
@@ -172,7 +172,7 @@ include('../include/sweetAlert.php');
 
                                                     ?>
                                                     <tr class="odd">
-                                                        <td><?= $i++ ?></td>
+                                                        <td class="text-center align-content-center"><?= $i++ ?></td>
                                                         <td><?= $r['applicationId']; ?></td>
                                                         <td><?= $r['nocType']; ?></td>
                                                         <td><?= $r['dob']; ?></td>
@@ -241,7 +241,7 @@ include('../include/sweetAlert.php');
     <script>
 
         $("#datatable").DataTable({
-
+            "responsive": true,
             "scrollCollapse": true,
             "language": {
                 "lengthMenu": "Show _MENU_",

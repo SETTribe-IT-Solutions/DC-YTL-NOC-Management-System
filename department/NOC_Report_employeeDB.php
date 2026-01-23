@@ -62,7 +62,7 @@ HTML;
     }
 
     if ($applicationId && $reportFile) {
-        echo $sql = "
+        $sql = "
             UPDATE nocApplicationReviews 
             SET employeeReport = '{$reportFile}', employeeRemark = '{$reportRemark}' 
             WHERE applicationId = '{$applicationId}' AND departmentId = '{$departmentId}'

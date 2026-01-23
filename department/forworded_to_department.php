@@ -297,7 +297,7 @@ if (!empty($row['tahildarFile'])) {
             <textarea name="tahildarRemark" class="form-control" rows="2" placeholder="Enter your remark..."></textarea>
           </div>
           <div class="mb-3">
-            <label class="form-label">NOC DSC Signed Document <span class="text-danger">*</span></label>
+            <label class="form-label">Document <span class="text-danger">*</span></label>
             <input type="file" required name="tahildarFile" class="form-control" accept=".pdf">
           </div>
         </div>
@@ -323,6 +323,10 @@ if (!empty($row['tahildarFile'])) {
           <div class="mb-3">
             <label class="form-label">Remark</label>
             <textarea name="tahildarRemark" class="form-control" rows="3" placeholder="Enter rejection reason" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Document <span class="text-danger">*</span></label>
+            <input type="file" required name="tahildarFile" class="form-control" accept=".pdf">
           </div>
         </div>
         <div class="modal-footer">

@@ -6,6 +6,7 @@ date_default_timezone_set('Asia/Kolkata');
 if (isset($_POST['submit'])) {
     $departmentId = isset($_POST['departmentId']) ? (is_array($_POST['departmentId']) ? implode(',', $_POST['departmentId']) : $_POST['departmentId']) : '';
     $name = $_POST['name'] ?? '';
+    $taluka = $_POST['taluka'] ?? '';
     $mobileNo = $_POST['mobileNo'] ?? '';
     $password = $_POST['password'] ?? '';
     $designation = $_POST['designation'] ?? '';
@@ -22,8 +23,8 @@ if (isset($_POST['submit'])) {
     }
 
     $query = mysqli_query($conn, "INSERT INTO users 
-    (`departmentId`, `name`, `mobileNo`, `password`, `designation`, `systemRole`, `userId`, `dateTime`, `status`) 
-    VALUES ('$departmentId','$name','$mobileNo', '$password','$designation','$systemRole', '$userId', '$DateTime', 'Active')");
+    (`departmentId`, `name`, `mobileNo`, `taluka`, `password`, `designation`, `systemRole`, `userId`, `dateTime`, `status`) 
+    VALUES ('$departmentId','$name','$mobileNo', '$taluka', '$password','$designation','$systemRole', '$userId', '$DateTime', 'Active')");
 
 
     echo "<!DOCTYPE html><html><head><script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script></head><body>

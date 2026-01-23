@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("217.21.88.4", "u952673419_NOC_Portal", "ST@NOCYavatmal1", "u952673419_NOC_Portal") or die("Connection could not established");
+$conn = mysqli_connect("localhost", "u196817721_dc_ytl_noc", "ST@NOCYavatmal1", "u196817721_dc_ytl_noc") or die("Connection could not established");
 
 $connect = $conn;
 $con = $conn;

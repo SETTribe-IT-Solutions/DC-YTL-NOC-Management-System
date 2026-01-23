@@ -263,11 +263,6 @@ error_reporting(0);
                                             style="color: #1e3c72;">Password</label>
 
                                         <!--end::Label-->
-                                        <!--begin::Link-->
-                                        <a href="forgot_password.php" class="fs-6 fw-bold" style="color: #ff6600;">
-                                            Forgot Password?
-                                        </a>
-                                        <!--end::Link-->
                                     </div>
                                     <!--end::Wrapper-->
                                     <!--begin::Input-->

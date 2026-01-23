@@ -1,4 +1,7 @@
 <style>
+    :root {
+        --bs-app-header-height : 120px
+    }
     .header-container {
         background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
         /* border-radius: 20px; */
@@ -142,7 +145,7 @@
     }
 
     .app-sidebar {
-        top: 24% !important
+        top: 18% !important
     }
 
     .app-main>div {

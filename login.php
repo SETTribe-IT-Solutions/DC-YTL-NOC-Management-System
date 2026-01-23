@@ -3,22 +3,17 @@ session_start();
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
-
 if (empty($_REQUEST['role'])) {
     header("Location: index.html");
     exit();
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <!--begin::Head-->
-
 <head>
     <title>NOC Portal</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
     <meta charset="utf-8" />
     <meta name="description" content="No Objection Certificate Portal - Maharashtra Government" />
     <meta name="keywords" content="NOC, No Objection Certificate, Maharashtra Government, Maharashtra Shashan" />
@@ -31,7 +26,6 @@ if (empty($_REQUEST['role'])) {
             background: linear-gradient(135deg, #0f5132 0%, #198754 100%);
             border-bottom: 3px solid #20c997;
         }
-
         .emblem-container {
             display: flex;
             align-items: center;
@@ -39,7 +33,6 @@ if (empty($_REQUEST['role'])) {
             gap: 20px;
             margin-bottom: 20px;
         }
-
         .emblem-logo {
             width: 80px;
             height: 80px;
@@ -51,13 +44,11 @@ if (empty($_REQUEST['role'])) {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 8px;
         }
-
         .emblem-logo img {
             width: 100%;
             height: 100%;
             object-fit: contain;
         }
-
         .maharashtra-logo {
             width: 84px;
             height: 79px;
@@ -69,25 +60,21 @@ if (empty($_REQUEST['role'])) {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 8px;
         }
-
         .maharashtra-logo img {
             width: 100%;
             height: 100%;
             object-fit: contain;
         }
-
         .noc-title {
             color: #20c997;
             font-weight: bold;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
-
         .government-text {
             color: white;
             font-size: 1.1rem;
             margin-bottom: 10px;
         }
-
         .login-form {
             background: white;
             border-radius: 15px;
@@ -98,7 +85,6 @@ if (empty($_REQUEST['role'])) {
             position: relative;
             overflow: hidden;
         }
-
         .login-form::before {
             content: '';
             position: absolute;
@@ -113,29 +99,24 @@ if (empty($_REQUEST['role'])) {
             opacity: 0.05;
             z-index: 1;
         }
-
         .login-form>* {
             position: relative;
             z-index: 2;
         }
-
         .form-control:focus {
             border-color: #198754;
             box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
         }
-
         .btn-government {
             background: linear-gradient(45deg, #198754, #20c997);
             border: none;
             color: white;
             font-weight: bold;
         }
-
         .btn-government:hover {
             background: linear-gradient(45deg, #0f5132, #198754);
             color: white;
         }
-
         .ashoka-chakra {
             width: 60px;
             height: 60px;
@@ -146,20 +127,17 @@ if (empty($_REQUEST['role'])) {
             align-items: center;
             justify-content: center;
         }
-
         .ashoka-chakra::before {
             content: "☸";
             font-size: 30px;
             color: #000080;
         }
-
         .maharashtra-text {
             font-size: 12px;
             color: #000080;
             font-weight: bold;
             text-align: center;
         }
-
         .logo-fallback {
             font-size: 12px;
             color: #1e3c72;
@@ -173,7 +151,6 @@ if (empty($_REQUEST['role'])) {
 </head>
 <!--end::Head-->
 <!--begin::Body-->
-
 <body id="kt_body" class="app-blank">
     <!--begin::Root-->
     <div class="d-flex flex-column flex-root" id="kt_app_root">
@@ -193,13 +170,11 @@ if (empty($_REQUEST['role'])) {
                                     alt="Emblem of India" />
                             </div>
                             <div class="maharashtra-logo">
-
                                 <img src="assets/media/logos/Seal_of_Maharashtra.png"
                                     alt="Maharashtra Government Logo" />
                             </div>
                         </div>
                         <!--end::Government Logos-->
-
                         <!--begin::Title-->
                         <h1 class="d-none d-lg-block fw-bold text-white fs-2qx pb-3">
                             <span class="noc-title">NOC Portal</span>
@@ -209,7 +184,6 @@ if (empty($_REQUEST['role'])) {
                             <div style="font-size: 1.1rem;">Government of Maharashtra</div>
                         </div>
                         <!--end::Title-->
-
                         <!--begin::Description-->
                         <p class="d-none d-lg-block fw-semibold text-white" style="font-size: 28px;">
                             No Objection Certificate
@@ -236,25 +210,22 @@ if (empty($_REQUEST['role'])) {
                                 <!--begin::Heading-->
                                 <div class="text-center mb-8">
                                     <!--begin::Title-->
-                                    <h1 class="text-dark mb-3" style="color: #1e3c72 !important;">Login to NOC Portal
+                                    <h1 class="text-dark mb-3" style="color: #1e3c72 !important;">NOC पोर्टलवर लॉगिन करा
                                     </h1>
                                     <!--end::Title-->
                                     <!--begin::Subtitle-->
                                     <div class="text-gray-600 fw-semibold fs-5 mb-4">
-                                        Access your No Objection Certificate applications as
-                                        <span
-                                            class="text-info"><?= ($_GET['role'] == "Officer") ? 'Officer' : 'Civilian' ?></span>
+                                        तुमच्या हरकत नसल्याचा दाखला अर्जांना <span class="text-info">
+                                            <?= ($_GET['role'] == "Officer") ? 'अधिकारी' : (($_GET['role'] == "Department") ? 'विभाग' : 'नागरिक') ?>
+                                        </span> म्हणून प्रवेश करा
                                     </div>
                                     <!--end::Subtitle-->
                                     <?php
                                     if ($_GET['role'] == "Civilian"):
-
-
                                         ?>
                                         <!--begin::Link-->
-                                        <div class="text-gray-500 fw-semibold fs-6">New User?
-                                            <a href="registration.php" class="fw-bold" style="color: #ff6600;">Register
-                                                Here</a>
+                                        <div class="text-gray-500 fw-semibold fs-6">नवीन वापरकर्ता?
+                                            <a href="registration.php" class="fw-bold" style="color: #ff6600;">येथे नोंदणी करा</a>
                                         </div>
                                         <!--end::Link-->
                                         <?php
@@ -262,27 +233,25 @@ if (empty($_REQUEST['role'])) {
                                     ?>
                                 </div>
                                 <!--begin::Heading-->
-
                                 <!--begin::Input group-->
                                 <div class="fv-row mb-8">
                                     <!--begin::Label-->
-                                    <label class="form-label fs-6 fw-bold" style="color: #1e3c72;">Mobile No</label>
+                                    <label class="form-label fs-6 fw-bold" style="color: #1e3c72;">मोबाईल नंबर</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <input class="form-control form-control-lg form-control-solid" required type="tel"
-                                        name="mobileNo" minlength="10" maxlength="10" placeholder="Enter your mobile no"
+                                        name="mobileNo" minlength="10" maxlength="10" placeholder="तुमचा मोबाईल नंबर प्रविष्ट करा"
                                         autocomplete="off" />
                                     <!--end::Input-->
                                 </div>
                                 <!--end::Input group-->
-
                                 <!--begin::Input group-->
                                 <div class="fv-row mb-8 position-relative">
                                     <!--begin::Wrapper-->
                                     <div class="d-flex flex-stack mb-2">
                                         <!--begin::Label-->
                                         <label class="form-label fw-bold fs-6 mb-0"
-                                            style="color: #1e3c72;">Password</label>
+                                            style="color: #1e3c72;">पासवर्ड</label>
                                         <!--end::Label-->
                                         <!--begin::Link-->
                                         <!-- <a href="forgot_password.php" class="fs-6 fw-bold" style="color: #ff6600;">
@@ -291,14 +260,12 @@ if (empty($_REQUEST['role'])) {
                                         <!--end::Link-->
                                     </div>
                                     <!--end::Wrapper-->
-
                                     <!--begin::Input with toggle icon-->
                                     <div class="position-relative">
                                         <input id="password-input"
                                             class="form-control form-control-lg form-control-solid pe-10"
-                                            type="password" name="password" placeholder="Enter your password" required
+                                            type="password" name="password" placeholder="तुमचा पासवर्ड प्रविष्ट करा" required
                                             autocomplete="off" />
-
                                         <!-- Toggle Eye Icon -->
                                         <span class="position-absolute top-50 end-0 translate-middle-y me-3"
                                             onclick="togglePassword()" style="cursor: pointer;">
@@ -308,29 +275,32 @@ if (empty($_REQUEST['role'])) {
                                     </div>
                                     <!--end::Input with toggle icon-->
                                 </div>
-
-
-
                                 <!--end::Input group-->
-
                                 <!--begin::Actions-->
                                 <div class="text-center">
                                     <!--begin::Submit button-->
                                     <button type="submit" id="kt_sign_in_submit" name="logIn"
                                         class="btn btn-lg btn-government w-100 mb-5">
-                                        <span class="indicator-label">Login to Portal</span>
-                                        <span class="indicator-progress">Please wait...
+                                        <span class="indicator-label">पोर्टलवर लॉगिन करा</span>
+                                        <span class="indicator-progress">कृपया प्रतीक्षा करा...
                                             <span
                                                 class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                     </button>
                                     <!--end::Submit button-->
-
                                     <!--begin::Separator-->
                                     <div class="text-center text-muted text-uppercase fw-bold mb-5"></div>
                                     <!--end::Separator-->
-
+                                   
+                                   
+                                    <!--begin::Google link-->
+                                        <a href="index.html"
+                                            class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5">
+                                             मुख पृष्ठ 
+                                        </a>
+                                        <!--end::Google link-->
+                                   
                                     <?php
-                                    if ($_GET['role'] == "Officer") {
+                                    /*if ($_GET['role'] == "Officer") {
                                         ?>
                                         <!--begin::Google link-->
                                         <a href="login.php?role=Civilian"
@@ -348,9 +318,8 @@ if (empty($_REQUEST['role'])) {
                                         </a>
                                         <!--end::Google link-->
                                         <?php
-                                    }
+                                    }*/
                                     ?>
-
                                 </div>
                                 <!--end::Actions-->
                             </form>
@@ -397,12 +366,10 @@ if (empty($_REQUEST['role'])) {
     include('include/jsLinks.php');
     ?>
     <!--end::Javascript-->
-
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password-input');
             const toggleIcon = document.getElementById('toggle-icon');
-
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 toggleIcon.classList.remove('bi-eye-slash-fill');
@@ -413,9 +380,47 @@ if (empty($_REQUEST['role'])) {
                 toggleIcon.classList.add('bi-eye-slash-fill');
             }
         }
+        
+        function isNumberKey(evt) {
+            // Allow: backspace, delete, tab, escape, enter
+            if ([8, 9, 27, 13, 46].indexOf(evt.keyCode) !== -1 ||
+                // Allow: Ctrl+A, Command+A
+                (evt.keyCode === 65 && (evt.ctrlKey === true || evt.metaKey === true)) ||
+                // Allow: home, end, left, right, down, up
+                (evt.keyCode >= 35 && evt.keyCode <= 40)) {
+                return true;
+            }
+            
+            // Ensure that it is a number and stop the keypress
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            return (charCode >= 48 && charCode <= 57); // 0-9 only
+        }
+        
+        // Additional validation on input
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileInput = document.querySelector('input[name="mobileNo"]');
+            if (mobileInput) {
+                mobileInput.addEventListener('input', function(e) {
+                    // Remove any non-numeric characters
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                    
+                    // Enforce 10 digit limit
+                    if (this.value.length > 10) {
+                        this.value = this.value.slice(0, 10);
+                    }
+                });
+                
+                mobileInput.addEventListener('blur', function(e) {
+                    // Validate on blur (when user leaves the field)
+                    if (this.value.length !== 10 || !/^[6-9][0-9]{9}$/.test(this.value)) {
+                        this.setCustomValidity('10 अंकी मोबाईल नंबर प्रविष्ट करा (6/7/8/9 ने सुरू होणारा)');
+                    } else {
+                        this.setCustomValidity('');
+                    }
+                });
+            }
+        });
     </script>
-
 </body>
 <!--end::Body-->
-
 </html>
