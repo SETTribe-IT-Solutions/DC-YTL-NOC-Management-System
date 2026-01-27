@@ -1,8 +1,15 @@
 <?php
-$conn = mysqli_connect("217.21.88.4", "u952673419_NOC_Portal", "ST@NOCYavatmal1", "u952673419_NOC_Portal") or die("Connection could not established");
+$conn = mysqli_connect(
+    "103.160.107.18",                
+    "nmrmlatur_dcytlnoc",          
+    "ST@NOCYavatmal1",                
+    "nmrmlatur_dcytlnoc"            
+);
 
-$connect = $conn;
+if (!$conn) {
+    die("DB Connection Failed: " . mysqli_connect_error());
+}
+ 
 $con = $conn;
-
 date_default_timezone_set('Asia/Kolkata');
 ?>
