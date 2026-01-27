@@ -139,9 +139,11 @@ include('../include/sweetAlert.php');
                                                     <th>तालुका</th>
                                                     <th>गाव</th>
                                                     <th>गट क्रमांक</th>
-                                                    <th>आधार कार्ड अपलोड करा</th>
-                                                    <th>पॅन कार्ड अपलोड करा</th>
-                                                    <th>Action</th>
+                                              <th>आधार कार्ड</th>
+<th>पॅन कार्ड</th>
+<th>NOC अर्ज</th>
+<th>Action</th>
+
                                                 </tr>
                                                 <!--end::Table row-->
                                             </thead>
@@ -173,10 +175,42 @@ include('../include/sweetAlert.php');
                                                         <td><?= $r['taluka']; ?></td>
                                                         <td><?= $r['village']; ?></td>
                                                         <td><?= $r['gatNo']; ?></td>
-                                                        <td><?= $r['aadharCard'] ? '<a href="' . $r['aadharCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?>
-                                                        </td>
-                                                        <td><?= $r['panCard'] ? '<a href="' . $r['panCard'] . '" target="_blank">View</a>' : 'फाईल निवडलेली नाही'; ?>
-                                                        </td>
+<td>
+<?php 
+if (!empty($r['aadharCard'])) {
+    echo '<a href="/Dev-DC-YTL-NOC-Management-System/' . $r['aadharCard'] . '" target="_blank">View</a>';
+} else {
+    echo 'फाईल निवडलेली नाही';
+}
+?>
+</td>
+
+
+
+
+
+<td>
+<?php 
+if (!empty($r['panCard'])) {
+    echo '<a href="/Dev-DC-YTL-NOC-Management-System/' . $r['panCard'] . '" target="_blank">View</a>';
+} else {
+    echo 'फाईल निवडलेली नाही';
+}
+?>
+</td>
+
+<td>
+<?php 
+if (!empty($r['nocApplicationFile'])) {
+    echo '<a href="/Dev-DC-YTL-NOC-Management-System/' . $r['nocApplicationFile'] . '" target="_blank">View</a>';
+} else {
+    echo 'फाईल निवडलेली नाही';
+}
+?>
+</td>
+
+
+
                                                         <td>
                                                             <a
                                                                 href="civilian/trackNoc.php?applicationId=<?= $r['applicationId'] ?>"><button
@@ -228,7 +262,7 @@ include('../include/sweetAlert.php');
     <script>
 
         $("#datatable").DataTable({
-
+            "responsive":true,
             "scrollCollapse": true,
             "language": {
                 "lengthMenu": "Show _MENU_",

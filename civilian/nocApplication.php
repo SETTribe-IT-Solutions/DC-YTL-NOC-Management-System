@@ -399,20 +399,28 @@ if ($designation === 'admin') {
                                                         </div>
                                                         <!--end::Col-->
                                                     </div>
-                                                    <div class="row">
-                                                        <!--begin::Col-->
-                                                        <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
-                                                            <label class="fs-5 fw-semibold mb-2">आधारकार्ड अपलोड करा
-                                                                <span class="text-danger">*</span></label>
-                                                            <input type="file" class="form-control"
-                                                                accept="image/*, .pdf" id="aadharCard" name="aadharCard"
-                                                                required>
-                                                            <div
-                                                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Col-->
-                                                    </div>
+                           <div class="row">
+
+    <!-- Aadhar Upload -->
+    <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
+        <label class="fs-5 fw-semibold mb-2">आधारकार्ड अपलोड करा
+            <span class="text-danger">*</span></label>
+        <input type="file" class="form-control"
+            accept="image/*, .pdf" id="aadharCard" name="aadharCard"
+            required>
+    </div>
+
+    <!-- NOC Arz Upload -->
+    <div class="col-md-6 mb-2 fv-row fv-plugins-icon-container">
+        <label class="fs-5 fw-semibold mb-2">NOC अर्ज अपलोड करा
+            <span class="text-danger">*</span></label>
+        <input type="file" class="form-control"
+            accept="application/pdf" id="nocArz" name="nocArz" required>
+    </div>
+
+</div>
+
+
                                                     <!--end::Input group-->
                                                     <!--begin::Submit-->
                                                     <button type="submit" name="submit" class="btn btn-primary"
